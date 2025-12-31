@@ -1,0 +1,251 @@
+{
+  "info": {
+    "name": "Room Availability API với Quantity",
+    "description": "API kiểm tra phòng trống - Hỗ trợ số lượng phòng yêu cầu",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Check Room Availability với Quantity (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingDetails\": [\n    {\n      \"roomTypeId\": \"CS-C-D\",\n      \"quantity\": 10,\n      \"listDate\": [\n        { \"ngay\": \"2025-12-26\" },\n        { \"ngay\": \"2025-12-27\" },\n        { \"ngay\": \"2025-12-28\" }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check"]
+        },
+        "description": "Kiểm tra phòng trống với số lượng cụ thể.\n\nYêu cầu 10 phòng loại CS-C-D cho 3 ngày."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Check Range với Quantity (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check-range?roomTypeId=CS-C-D&startDate=2025-12-26&endDate=2025-12-28&quantity=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check-range"],
+          "query": [
+            {
+              "key": "roomTypeId",
+              "value": "CS-C-D"
+            },
+            {
+              "key": "startDate",
+              "value": "2025-12-26"
+            },
+            {
+              "key": "endDate",
+              "value": "2025-12-28"
+            },
+            {
+              "key": "quantity",
+              "value": "10",
+              "description": "Số lượng phòng yêu cầu (mặc định = 1)"
+            }
+          ]
+        },
+        "description": "Kiểm tra xem có đủ 10 phòng CS-C-D từ 26/12 đến 28/12 không"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Check Single Date với Quantity (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check-date?roomTypeId=CS-C-D&date=2025-12-26&quantity=5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check-date"],
+          "query": [
+            {
+              "key": "roomTypeId",
+              "value": "CS-C-D"
+            },
+            {
+              "key": "date",
+              "value": "2025-12-26"
+            },
+            {
+              "key": "quantity",
+              "value": "5",
+              "description": "Số lượng phòng yêu cầu"
+            }
+          ]
+        },
+        "description": "Kiểm tra nhanh một ngày với quantity = 5"
+      },
+      "response": []
+    },
+    {
+      "name": "4. Check Multiple Room Types với Quantity",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingDetails\": [\n    {\n      \"roomTypeId\": \"CS-C-D\",\n      \"quantity\": 10,\n      \"listDate\": [\n        { \"ngay\": \"2025-12-26\" },\n        { \"ngay\": \"2025-12-27\" }\n      ]\n    },\n    {\n      \"roomTypeId\": \"CS-C-S\",\n      \"quantity\": 5,\n      \"listDate\": [\n        { \"ngay\": \"2025-12-26\" },\n        { \"ngay\": \"2025-12-27\" }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check"]
+        },
+        "description": "Kiểm tra nhiều loại phòng với số lượng khác nhau:\n- 10 phòng Deluxe\n- 5 phòng Suite"
+      },
+      "response": []
+    },
+    {
+      "name": "5. Check với Quantity = 0 (Error Test)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingDetails\": [\n    {\n      \"roomTypeId\": \"CS-C-D\",\n      \"quantity\": 0,\n      \"listDate\": [\n        { \"ngay\": \"2025-12-26\" }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check"]
+        },
+        "description": "Test validation: quantity phải > 0"
+      },
+      "response": []
+    },
+    {
+      "name": "6. Check với Quantity âm (Error Test)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check-range?roomTypeId=CS-C-D&startDate=2025-12-26&endDate=2025-12-28&quantity=-5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check-range"],
+          "query": [
+            {
+              "key": "roomTypeId",
+              "value": "CS-C-D"
+            },
+            {
+              "key": "startDate",
+              "value": "2025-12-26"
+            },
+            {
+              "key": "endDate",
+              "value": "2025-12-28"
+            },
+            {
+              "key": "quantity",
+              "value": "-5"
+            }
+          ]
+        },
+        "description": "Test validation: quantity không được âm"
+      },
+      "response": []
+    },
+    {
+      "name": "7. Check với Quantity rất lớn",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingDetails\": [\n    {\n      \"roomTypeId\": \"CS-C-D\",\n      \"quantity\": 999,\n      \"listDate\": [\n        { \"ngay\": \"2025-12-26\" }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check"]
+        },
+        "description": "Test với số lượng rất lớn (999 phòng) - Kỳ vọng: không đủ phòng"
+      },
+      "response": []
+    },
+    {
+      "name": "8. Check mặc định (quantity = 1)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8310/khachsan-service/api/room-availability/check-range?roomTypeId=CS-C-D&startDate=2025-12-26&endDate=2025-12-28",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8310",
+          "path": ["khachsan-service", "api", "room-availability", "check-range"],
+          "query": [
+            {
+              "key": "roomTypeId",
+              "value": "CS-C-D"
+            },
+            {
+              "key": "startDate",
+              "value": "2025-12-26"
+            },
+            {
+              "key": "endDate",
+              "value": "2025-12-28"
+            }
+          ]
+        },
+        "description": "Không truyền quantity - Mặc định = 1 phòng"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8310/khachsan-service",
+      "type": "string"
+    }
+  ]
+}
+

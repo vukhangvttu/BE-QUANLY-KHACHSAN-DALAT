@@ -1,0 +1,118 @@
+2025-12-28 00:18:54.333 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h24m57s70ms938µs800ns).
+2025-12-28 00:28:52.607 [INFO ] [http-nio-8310-exec-7] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@28520952
+2025-12-28 00:28:52.611 [TRACE] [http-nio-8310-exec-7] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-28 00:28:52.611 [INFO ] [http-nio-8310-exec-7] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-28 00:28:52.613 [TRACE] [http-nio-8310-exec-7] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-28 00:28:52.613 [DEBUG] [http-nio-8310-exec-7] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-28 00:28:52.623 [TRACE] [http-nio-8310-exec-7] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-28 00:28:52.623 [INFO ] [http-nio-8310-exec-7] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: CS-C-D - Classic-City View Double với số lượng yêu cầu: 10
+2025-12-28 00:28:52.624 [TRACE] [http-nio-8310-exec-7] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-28 00:28:52.625 [DEBUG] [http-nio-8310-exec-7] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-28 00:28:52.646 [WARN ] [http-nio-8310-exec-7] v.k.service.RoomAvailabilityService - Loại phòng CS-C-D không đủ phòng vào ngày 2025-12-28. Yêu cầu: 10, Còn: 9
+2025-12-28 00:28:52.646 [INFO ] [http-nio-8310-exec-7] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Không đủ phòng - Loại phòng Classic-City View Double (CS-C-D) không đủ phòng vào ngày 2025-12-28. Yêu cầu: 10 phòng, Còn trống: 9 phòng.
+2025-12-28 00:28:52.647 [TRACE] [http-nio-8310-exec-7] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-28 00:40:08.348 [INFO ] [http-nio-8310-exec-1] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@6fca806c
+2025-12-28 00:40:08.350 [TRACE] [http-nio-8310-exec-1] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-28 00:40:08.350 [INFO ] [http-nio-8310-exec-1] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-28 00:40:08.350 [TRACE] [http-nio-8310-exec-1] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-28 00:40:08.351 [DEBUG] [http-nio-8310-exec-1] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-28 00:40:08.353 [TRACE] [http-nio-8310-exec-1] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-28 00:40:08.353 [INFO ] [http-nio-8310-exec-1] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: CS-C-D - Classic-City View Double với số lượng yêu cầu: 10
+2025-12-28 00:40:08.353 [TRACE] [http-nio-8310-exec-1] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-28 00:40:08.356 [DEBUG] [http-nio-8310-exec-1] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-28 00:40:08.362 [WARN ] [http-nio-8310-exec-1] v.k.service.RoomAvailabilityService - Loại phòng CS-C-D không đủ phòng vào ngày 2025-12-28. Yêu cầu: 10, Còn: 9
+2025-12-28 00:40:08.362 [INFO ] [http-nio-8310-exec-1] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Không đủ phòng - Loại phòng Classic-City View Double (CS-C-D) không đủ phòng vào ngày 2025-12-28. Yêu cầu: 10 phòng, Còn trống: 9 phòng.
+2025-12-28 00:40:08.362 [TRACE] [http-nio-8310-exec-1] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-28 00:40:36.347 [INFO ] [http-nio-8310-exec-2] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@60fd9dee
+2025-12-28 00:40:36.348 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-28 00:40:36.349 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-28 00:40:36.349 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-28 00:40:36.349 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-28 00:40:36.350 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-28 00:40:36.350 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: CS-C-D - Classic-City View Double với số lượng yêu cầu: 10
+2025-12-28 00:40:36.351 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-28 00:40:36.351 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-28 00:40:36.361 [WARN ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng CS-C-D không đủ phòng vào ngày 2025-12-28. Yêu cầu: 10, Còn: 9
+2025-12-28 00:40:36.361 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Không đủ phòng - Loại phòng Classic-City View Double (CS-C-D) không đủ phòng vào ngày 2025-12-28. Yêu cầu: 10 phòng, Còn trống: 9 phòng.
+2025-12-28 00:40:36.362 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-28 02:26:12.422 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h9m50s732ms175µs800ns).
+2025-12-28 02:33:44.308 [TRACE] [scheduling-1] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.ScheduledTaskService.updateRoomStatusDaily]
+2025-12-28 02:33:44.327 [TRACE] [scheduling-1] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.getXepPhongDaNhan]: This method is not transactional.
+2025-12-28 02:33:44.417 [DEBUG] [scheduling-1] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        xep_phong_booking x 
+    WHERE
+        x.da_nhan_phong = TRUE   
+        AND CURRENT_DATE BETWEEN x.ngay_den AND (
+            x.ngay_di - INTERVAL '1 day'
+        );  
+2025-12-28 02:33:44.616 [DEBUG] [scheduling-1] org.hibernate.SQL - 
+    select
+        gp1_0.ma_gia_phong,
+        gp1_0.co_an_sang,
+        gp1_0.covat,
+        gp1_0.gia,
+        gp1_0.gia_cuoi_tuan,
+        gp1_0.gia_giuong,
+        gp1_0.gia_ngay_le,
+        gp1_0.gia_ngay_thuong,
+        gp1_0.maloaigia,
+        gp1_0.maloaiphong,
+        gp1_0.tien_an_sang,
+        gp1_0.tien_an_sang_tre_em,
+        gp1_0.vat 
+    from
+        gia_phong gp1_0 
+    where
+        gp1_0.ma_gia_phong=?
+2025-12-28 02:33:44.737 [TRACE] [scheduling-1] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.ScheduledTaskService.updateRoomStatusDaily]
+2025-12-28 15:45:40.190 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11h42m56s7ms316µs400ns).
+2025-12-28 20:33:16.663 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4h30m37s312ms590µs599ns).
+2025-12-28 21:25:56.424 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=50m308ms214µs600ns).

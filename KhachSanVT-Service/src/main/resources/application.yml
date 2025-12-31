@@ -1,0 +1,61 @@
+server:
+  port: 8310
+  servlet:
+    context-path: /khachsan-service
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    name: khachsan-service
+  web:
+    locale: vi_VN
+    locale-resolver: fixed
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/QL-KHACH-SAN-VT
+    username: ${USER_DB:YqKZwsA/4cLvT22dQpMngxAfnGorgm+xYzbzW1qgPHw=}
+    password: ${USER_PW:D0/HnzSe7XZII4zTojifuRoYlSQy/k4dXJVgwOHsDBrKc19wWPHjT0KXXMhNwP9d}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: GoldenEraHikariCP
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    root: INFO
+    org.goldenera: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.http.converter.json: DEBUG
+    org.springframework.transaction: TRACE
+
+
+  file:
+    name: /var/log/app/app.log
+
+config:
+  dir: D:/docker/docker-khach-san
+
+jwt:
+  signerKey: |-
+    "9lo+R+4nWrLw4cs9/52XXDJuRy6JAM/tygP4JhbZl/64k5wTH0mNGjUQlncat4V5"
+  valid-duration: 3600
+  refreshable-duration: 36000
+
+mst:
+  mk: 8V+MLk0eREGSIaqpefv2D4QE+X3tanteeZqu7Cbjh50=

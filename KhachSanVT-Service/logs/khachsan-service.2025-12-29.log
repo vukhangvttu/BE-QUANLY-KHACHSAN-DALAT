@@ -1,0 +1,1033 @@
+2025-12-29 07:08:23.636 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7h58s180ms543µs200ns).
+2025-12-29 13:03:39.092 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h23m41s228ms357µs100ns).
+2025-12-29 13:04:29.565 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=50s481ms496µs900ns).
+2025-12-29 13:16:10.531 [INFO ] [http-nio-8310-exec-5] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@1c1dbf6f
+2025-12-29 13:16:10.551 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:16:10.551 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:16:10.557 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:16:10.597 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:16:10.639 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:16:10.639 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 1
+2025-12-29 13:16:10.639 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:16:10.656 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:16:10.707 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 1)
+2025-12-29 13:16:10.707 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:16:10.716 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:16:10.718 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 1)
+2025-12-29 13:16:10.722 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:16:10.722 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:16:10.724 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 1)
+2025-12-29 13:16:10.724 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:16:10.728 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:16:10.732 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 1)
+2025-12-29 13:16:10.732 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:16:10.732 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:16:10.739 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 1)
+2025-12-29 13:16:10.739 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:16:10.739 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:16:10.739 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 1)
+2025-12-29 13:16:10.739 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:16:10.739 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:24:47.196 [INFO ] [http-nio-8310-exec-4] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@2638c93
+2025-12-29 13:24:47.198 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:24:47.199 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:24:47.199 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:24:47.200 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:24:47.203 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:24:47.203 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 1
+2025-12-29 13:24:47.203 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:24:47.205 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:24:47.212 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 1)
+2025-12-29 13:24:47.212 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:24:47.213 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:24:47.219 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 1)
+2025-12-29 13:24:47.219 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:24:47.220 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:24:47.226 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 1)
+2025-12-29 13:24:47.226 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:24:47.227 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:24:47.232 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 1)
+2025-12-29 13:24:47.232 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:24:47.233 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:24:47.236 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 1)
+2025-12-29 13:24:47.236 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:24:47.237 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:24:47.241 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 1)
+2025-12-29 13:24:47.241 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:24:47.241 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:28:45.083 [INFO ] [http-nio-8310-exec-9] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@3874f8f4
+2025-12-29 13:28:45.085 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:28:45.085 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:28:45.085 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:28:45.086 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:28:45.089 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:28:45.089 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 1
+2025-12-29 13:28:45.089 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:28:45.089 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:28:45.097 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 1)
+2025-12-29 13:28:45.098 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:28:45.099 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:28:45.106 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 1)
+2025-12-29 13:28:45.107 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:28:45.109 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:28:45.203 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 1)
+2025-12-29 13:28:45.204 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:28:45.208 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:28:45.215 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 1)
+2025-12-29 13:28:45.215 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:28:45.217 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:28:45.222 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 1)
+2025-12-29 13:28:45.223 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:28:45.223 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:28:45.229 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 1)
+2025-12-29 13:28:45.229 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:28:45.230 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:31:29.269 [INFO ] [http-nio-8310-exec-10] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@d8396cc
+2025-12-29 13:31:29.273 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:31:29.273 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:31:29.273 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:31:29.274 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:31:29.276 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:31:29.277 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 13:31:29.278 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:31:29.279 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:31:29.285 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 13:31:29.285 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:31:29.286 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:31:29.291 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 13:31:29.291 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:31:29.292 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:31:29.297 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 13:31:29.297 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:31:29.298 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:31:29.301 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 13:31:29.301 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:31:29.302 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:31:29.305 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 13:31:29.305 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:31:29.306 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:31:29.311 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 13:31:29.311 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:31:29.311 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:37:55.724 [INFO ] [http-nio-8310-exec-2] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@ea1fa0b
+2025-12-29 13:37:55.728 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:37:55.729 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:37:55.729 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:37:55.730 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:37:55.739 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:37:55.739 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 13:37:55.739 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:37:55.740 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:37:55.762 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 13:37:55.762 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:37:55.763 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:37:55.769 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 13:37:55.769 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:37:55.770 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:37:55.774 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 13:37:55.774 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:37:55.776 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:37:55.780 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 13:37:55.780 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:37:55.780 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:37:55.784 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 13:37:55.784 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:37:55.784 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:37:55.791 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 13:37:55.791 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:37:55.791 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:40:24.251 [INFO ] [http-nio-8310-exec-5] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@7bc979a6
+2025-12-29 13:40:24.254 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:40:24.255 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:40:24.255 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:40:24.256 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:40:24.258 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:40:24.258 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 13:40:24.258 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:40:24.259 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:40:24.262 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 13:40:24.262 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:40:24.263 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:40:24.267 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 13:40:24.267 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:40:24.268 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:40:24.271 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 13:40:24.271 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:40:24.272 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:40:24.276 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 13:40:24.276 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:40:24.277 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:40:24.281 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 13:40:24.281 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:40:24.283 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:40:24.287 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 13:40:24.287 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:40:24.287 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:46:35.460 [INFO ] [http-nio-8310-exec-4] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@1dd59766
+2025-12-29 13:46:35.462 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:46:35.462 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:46:35.462 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:46:35.463 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:46:35.465 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:46:35.465 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 13:46:35.465 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:46:35.466 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:46:35.470 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 13:46:35.470 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:46:35.471 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:46:35.474 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 13:46:35.474 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:46:35.475 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:46:35.479 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 13:46:35.479 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:46:35.480 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:46:35.485 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 13:46:35.485 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:46:35.486 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:46:35.490 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 13:46:35.490 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:46:35.490 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:46:35.495 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 13:46:35.495 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:46:35.495 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:49:40.156 [INFO ] [http-nio-8310-exec-9] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@50b586b1
+2025-12-29 13:49:40.158 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:49:40.158 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:49:40.159 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:49:40.159 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:49:40.160 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:49:40.161 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 13:49:40.161 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:49:40.161 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:49:40.166 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 13:49:40.167 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:49:40.167 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:49:40.170 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 13:49:40.170 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:49:40.173 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:49:40.176 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 13:49:40.177 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:49:40.177 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:49:40.182 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 13:49:40.183 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:49:40.193 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:49:40.197 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 13:49:40.198 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:49:40.198 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:49:40.202 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 13:49:40.202 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:49:40.202 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:57:11.142 [INFO ] [http-nio-8310-exec-10] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@77b7b39c
+2025-12-29 13:57:11.145 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 13:57:11.145 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 13:57:11.146 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:57:11.147 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 13:57:11.149 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 13:57:11.149 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 13:57:11.150 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:57:11.150 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:57:11.155 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 13:57:11.156 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:57:11.157 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:57:11.160 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 13:57:11.160 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:57:11.161 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:57:11.165 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 13:57:11.165 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:57:11.166 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:57:11.170 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 13:57:11.170 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:57:11.171 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:57:11.175 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 13:57:11.175 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 13:57:11.176 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 13:57:11.179 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 13:57:11.179 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 13:57:11.179 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:01:33.623 [INFO ] [http-nio-8310-exec-2] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@6ebd904b
+2025-12-29 14:01:33.625 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:01:33.625 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 14:01:33.626 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:01:33.627 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 14:01:33.629 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:01:33.629 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 14:01:33.629 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:01:33.630 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:01:33.635 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 14:01:33.635 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:01:33.636 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:01:33.640 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 14:01:33.640 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:01:33.641 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:01:33.644 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 14:01:33.645 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:01:33.645 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:01:33.650 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 14:01:33.650 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:01:33.651 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:01:33.654 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 14:01:33.655 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:01:33.655 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:01:33.658 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 14:01:33.658 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 14:01:33.658 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:08:00.342 [INFO ] [http-nio-8310-exec-5] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@677bba26
+2025-12-29 14:08:00.344 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:08:00.344 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 14:08:00.345 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:08:00.346 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 14:08:00.354 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:08:00.354 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 14:08:00.355 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:08:00.356 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:08:00.373 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 14:08:00.374 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:08:00.374 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:08:00.377 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 14:08:00.378 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:08:00.379 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:08:00.383 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 14:08:00.383 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:08:00.383 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:08:00.387 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 14:08:00.387 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:08:00.387 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:08:00.391 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 14:08:00.391 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:08:00.392 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:08:00.396 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 14:08:00.396 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 14:08:00.396 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:09:41.843 [INFO ] [http-nio-8310-exec-4] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@16b00cc3
+2025-12-29 14:09:41.845 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:09:41.845 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 14:09:41.846 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:09:41.847 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 14:09:41.849 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:09:41.849 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 14:09:41.850 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:09:41.850 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:09:41.854 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 14:09:41.854 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:09:41.855 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:09:41.859 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 14:09:41.860 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:09:41.860 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:09:41.863 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 14:09:41.864 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:09:41.864 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:09:41.871 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 14:09:41.872 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:09:41.872 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:09:41.877 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 14:09:41.878 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:09:41.878 [DEBUG] [http-nio-8310-exec-4] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:09:41.885 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 14:09:41.885 [INFO ] [http-nio-8310-exec-4] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 14:09:41.885 [TRACE] [http-nio-8310-exec-4] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:10:52.084 [INFO ] [http-nio-8310-exec-9] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@7076842f
+2025-12-29 14:10:52.086 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:10:52.086 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 14:10:52.086 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:10:52.086 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 14:10:52.089 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:10:52.089 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 14:10:52.089 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:10:52.091 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:10:52.094 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 14:10:52.094 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:10:52.095 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:10:52.098 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 14:10:52.098 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:10:52.099 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:10:52.102 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 14:10:52.102 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:10:52.106 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:10:52.110 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 14:10:52.110 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:10:52.111 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:10:52.116 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 14:10:52.116 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:10:52.117 [DEBUG] [http-nio-8310-exec-9] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:10:52.121 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 14:10:52.122 [INFO ] [http-nio-8310-exec-9] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 14:10:52.122 [TRACE] [http-nio-8310-exec-9] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:13:01.844 [INFO ] [http-nio-8310-exec-10] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@5f68fea7
+2025-12-29 14:13:01.846 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:13:01.846 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 14:13:01.846 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:13:01.847 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 14:13:01.849 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:13:01.849 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 14:13:01.849 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:13:01.850 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:13:01.854 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 14:13:01.855 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:13:01.855 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:13:01.858 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 14:13:01.858 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:13:01.859 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:13:01.864 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 14:13:01.864 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:13:01.865 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:13:01.870 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 14:13:01.871 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:13:01.871 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:13:01.877 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 14:13:01.877 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:13:01.878 [DEBUG] [http-nio-8310-exec-10] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:13:01.881 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 14:13:01.881 [INFO ] [http-nio-8310-exec-10] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 14:13:01.881 [TRACE] [http-nio-8310-exec-10] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:17:23.663 [INFO ] [http-nio-8310-exec-2] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@3d0285bd
+2025-12-29 14:17:23.665 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:17:23.665 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 14:17:23.665 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:17:23.666 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 14:17:23.668 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:17:23.668 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 14:17:23.668 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:17:23.669 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:17:23.674 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 14:17:23.674 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:17:23.675 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:17:23.679 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 14:17:23.680 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:17:23.680 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:17:23.683 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 14:17:23.683 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:17:23.683 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:17:23.691 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 14:17:23.691 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:17:23.692 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:17:23.696 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 14:17:23.696 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:17:23.697 [DEBUG] [http-nio-8310-exec-2] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:17:23.701 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 14:17:23.701 [INFO ] [http-nio-8310-exec-2] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 14:17:23.701 [TRACE] [http-nio-8310-exec-2] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:18:41.244 [INFO ] [http-nio-8310-exec-5] v.k.c.RoomAvailabilityController - Nhận yêu cầu kiểm tra phòng trống: vttu.khachsanservice.dto.request.CheckRoomAvailabilityRequest@3dd3b050
+2025-12-29 14:18:41.245 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:18:41.246 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Bắt đầu kiểm tra phòng trống cho 1 loại phòng
+2025-12-29 14:18:41.246 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:18:41.247 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    select
+        lp1_0.ma_loai_phong,
+        lp1_0.so_giuong,
+        lp1_0.so_luong,
+        lp1_0.so_luong_khach,
+        lp1_0.ten_loai_phong,
+        lp1_0.thu_tu 
+    from
+        loai_phong lp1_0 
+    where
+        lp1_0.ma_loai_phong=?
+2025-12-29 14:18:41.248 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]
+2025-12-29 14:18:41.248 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kiểm tra loại phòng: DLX-TR - Deluxe-Sea View Triple với số lượng yêu cầu: 10
+2025-12-29 14:18:41.248 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:18:41.249 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:18:41.292 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-29 (Yêu cầu: 10)
+2025-12-29 14:18:41.292 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:18:41.293 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:18:41.297 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-30 (Yêu cầu: 10)
+2025-12-29 14:18:41.298 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:18:41.298 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:18:41.302 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2025-12-31 (Yêu cầu: 10)
+2025-12-29 14:18:41.302 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:18:41.302 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:18:41.306 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-01 (Yêu cầu: 10)
+2025-12-29 14:18:41.306 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:18:41.307 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:18:41.311 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 13 phòng trống vào ngày 2026-01-02 (Yêu cầu: 10)
+2025-12-29 14:18:41.311 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.checkRoomAvailabilityByDate]: This method is not transactional.
+2025-12-29 14:18:41.311 [DEBUG] [http-nio-8310-exec-5] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        check_room_availability_by_date(?, ?)
+2025-12-29 14:18:41.316 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Loại phòng DLX-TR còn đủ 14 phòng trống vào ngày 2026-01-03 (Yêu cầu: 10)
+2025-12-29 14:18:41.317 [INFO ] [http-nio-8310-exec-5] v.k.service.RoomAvailabilityService - Kết quả kiểm tra: Đủ phòng - Tất cả các loại phòng đều đủ số lượng trong khoảng thời gian yêu cầu
+2025-12-29 14:18:41.317 [TRACE] [http-nio-8310-exec-5] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.RoomAvailabilityService.checkRoomAvailability]
+2025-12-29 14:36:55.426 [WARN ] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m54s424ms527µs700ns).
+2025-12-29 16:48:49.152 [TRACE] [scheduling-1] o.s.t.i.TransactionInterceptor - Getting transaction for [vttu.khachsanservice.service.ScheduledTaskService.updateRoomStatusDaily]
+2025-12-29 16:48:49.161 [TRACE] [scheduling-1] o.s.t.i.TransactionInterceptor - No need to create transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.getXepPhongDaNhan]: This method is not transactional.
+2025-12-29 16:48:49.186 [DEBUG] [scheduling-1] org.hibernate.SQL - 
+    SELECT
+        * 
+    FROM
+        xep_phong_booking x 
+    WHERE
+        x.da_nhan_phong = TRUE   
+        AND CURRENT_DATE BETWEEN x.ngay_den AND (
+            x.ngay_di - INTERVAL '1 day'
+        );  
+2025-12-29 16:48:49.239 [INFO ] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-12-29 16:48:49.253 [DEBUG] [scheduling-1] org.hibernate.SQL - 
+    select
+        gp1_0.ma_gia_phong,
+        gp1_0.co_an_sang,
+        gp1_0.covat,
+        gp1_0.gia,
+        gp1_0.gia_cuoi_tuan,
+        gp1_0.gia_giuong,
+        gp1_0.gia_ngay_le,
+        gp1_0.gia_ngay_thuong,
+        gp1_0.maloaigia,
+        gp1_0.maloaiphong,
+        gp1_0.tien_an_sang,
+        gp1_0.tien_an_sang_tre_em,
+        gp1_0.vat 
+    from
+        gia_phong gp1_0 
+    where
+        gp1_0.ma_gia_phong=?
+2025-12-29 16:48:49.285 [INFO ] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-12-29 16:48:49.308 [TRACE] [scheduling-1] o.s.t.i.TransactionInterceptor - Completing transaction for [vttu.khachsanservice.service.ScheduledTaskService.updateRoomStatusDaily]
+2025-12-29 16:48:49.536 [INFO ] [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-29 16:48:49.567 [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-29 16:48:49.573 [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

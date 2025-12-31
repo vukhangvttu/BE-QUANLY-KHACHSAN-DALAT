@@ -1,0 +1,27 @@
+services:
+  khachsan-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: khachsan-service
+    volumes:
+      - D:/docker/docker-khach-san:/app/config
+    ports:
+      - "8310:8310"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - CONFIG_DIR=/app/config
+    networks:
+      - microservicesks-network
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Định nghĩa network
+networks:
+  microservicesks-network:
+    driver: bridge
