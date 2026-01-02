@@ -24,10 +24,6 @@ public class DataSourceConfig {
     @Value("${spring.datasource.driver-class-name}")
     private String driverClass;
 
-    @Value("${config.dir}")
-    private String configDir;
-
-
     @Bean
     public DataSource dataSource() {
 
@@ -42,10 +38,6 @@ public class DataSourceConfig {
         config.setPassword(AES.decrypt(password, setKey, salt));
 
         return new HikariDataSource(config);
-    }
-    @Bean(name = "transactionManager")
-    public DataSourceTransactionManager dataSourceTransactionManager() {
-        return new DataSourceTransactionManager(dataSource());
     }
 
 }

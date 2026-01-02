@@ -26,7 +26,6 @@ spring:
       connection-timeout: 30000
 
   jpa:
-    open-in-view: false
     show-sql: true
     hibernate:
       ddl-auto: none
@@ -59,3 +58,8 @@ jwt:
 
 mst:
   mk: 8V+MLk0eREGSIaqpefv2D4QE+X3tanteeZqu7Cbjh50=
+
+external:
+  golden-era:
+    base-url: ${GOLDEN_ERA_BASE_URL:http://localhost:8010/api/v1/golden-era}
+

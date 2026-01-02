@@ -3,6 +3,7 @@ package vttu.khachsanservice.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import vttu.khachsanservice.dto.PhongTrongThoiGian;
 import vttu.khachsanservice.entity.XepPhongBooKing;
 
@@ -31,6 +32,7 @@ public interface XepPhongRepository extends JpaRepository<XepPhongBooKing, Strin
 
     // cập nhật nhận phòng
     @Modifying
+    @Transactional
     @Query("UPDATE XepPhongBooKing xp SET xp.daNhanPhong =:danhanphong, xp.thoiGianNhan = :thoigiannhan , xp.userCheckIn = :userCheckIn,xp.checkInTre =:checkinTre , xp.phuThuCheckInSom =:phuThuCheckInSom  WHERE xp.maXepPhongBooking = :maxepphongbooking")
     int updateDanhanPhong(boolean danhanphong, LocalDateTime thoigiannhan, String maxepphongbooking, String userCheckIn, boolean checkinTre, BigDecimal phuThuCheckInSom);
 

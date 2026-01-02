@@ -47,51 +47,51 @@ public class BooKing {
     String loaiNguonKhach;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_hinh_thuc_thanh_toan", nullable = true)
+    @JoinColumn(name = "ma_hinh_thuc_thanh_toan")
     HinhThucThanhToan hinhThucThanhToan;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_nguon_khach", nullable = true)
+    @JoinColumn(name = "ma_nguon_khach")
     NguonKhach nguonKhach;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_thi_truong", nullable = true)
+    @JoinColumn(name = "ma_thi_truong")
     ThiTruong thiTruong;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_khu_vuc", nullable = true)
+    @JoinColumn(name = "ma_khu_vuc")
     KhuVuc khuVuc;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_muc_dich_den", nullable = true)
+    @JoinColumn(name = "ma_muc_dich_den")
     MucDichDen mucDichDen;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_giam_gia", nullable = true)
+    @JoinColumn(name = "ma_giam_gia")
     GiamGia giamGia;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_trang_thai_booking", nullable = true)
+    @JoinColumn(name = "ma_trang_thai_booking")
     TrangThaiBooKing trangThaiBooKing;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_loai_the_thanh_toan", nullable = true)
+    @JoinColumn(name = "ma_loai_the_thanh_toan")
     LoaiThe loaiThe;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_khach_hang_booking", nullable = true)
+    @JoinColumn(name = "ma_khach_hang_booking")
     KhachHangBooKing khachHangBooKing;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_nhom_khach_hang", nullable = true)
+    @JoinColumn(name = "ma_nhom_khach_hang")
     NhomKhachHang nhomKhachHang;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_thong_tin_lien_he", nullable = true)
+    @JoinColumn(name = "ma_thong_tin_lien_he")
     ThongTinLienHeBooKing thongTinLienHeBooKing;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_danh_xung", nullable = true)
+    @JoinColumn(name = "ma_danh_xung")
     DanhXung danhXung;
 
 
