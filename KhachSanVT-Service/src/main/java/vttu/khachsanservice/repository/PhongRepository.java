@@ -62,7 +62,7 @@ public interface PhongRepository extends JpaRepository<Phong, String> {
             )
         SELECT xp.ma_booking, lp.ma_loai_phong, lp.ten_loai_phong ,xp.ma_phong, xp.ngay_den, xp.ngay_di,
 		xp.gia,xp.phu_thu_tien_giuong,xp.thoi_gian_nhan, booking.ghi_chu, dich_vu_agg.tong_tien_dich_vu,
-		nv.ma_nhan_vien
+		nv.ma_nhan_vien, booking.nguoi_tao
         FROM xep_phong_booking xp
         JOIN phong p on xp.ma_phong = p.ma_phong
         JOIN loai_phong lp on p.ma_loaiphong = lp.ma_loai_phong

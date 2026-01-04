@@ -141,7 +141,8 @@ public enum ErrorCode {
     INVALID_THANH_TIEN_PHU_THU(1129,"Không tìm thấy thành tiền", HttpStatus.NOT_FOUND),
     CCCD_NOT_VALID(1130,"", HttpStatus.NOT_FOUND),
     TEN_CONG_TY_NOT_FOUND(1131,"Tên công ty không được để trống", HttpStatus.NOT_FOUND),
-    DIA_CHI_NOT_FOUND(1132,"Địa chỉ không được để trống", HttpStatus.NOT_FOUND)
+    DIA_CHI_NOT_FOUND(1132,"Địa chỉ không được để trống", HttpStatus.NOT_FOUND),
+    PHONG_KHONG_DU_TRONG(1133,"Không đủ phòng trống để xếp cho booking: ", HttpStatus.INTERNAL_SERVER_ERROR)
             ;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {

@@ -31,7 +31,7 @@ public class RoomAvailabilityService {
      * Kiểm tra phòng trống với transaction isolation SERIALIZABLE
      * để đảm bảo thread-safe và không có race condition
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = true)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public CheckRoomAvailabilityResponse checkRoomAvailability(CheckRoomAvailabilityRequest request) {
         log.info("Bắt đầu kiểm tra phòng trống cho {} loại phòng", request.getBookingDetails().size());
 

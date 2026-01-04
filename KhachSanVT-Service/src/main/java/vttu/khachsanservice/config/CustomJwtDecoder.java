@@ -31,16 +31,7 @@ public class CustomJwtDecoder implements JwtDecoder {
 
     @Override
     public Jwt decode(String token) throws JwtException {
-
-        try {
-            var response = authenticationService.introspect(
-                    IntrospectRequest.builder().token(token).build());
-
-            if (!response.isValid()) throw new JwtException("Token invalid");
-        } catch (JOSEException | ParseException e) {
-            throw new JwtException(e.getMessage());
-        }
-
+        // Khởi tạo NimbusJwtDecoder nếu chưa có
         if (Objects.isNull(nimbusJwtDecoder)) {
             SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
             nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
@@ -48,6 +39,7 @@ public class CustomJwtDecoder implements JwtDecoder {
                     .build();
         }
 
+        // Decode token - NimbusJwtDecoder sẽ tự động throw JwtException nếu token hết hạn hoặc không hợp lệ
         return nimbusJwtDecoder.decode(token);
     }
 }

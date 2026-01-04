@@ -89,394 +89,45 @@ public class BooKingService {
 
 @Transactional
 public BooKingResponse createBooKing(BooKingRequest request) {
-    // Helper method để tìm entity
-     findEntityOrThrow(
-            () -> danhXungRepository.findById(request.getDanhXung().getMaDanhXung()),
-            ErrorCode.DANH_XUNG_NOT_FOUND,
-            request.getDanhXung().getMaDanhXung()
-    );
+    // Validate các entity liên quan
+    validateRelatedEntities(request);
 
-     findEntityOrThrow(
-            () -> nhomKhachHangRepository.findById(request.getNhomKhachHang().getMaNhomKhachHang()),
-            ErrorCode.NHOM_KHACH_HANG_NOT_FOUND,
-            request.getNhomKhachHang().getMaNhomKhachHang()
-    );
-
-     findEntityOrThrow(
-            () -> khuVucRepository.findById(request.getKhuVuc().getMaKhuVuc()),
-            ErrorCode.KHU_VUC_NOT_FOUND,
-            request.getKhuVuc().getMaKhuVuc()
-    );
-
-     findEntityOrThrow(
-            () -> thiTruongRepository.findById(request.getThiTruong().getMaThiTruong()),
-            ErrorCode.THI_TRUONG_NOT_FOUND,
-            request.getThiTruong().getMaThiTruong()
-    );
-
-     findEntityOrThrow(
-            () -> hinhThucThanhToanRepository.findById(request.getHinhThucThanhToan().getMaHinhThucThanhToan()),
-            ErrorCode.HINH_THUC_THAN_TOAN_NOT_FOUND,
-            request.getHinhThucThanhToan().getMaHinhThucThanhToan()
-    );
-
-     findEntityOrThrow(
-            () -> mucDichDenRepository.findById(request.getMucDichDen().getMaMucDich()),
-            ErrorCode.MUC_DICH_DEN_NOT_FOUND, // Sửa mã lỗi
-            request.getMucDichDen().getMaMucDich()
-    );
-
-     findEntityOrThrow(
-            () -> nguonKhachRepository.findById(request.getNguonKhach().getMaNguonKhach()),
-            ErrorCode.NGUON_KHACH_NOT_FOUND,
-            request.getNguonKhach().getMaNguonKhach()
-    );
-
-    findEntityOrThrow(
-            () -> giamGiaRepository.findById(request.getGiamGia().getMaGiamGia()),
-            ErrorCode.GIAM_GIA_NOT_FOUND,
-            request.getGiamGia().getMaGiamGia()
-    );
-
-     findEntityOrThrow(
-            () -> trangThaiBooKingRepository.findById(request.getTrangThaiBooKing().getMaTrangThaiBooKing()),
-            ErrorCode.TRANG_THAI_BOOKING_NOT_FOUND,
-            request.getTrangThaiBooKing().getMaTrangThaiBooKing()
-    );
-
-     findEntityOrThrow(
-            () -> loaiTheRepository.findById(request.getLoaiThe().getMaLoaiThe()),
-            ErrorCode.LOAI_THE_NOT_FOUND,
-            request.getLoaiThe().getMaLoaiThe()
-    );
-
-
-    // Lưu KhachHangBooKing
-    KhachHangBooKing khachHangBooKing = khachHangBooKingMapper.toCreateKhachHangBooKing(request.getKhachHangBooKing());
-    khachHangBooKing.setMaKhachHangBooking(khachHangBooKingService.generateNewId());
-    khachHangBooKing.setNgayTao(LocalDateTime.now());
-    khachHangBooKing = khachHangBooKingRepository.save(khachHangBooKing);
-
-    // Lưu ThongTinLienHeBooKing
-    ThongTinLienHeBooKing thongTinLienHeBooKing = thongTinLienHeBooKingMapper.toThongTinLienHeBooKing(request.getThongTinLienHeBooKing());
-    thongTinLienHeBooKing = thongTinLienHeRepository.save(thongTinLienHeBooKing);
+    // Lưu thông tin khách hàng và liên hệ
+    KhachHangBooKing khachHangBooKing = saveCustomerInfo(request);
+    ThongTinLienHeBooKing thongTinLienHeBooKing = saveContactInfo(request);
 
     // Tạo và lưu BooKing chính
-    BooKing booKing = booKingMapper.toCreateBooKing(request);
-    booKing.setMaBooking(generateNewBookingId());
-    booKing.setKhachHangBooKing(khachHangBooKing);
-    booKing.setThongTinLienHeBooKing(thongTinLienHeBooKing);
-
-    // Xử lý YeuCau
-    if (CollectionUtils.isNotEmpty(request.getYeuCaus())) {
-        List<YeuCau> yeuCaus = request.getYeuCaus().stream()
-                .map(yeuCauRequest -> findEntityOrThrow(
-                        () -> yeuCauRepository.findById(yeuCauRequest.getMaYeuCau()),
-                        ErrorCode.MA_YEUCAU_NOT_FOUND,
-                        yeuCauRequest.getMaYeuCau()
-                ))
-                .collect(Collectors.toList());
-        booKing.setYeuCaus(yeuCaus);
-    }
+    BooKing booKing = createAndSaveMainBooking(request, khachHangBooKing, thongTinLienHeBooKing);
 
     var authentiaction = SecurityContextHolder.getContext().getAuthentication();
-    booKing.setNguoiTao(authentiaction.getName());
-    booKing.setThoiGianTao(LocalDateTime.now());
-    booKing.setLoaiNguonKhach(request.getLoaiNguonKhach().toUpperCase());
-    booKing = booKingRepository.save(booKing);
   // Kiểm tra giá trị sau khi lưu
   log.info("After saving BooKing - maBooking: {}, tongTien: {}",
     booKing.getMaBooking(), booKing.getTongTien());
-    // Xử lý phòng hội nghị
-//    BigDecimal tongTiengHoiNghi = BigDecimal.ZERO;
-//    if(!request.getPhongHoiNghis().isEmpty()) {
-//        for (PhongHoiNghiRequest phongHoiNghiRequest : request.getPhongHoiNghis()) {
-//
-//            if(!phongHoiNghiRequest.isDuBao()) {
-//                throw new AppException(ErrorCode.NOT_ALLOW_DU_BAO_PHONG_HOI_NGHI);
-//            }
-//            LocalDate ngayBD = phongHoiNghiRequest.getNgayBatDau();
-//            LocalDate ngayKT = phongHoiNghiRequest.getNgayKetThuc();
-//
-//            if (ngayBD == null || ngayKT == null) {
-//                throw new AppException(ErrorCode.NGAYDEN_NGAYDI_EMPTY, "Ngày đến hoặc ngày đi không được null");
-//            }
-//
-//            long soDemThueLong = ChronoUnit.DAYS.between(ngayBD, ngayKT);
-//            if (soDemThueLong < 0) {
-//                throw new AppException(ErrorCode.ERROR_NGAYDI, "Hội nghị ngày đi phải sau ngày đến");
-//            }
-//
-//            if(phongHoiNghiRequest.getSoLuong() == 0) {
-//                throw new AppException(ErrorCode.INVALID_SO_LUONG);
-//            }
-//            if(phongHoiNghiRequest.getDonGia() == null) {
-//                throw new AppException(ErrorCode.INVALID_DON_GIA);
-//            }
-//
-//
-//            PhongHoiNghi phongHoiNghi= phongHoiNghiMapper.toCreateHoiNghi(phongHoiNghiRequest);
-//            phongHoiNghi.setBooKing(booKing);
-//            phongHoiNghiRepository.save(phongHoiNghi);
-//
-//            tongTiengHoiNghi = phongHoiNghi.getDonGia();
-//        }
-//    }
 
     if(request.getChiTietBooKings() == null || request.getChiTietBooKings().isEmpty()) {
         throw new AppException(ErrorCode.CHI_TIET_BOOKING_NOT_EMPTY);
     }
 
     // Xử lý ChiTietBooking
-    AtomicReference<BigDecimal> tongTien = new AtomicReference<>(BigDecimal.ZERO);
-    BooKing finalBooKing = booKing;
-    List<Log_DanhSachPhongChiTiet> logDanhSachPhongChiTietList = new ArrayList<>();
-    AtomicBoolean khongCoPhong = new AtomicBoolean(false);
-    List<Log_GiaPhongTheoNgay> logGiaPhongTheoNgay = new ArrayList<>();
-    List<ChiTietBooking> chiTietBookings = request.getChiTietBooKings().stream()
-            .map(chiTietBooKingRequest -> {
-                if (chiTietBooKingRequest.getSoLuong() > chiTietBooKingRequest.getSoLuongDuBaoPhong()) {
-                    throw new AppException(ErrorCode.SO_LUONG_ERROR);
-                }
-                // Tính số ngày thuê
-                LocalDate ngayDen = chiTietBooKingRequest.getNgayDen();
-                LocalDate ngayDi = chiTietBooKingRequest.getNgayDi();
+    ProcessChiTietBookingResult result = processChiTietBookings(request, booKing);
 
-                if(chiTietBooKingRequest.getIndex() == 0) {
-                    throw new AppException(ErrorCode.INDEX_ERROR);
-                }
+    // Kiểm tra tổng tiền
+    validateTotalAmount(result.tongTien, request.getTongTien(), request.getTienCoc());
 
-                if (ngayDen == null || ngayDi == null) {
-                    throw new AppException(ErrorCode.NGAYDEN_NGAYDI_EMPTY, "Ngày đến hoặc ngày đi không được null");
-                }
-
-                long soDemThueLong = ChronoUnit.DAYS.between(ngayDen, ngayDi);
-                if (soDemThueLong < 0) {
-                    throw new AppException(ErrorCode.ERROR_NGAYDI, "Ngày đi phải sau ngày đến");
-                }
-
-  //              int soDemThue = (soDemThueLong == 0) ? 1 : (int) soDemThueLong;
-                // Bổ sung ẩn giá phòng cho tất cả các ngày
-//                BigDecimal tienPhong = chiTietBooKingRequest.getGia().multiply(BigDecimal.valueOf(soDemThue).multiply(BigDecimal.valueOf(chiTietBooKingRequest.getSoLuong())));
-
-
-                // 13-05-2025 bổ sung chon phong
-
-
-                // Kiểm tra trùng lặp maPhong trong request
-                Set<String> maPhongSet = new HashSet<>();
-                for (DanhSachPhongChiTietRequest req : chiTietBooKingRequest.getDanhSachPhongChiTiets()) {
-                    String maPhong = req.getMaPhong();
-                    if (!maPhongSet.add(maPhong)) {
-                        throw new AppException(ErrorCode.DUPLICATE_MA_PHONG, "Phòng " + maPhong + " bị trùng lặp trong request.");
-                    }
-                    int kiemTraPhong = chiTietBooKingRepository.kiemTraMaPhongDaTonTaiTrongChiTietBooking(maPhong, ngayDen, ngayDi);
-                    if (kiemTraPhong > 0) {
-                        throw new AppException(ErrorCode.ERROR_PHONG_DA_DAT, "Phòng " + maPhong + " đã được đặt trong khoảng thời gian này.");
-                    }
-                }
-
-                // kiem tra ma phong có tồn tại trong hệ thống trong khoản thơi gian
-
-
-
-                int soLuongExtra = chiTietBooKingRequest.getSoLuongExtraBed();
-
-                if (!chiTietBooKingRequest.getDanhSachPhongChiTiets().isEmpty()) {
-
-                    if(chiTietBooKingRequest.getDanhSachPhongChiTiets().size() != chiTietBooKingRequest.getSoLuong()) {
-                        throw new AppException(ErrorCode.ERROR_SO_LUONG_PHONG);
-                    }
-
-                    int kiemTraSoLuongPhongExtra = 0;
-
-                    for(DanhSachPhongChiTietRequest phongDTO : chiTietBooKingRequest.getDanhSachPhongChiTiets()) {
-                        Phong phongKT = phongRepository.findById(phongDTO.getMaPhong())
-                                .orElseThrow(() -> new AppException(ErrorCode.PHONG_NOT_FOUND, "Không tìm thấy phòng với mã: " + phongDTO.getMaPhong()));
-
-                        if(phongKT.getSoGiuongThem() > 0) {
-                            kiemTraSoLuongPhongExtra++;
-                        }
-
-                    }
-                    if(chiTietBooKingRequest.getSoLuongExtraBed() > 0) {
-                        if(kiemTraSoLuongPhongExtra < soLuongExtra) {
-                            throw new AppException(ErrorCode.ERROR_SO_LUONG_PHONG_EXTRA);
-                        }
-                    }
-
-                } else
-                    khongCoPhong.set(true);
-
-
-                ChiTietBooking chiTietBooking = chiTietBooKingMapper.toCreChiTietDatPhong(chiTietBooKingRequest);
-                chiTietBooking.setBooKing(finalBooKing);
-
-                chiTietBooking.setLoaiPhong(findEntityOrThrow(
-                        () -> loaiPhongRepository.findById(chiTietBooKingRequest.getLoaiPhong().getMaLoaiPhong()),
-                        ErrorCode.LOAI_PHONG_NOT_FOUND,
-                        chiTietBooKingRequest.getLoaiPhong().getMaLoaiPhong()
-                ));
-
-                chiTietBooking.setLoaiGia(findEntityOrThrow(
-                        () -> loaiGiaRepository.findById(chiTietBooKingRequest.getLoaiGia().getMaLoaiGia()),
-                        ErrorCode.LOAI_GIA_NOT_FOUND,
-                        chiTietBooKingRequest.getLoaiGia().getMaLoaiGia()
-                ));
-                chiTietBooking.setGiaPhong(findEntityOrThrow(
-                        () -> giaPhongRepository.findById(chiTietBooKingRequest.getGiaPhong().getMaGiaPhong()),
-                        ErrorCode.GIA_PHONG_ERROR,
-                        chiTietBooKingRequest.getGiaPhong().getMaGiaPhong()
-                ));
-
-                List<DanhSachPhongChiTiet> dsPhong = new ArrayList<>();
-
-                for (DanhSachPhongChiTietRequest phongDTO : chiTietBooKingRequest.getDanhSachPhongChiTiets()) {
-                    Phong phong = phongRepository.findById(phongDTO.getMaPhong())
-                            .orElseThrow(() -> new AppException(ErrorCode.PHONG_NOT_FOUND, "Không tìm thấy phòng với mã: " + phongDTO.getMaPhong()));
-                    DanhSachPhongChiTiet danhSachPhongChiTiet = new DanhSachPhongChiTiet();
-                    danhSachPhongChiTiet.setMaPhong(phong.getMaPhong());
-                    danhSachPhongChiTiet.setChiTietBooking(chiTietBooking);
-                    danhSachPhongChiTiet.setSoGiuongThem(phongDTO.getSoGiuongThem());
-                    dsPhong.add(danhSachPhongChiTiet);
-
-                    // Lưu log danh sách phòng chi tiết
-                    Log_DanhSachPhongChiTiet logDanhSachPhongChiTiet = new Log_DanhSachPhongChiTiet();
-                    logDanhSachPhongChiTiet.setMaPhong(phong.getMaPhong());
-                    logDanhSachPhongChiTiet.setSoGiuongThem(phongDTO.getSoGiuongThem());
-                    logDanhSachPhongChiTiet.setMachiTietBooking(chiTietBooking.getMaChiTietBooking());
-                    logDanhSachPhongChiTiet.setTrangThai("CREATED");
-                    logDanhSachPhongChiTiet.setThoiGianTao(LocalDateTime.now());
-                    logDanhSachPhongChiTietList.add(logDanhSachPhongChiTiet);
-                }
-                chiTietBooking.setDanhSachPhongChiTiets(dsPhong);
-
-
-                // 24-05-2025 bổ sung thêm danh sách gía từng theo ngày
-                if(chiTietBooKingRequest.getGiaPhongTheoNgays() == null || chiTietBooKingRequest.getGiaPhongTheoNgays().isEmpty()) {
-                    throw new AppException(ErrorCode.GIA_PHONG_THEO_NGAY_EMPTY);
-                }
-
-                // Kiểm tra giá phòng theo ngày
-//                BigDecimal tienPhongTheoNgay = chiTietBooKingRequest.getGiaPhongTheoNgays().stream()
-//                        .map(GiaPhongTheoNgayRequest::getGia)
-//                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-                BigDecimal tienPhongTheoNgay = BigDecimal.ZERO;
-
-                List<GiaPhongTheoNgay> giaPhongTheoNgays = new ArrayList<>();
-                for( GiaPhongTheoNgayRequest giaPhongTheoNgayRequest : chiTietBooKingRequest.getGiaPhongTheoNgays()) {
-                    if(giaPhongTheoNgayRequest.getNgay() == null || giaPhongTheoNgayRequest.getGia() == null) {
-                        throw new AppException(ErrorCode.GIA_PHONG_THEO_NGAY_EMPTY);
-                    }
-
-                    GiaPhongTheoNgay giaPhongTheoNgay = new GiaPhongTheoNgay();
-                    giaPhongTheoNgay.setChiTietBooking(chiTietBooking);
-                    giaPhongTheoNgay.setNgay(giaPhongTheoNgayRequest.getNgay());
-                    giaPhongTheoNgay.setGia(giaPhongTheoNgayRequest.getGia());
-                    giaPhongTheoNgay.setMaLoaiPhong(giaPhongTheoNgayRequest.getMaLoaiPhong());
-                    giaPhongTheoNgay.setTrangThai("CREATED");
-                    giaPhongTheoNgays.add(giaPhongTheoNgay);
-
-                    // Lưu log giá phòng theo ngày
-                    Log_GiaPhongTheoNgay log = new Log_GiaPhongTheoNgay();
-                    log.setMaChiTietBooking(chiTietBooking.getMaChiTietBooking());
-
-                    log.setNgay(giaPhongTheoNgayRequest.getNgay());
-                    log.setGia(giaPhongTheoNgayRequest.getGia());
-                    log.setMaLoaiPhong(giaPhongTheoNgayRequest.getMaLoaiPhong());
-                    log.setThoiGianTao(LocalDateTime.now());
-                    log.setTrangThai("CREATED");
-                    logGiaPhongTheoNgay.add(log);
-
-
-                    tienPhongTheoNgay = tienPhongTheoNgay.add(giaPhongTheoNgayRequest.getGia());
-
-                }
-
-                chiTietBooking.setGiaPhongTheoNgays(giaPhongTheoNgays);
-
-              //// TINH SO DEM THUE
-                int soDemThue = (soDemThueLong == 0) ? 1 : (int) soDemThueLong;
-
-                /// / TINH TIEN EXTRA BED
-                BigDecimal tienExtra = chiTietBooKingRequest.getGiaExtraBed().multiply(BigDecimal.valueOf(soDemThue)).multiply(BigDecimal.valueOf(chiTietBooKingRequest.getSoLuongExtraBed()));
-
-                /// / TINH TIEN PHU THU TRE EM
-                BigDecimal tienPhuThuTreEm = chiTietBooKingRequest.getGiaPhuThuTreEm().multiply(BigDecimal.valueOf(soDemThue)).multiply(BigDecimal.valueOf(chiTietBooKingRequest.getSoLuongPhuThuTreEm()));
-
-                /// TINH TIEN PHU THU AN SANG
-                BigDecimal tienPhuThuAnSang = chiTietBooKingRequest.getGiaPhuThuAnSang().multiply(BigDecimal.valueOf(soDemThue)).multiply(BigDecimal.valueOf(chiTietBooKingRequest.getSoLuongPhuThuAnSang()));
-
-              /// TINH TIEN PHONG
-                BigDecimal tong = tienPhongTheoNgay.multiply(BigDecimal.valueOf(chiTietBooking.getSoLuong())).add(tienExtra).add(tienPhuThuTreEm).add(tienPhuThuAnSang);
-
-
-                tongTien.updateAndGet(v -> v.add(tong));
-
-
-                return chiTietBooking;
-            })
-            .collect(Collectors.toList());
-
-    tongTien.set(tongTien.get().subtract(request.getTienCoc()));
-
-
-// So sánh tổng tiền tính được với tổng tiền từ request
-    if (tongTien.get().compareTo(request.getTongTien()) != 0) {
-        throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
-    }
-
-
-    // Kiểm tra số lượng phần tử trong danh sách sau khi xử lý
-    if (request.getChiTietBooKings() == null || request.getChiTietBooKings().size() != chiTietBookings.size()) {
+    // Kiểm tra số lượng booking
+    if (request.getChiTietBooKings().size() != result.chiTietBookings.size()) {
         throw new AppException(ErrorCode.SO_LUONG_BOOKING_KHONG_KHOP);
     }
 
-    chiTietBooKingRepository.saveAll(chiTietBookings);
+    chiTietBooKingRepository.saveAll(result.chiTietBookings);
+    log_DanhSachPhongChiTietRepositoty.saveAll(result.logDanhSachPhongChiTietList);
+    logGiaPhongTheoNgayRepository.saveAll(result.logGiaPhongTheoNgay);
 
-    // Lưu log danh sách phòng chi tiết
-    log_DanhSachPhongChiTietRepositoty.saveAll(logDanhSachPhongChiTietList);
-
-    // Lưu log giá phòng theo ngày
-    logGiaPhongTheoNgayRepository.saveAll(logGiaPhongTheoNgay);
-
-    // SAU KHI SAVE BOKING THANH CONG THI XEP PHONG TU DONG
-  // Xếp phòng tự động
-  if (!khongCoPhong.get()) {
-    int stt = 1;
-    for (ChiTietBooking chiTietBooking : chiTietBookings) {
-      List<DanhSachPhongChiTiet> phongChiTietList = chiTietBooking.getDanhSachPhongChiTiets();
-      int soPhongCanXep = chiTietBooking.getSoLuong();
-      int soExtraBed = chiTietBooking.getSoLuongExtraBed();
-      int soLuongPhuThuTreEm = chiTietBooking.getSoLuongPhuThuTreEm();
-      BigDecimal giaExtraBed = chiTietBooking.getGiaExtraBed();
-
-      for (int i = 0; i < soPhongCanXep && i < phongChiTietList.size(); i++) {
-        DanhSachPhongChiTiet phongDTO = phongChiTietList.get(i);
-
-        int extraBed = (i < soExtraBed) ? 1 : 0;
-        BigDecimal gia = (i < soExtraBed) ? giaExtraBed : BigDecimal.ZERO;
-        // Chỉ gán soLuongPhuThuTreEm cho phòng đầu tiên
-        int phuThuTreEm = (i == 0 && soLuongPhuThuTreEm > 0) ? soLuongPhuThuTreEm : 0;
-
-        createSaveXepPhongBooKing(
-          chiTietBooking,
-          booKing,
-          phongDTO.getMaPhong(),
-          stt,
-          extraBed,
-          gia,
-          authentiaction,
-          chiTietBooking.getGiaPhongTheoNgays()
-
-        );
-        stt++;
-      }
+    // Xếp phòng tự động nếu có chọn phòng
+    if (!result.khongCoPhong) {
+        autoAssignRooms(result.chiTietBookings, booKing, authentiaction);
+        booKingRepository.updateDa_xep_phong(true, booKing.getMaBooking());
     }
-
-    booKingRepository.updateDa_xep_phong(true, booKing.getMaBooking());
-  }
-
 
 
     return booKingMapper.toBooKingResponse(booKing);
@@ -1080,64 +731,6 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     return booKingMapper.toBooKingResponse(booKingUpdate);
   }
 
-@Transactional
-public BooKingResponse updateBooKing1(String maBooking, BooKingRequest request) {
-    // 1. Tìm và xác thực bản ghi BooKing
-    BooKing booKing = findBooKingById(maBooking);
-
-    // 2. Xác thực các thực thể liên quan
-    validateRelatedEntities(request);
-
-    // 3. Cập nhật thông tin BooKing
-    BooKing booKingUpdate = updateBooKingDetails(booKing, request);
-
-    // 4. Xử lý yêu cầu bổ sung
-    updateYeuCauList(booKingUpdate, request.getYeuCaus());
-
-    // 5. Lưu thông tin khách hàng và liên hệ
-    KhachHangBooKing khachHangBooKing = saveKhachHangBooKing(request.getKhachHangBooKing());
-    ThongTinLienHeBooKing thongTinLienHeBooKing = saveThongTinLienHeBooKing(request.getThongTinLienHeBooKing());
-
-
-    // 6. Khởi tạo danh sách log danh sách phòng chi tiết
-    List<Log_DanhSachPhongChiTiet> logDanhSachPhongChiTietList = new ArrayList<>();
-
-
-    // 7. Xử lý chi tiết booking
-    List<ChiTietBooking> chiTietBookings = processChiTietBookings(booKing, request, maBooking,logDanhSachPhongChiTietList);
-
-
-    // 8. Cập nhật thông tin tổng quát và lưu
-    booKingUpdate.setChiTietBookings(chiTietBookings);
-    booKingUpdate.setMaBooking(maBooking);
-    booKingUpdate.setKhachHangBooKing(khachHangBooKing);
-    booKingUpdate.setThongTinLienHeBooKing(thongTinLienHeBooKing);
-    booKingUpdate.setThoiGianTao(booKing.getThoiGianTao());
-    booKingUpdate.setNguoiTao(booKing.getNguoiTao());
-    booKingUpdate.setLoaiNguonKhach(request.getLoaiNguonKhach().toUpperCase());
-    booKingUpdate.setTongTien(request.getTongTien());
-
-    // 9. Kiểm tra tổng tiền và số lượng chi tiết booking
-    validateTongTienAndChiTietBookings(booKingUpdate, request);
-
-    // 10. Lưu và trả về kết quả
-    booKingRepository.save(booKingUpdate);
-    log_DanhSachPhongChiTietRepositoty.saveAll(logDanhSachPhongChiTietList);
-
-    return booKingMapper.toBooKingResponse(booKingUpdate);
-}
-
-    /**
-     * Tìm bản ghi BooKing theo mã
-     * @param maBooking Mã booking cần tìm
-     * @return Đối tượng BooKing
-     * @throws AppException Nếu không tìm thấy booking
-     */
-    private BooKing findBooKingById(String maBooking) {
-        return booKingRepository.findById(maBooking)
-                .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND, "Booking không tồn tại: " + maBooking));
-    }
-
     /**
      * Xác thực các thực thể liên quan (DanhXung, NhomKhachHang, KhuVuc,...)
      * @param request Yêu cầu chứa thông tin các thực thể cần xác thực
@@ -1174,102 +767,6 @@ public BooKingResponse updateBooKing1(String maBooking, BooKingRequest request) 
         findEntityOrThrow(
                 () -> loaiTheRepository.findById(request.getLoaiThe().getMaLoaiThe()),
                 ErrorCode.LOAI_THE_NOT_FOUND, request.getLoaiThe().getMaLoaiThe());
-    }
-
-    /**
-     * Cập nhật thông tin chi tiết của BooKing
-     * @param booKing Đối tượng BooKing hiện tại
-     * @param request Yêu cầu chứa thông tin cần cập nhật
-     * @return Đối tượng BooKing đã được cập nhật
-     */
-    private BooKing updateBooKingDetails(BooKing booKing, BooKingRequest request) {
-        BooKing booKingUpdate = booKingMapper.toCreateBooKing(request);
-        booKingUpdate.setThoiGianTao(booKing.getThoiGianTao());
-        booKingUpdate.setNguoiTao(booKing.getNguoiTao());
-        return booKingUpdate;
-    }
-
-    /**
-     * Cập nhật danh sách yêu cầu bổ sung
-     * @param booKingUpdate Đối tượng BooKing cần cập nhật danh sách yêu cầu
-     * @param yeuCaus Danh sách yêu cầu từ request
-     * @throws AppException Nếu mã yêu cầu không tồn tại
-     */
-    private void updateYeuCauList(BooKing booKingUpdate, List<YeuCauRequest> yeuCaus) {
-        if (yeuCaus != null && !yeuCaus.isEmpty()) {
-            List<YeuCau> yeuCausMoi = yeuCaus.stream()
-                    .map(yeuCauRequest -> yeuCauRepository.findById(yeuCauRequest.getMaYeuCau())
-                            .orElseThrow(() -> new AppException(ErrorCode.MA_YEUCAU_NOT_FOUND, "YeuCau không tồn tại: " + yeuCauRequest.getMaYeuCau())))
-                    .toList();
-            booKingUpdate.getYeuCaus().clear();
-            booKingUpdate.getYeuCaus().addAll(yeuCausMoi);
-        }
-    }
-
-    /**
-     * Lưu thông tin khách hàng booking
-     * @param khachHangRequest Thông tin khách hàng từ request
-     * @return Đối tượng KhachHangBooKing đã được lưu
-     */
-    private KhachHangBooKing saveKhachHangBooKing(KhachHangBooKingRequest khachHangRequest) {
-        KhachHangBooKing khachHangBooKing = khachHangBooKingMapper.toCreateKhachHangBooKing(khachHangRequest);
-        khachHangBooKing.setMaKhachHangBooking(khachHangBooKingService.generateNewId());
-        return khachHangBooKingRepository.save(khachHangBooKing);
-    }
-
-    /**
-     * Lưu thông tin liên hệ booking
-     * @param thongTinRequest Thông tin liên hệ từ request
-     * @return Đối tượng ThongTinLienHeBooKing đã được lưu
-     */
-    private ThongTinLienHeBooKing saveThongTinLienHeBooKing(ThongTinLienHeBooKingRequest thongTinRequest) {
-        ThongTinLienHeBooKing thongTinLienHeBooKing = thongTinLienHeBooKingMapper.toThongTinLienHeBooKing(thongTinRequest);
-        return thongTinLienHeRepository.save(thongTinLienHeBooKing);
-    }
-
-    /**
-     * Xử lý chi tiết booking và các thông tin liên quan
-     * @param booKing Đối tượng BooKing hiện tại
-     * @param request Yêu cầu chứa danh sách chi tiết booking
-     * @param maBooking Mã booking
-     * @return Danh sách ChiTietBooking đã xử lý
-     * @throws AppException Nếu có lỗi trong quá trình xử lý
-     */
-    private List<ChiTietBooking> processChiTietBookings(BooKing booKing, BooKingRequest request, String maBooking,List<Log_DanhSachPhongChiTiet> logDanhSachPhongChiTietList) {
-        if (request.getChiTietBooKings() == null || request.getChiTietBooKings().isEmpty()) {
-            throw new AppException(ErrorCode.CHI_TIET_BOOKING_NOT_EMPTY);
-        }
-
-        List<String> maLoaiPhongList = request.getChiTietBooKings().stream()
-                .map(chiTiet -> chiTiet.getLoaiPhong().getMaLoaiPhong())
-                .collect(Collectors.toList());
-
-        Map<String, ChiTietBooking> existingChiTietBookings = chiTietBooKingRepository
-                .findByMaBookingAndLoaiPhong(maBooking, maLoaiPhongList)
-                .stream()
-                .collect(Collectors.toMap(
-                        chiTiet -> chiTiet.getLoaiPhong().getMaLoaiPhong(),
-                        chiTiet -> chiTiet
-                ));
-
-        boolean kiemTraNgayDenVaNgayDi = checkAndUpdateXepPhong(booKing, request, maBooking);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AtomicReference<BigDecimal> tongTien = new AtomicReference<>(BigDecimal.ZERO);
-        List<ChiTietBooking> chiTietBookings = new ArrayList<>();
-        int stt = 1;
-
-        for (ChiTietBooKingRequest chiTietRequest : request.getChiTietBooKings()) {
-            ChiTietBooking chiTietBooking = processSingleChiTietBooking(
-                    chiTietRequest, booKing, maBooking, existingChiTietBookings,
-                    kiemTraNgayDenVaNgayDi, authentication, tongTien, stt,logDanhSachPhongChiTietList);
-
-
-
-            chiTietBookings.add(chiTietBooking);
-            stt++;
-        }
-
-        return chiTietBookings;
     }
 
     /**
@@ -1397,22 +894,6 @@ public BooKingResponse updateBooKing1(String maBooking, BooKingRequest request) 
                 .multiply(BigDecimal.valueOf(soDemThue))
                 .multiply(BigDecimal.valueOf(chiTietRequest.getSoLuongExtraBed()));
     }
-
-    private BigDecimal calulateTienPhongTheoNgay(ChiTietBooKingRequest chiTietRequest) {
-
-        // Tính tiền phòng theo ngày
-        if (chiTietRequest.getGiaPhongTheoNgays() == null || chiTietRequest.getGiaPhongTheoNgays().isEmpty()) {
-            throw new AppException(ErrorCode.GIA_PHONG_THEO_NGAY_EMPTY, "Giá phòng theo ngày không được trống");
-        }
-        BigDecimal tongTienPhong = BigDecimal.ZERO;
-        for( GiaPhongTheoNgayRequest giaPhongTheoNgayRequest : chiTietRequest.getGiaPhongTheoNgays()) {
-            tongTienPhong = tongTienPhong.add(giaPhongTheoNgayRequest.getGia());
-        }
-
-        return tongTienPhong
-                .multiply(BigDecimal.valueOf(chiTietRequest.getSoLuong()));
-    }
-
     /**
      * Kiểm tra số lượng phòng trống
      * @param chiTietRequest Yêu cầu chi tiết booking
@@ -1667,25 +1148,382 @@ public BooKingResponse updateBooKing1(String maBooking, BooKingRequest request) 
         }
     }
 
-    /**
-     * Kiểm tra tổng tiền và số lượng chi tiết booking
-     * @param booKingUpdate Đối tượng BooKing đã cập nhật
-     * @param request Yêu cầu chứa thông tin cần kiểm tra
-     * @throws AppException Nếu tổng tiền hoặc số lượng chi tiết booking không khớp
-     */
-    private void validateTongTienAndChiTietBookings(BooKing booKingUpdate, BooKingRequest request) {
-        if (booKingUpdate.getTongTien().compareTo(request.getTongTien()) != 0) {
-            throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
-        }
-        if (request.getChiTietBooKings().size() != booKingUpdate.getChiTietBookings().size()) {
-            throw new AppException(ErrorCode.SO_LUONG_BOOKING_KHONG_KHOP);
-        }
-    }
 
     // Helper method để tránh lặp code
     private <T, ID> T findEntityOrThrow(Supplier<Optional<T>> repositorySupplier, ErrorCode errorCode, ID id) {
         return repositorySupplier.get()
                 .orElseThrow(() -> new AppException(errorCode, String.valueOf(id)));
+    }
+
+    /**
+     * Lưu thông tin khách hàng
+     */
+    private KhachHangBooKing saveCustomerInfo(BooKingRequest request) {
+        KhachHangBooKing khachHangBooKing = khachHangBooKingMapper.toCreateKhachHangBooKing(request.getKhachHangBooKing());
+        khachHangBooKing.setMaKhachHangBooking(khachHangBooKingService.generateNewId());
+        khachHangBooKing.setNgayTao(LocalDateTime.now());
+        return khachHangBooKingRepository.save(khachHangBooKing);
+    }
+
+    /**
+     * Lưu thông tin liên hệ
+     */
+    private ThongTinLienHeBooKing saveContactInfo(BooKingRequest request) {
+        ThongTinLienHeBooKing thongTinLienHeBooKing = thongTinLienHeBooKingMapper.toThongTinLienHeBooKing(request.getThongTinLienHeBooKing());
+        return thongTinLienHeRepository.save(thongTinLienHeBooKing);
+    }
+
+    /**
+     * Tạo và lưu booking chính
+     */
+    private BooKing createAndSaveMainBooking(BooKingRequest request, KhachHangBooKing khachHangBooKing, ThongTinLienHeBooKing thongTinLienHeBooKing) {
+        BooKing booKing = booKingMapper.toCreateBooKing(request);
+        booKing.setMaBooking(generateNewBookingId());
+        booKing.setKhachHangBooKing(khachHangBooKing);
+        booKing.setThongTinLienHeBooKing(thongTinLienHeBooKing);
+
+        // Xử lý YeuCau
+        if (CollectionUtils.isNotEmpty(request.getYeuCaus())) {
+            List<YeuCau> yeuCaus = request.getYeuCaus().stream()
+                    .map(yeuCauRequest -> findEntityOrThrow(
+                            () -> yeuCauRepository.findById(yeuCauRequest.getMaYeuCau()),
+                            ErrorCode.MA_YEUCAU_NOT_FOUND,
+                            yeuCauRequest.getMaYeuCau()
+                    ))
+                    .collect(Collectors.toList());
+            booKing.setYeuCaus(yeuCaus);
+        }
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        booKing.setNguoiTao(authentication.getName());
+        booKing.setThoiGianTao(LocalDateTime.now());
+        booKing.setLoaiNguonKhach(request.getLoaiNguonKhach().toUpperCase());
+        return booKingRepository.save(booKing);
+    }
+
+    /**
+     * Validate và tính toán số đêm thuê
+     */
+    private int validateAndCalculateNights(LocalDate ngayDen, LocalDate ngayDi) {
+        if (ngayDen == null || ngayDi == null) {
+            throw new AppException(ErrorCode.NGAYDEN_NGAYDI_EMPTY, "Ngày đến hoặc ngày đi không được null");
+        }
+        long soDemThueLong = ChronoUnit.DAYS.between(ngayDen, ngayDi);
+        if (soDemThueLong < 0) {
+            throw new AppException(ErrorCode.ERROR_NGAYDI, "Ngày đi phải sau ngày đến");
+        }
+        return (soDemThueLong == 0) ? 1 : (int) soDemThueLong;
+    }
+
+    /**
+     * Validate phòng không bị trùng lặp và đã được đặt
+     */
+    private void validateRoomDuplication(List<DanhSachPhongChiTietRequest> danhSachPhongChiTiets, LocalDate ngayDen, LocalDate ngayDi) {
+        Set<String> maPhongSet = new HashSet<>();
+        for (DanhSachPhongChiTietRequest req : danhSachPhongChiTiets) {
+            String maPhong = req.getMaPhong();
+            if (!maPhongSet.add(maPhong)) {
+                throw new AppException(ErrorCode.DUPLICATE_MA_PHONG, "Phòng " + maPhong + " bị trùng lặp trong request.");
+            }
+            int kiemTraPhong = chiTietBooKingRepository.kiemTraMaPhongDaTonTaiTrongChiTietBooking(maPhong, ngayDen, ngayDi);
+            if (kiemTraPhong > 0) {
+                throw new AppException(ErrorCode.ERROR_PHONG_DA_DAT, "Phòng " + maPhong + " đã được đặt trong khoảng thời gian này.");
+            }
+        }
+    }
+
+    /**
+     * Validate số lượng phòng extra bed
+     */
+    private void validateExtraBedRooms(List<DanhSachPhongChiTietRequest> danhSachPhongChiTiets, int soLuongExtraBed) {
+        if (danhSachPhongChiTiets.isEmpty()) {
+            return;
+        }
+
+        int kiemTraSoLuongPhongExtra = 0;
+        for (DanhSachPhongChiTietRequest phongDTO : danhSachPhongChiTiets) {
+            Phong phongKT = phongRepository.findById(phongDTO.getMaPhong())
+                    .orElseThrow(() -> new AppException(ErrorCode.PHONG_NOT_FOUND, "Không tìm thấy phòng với mã: " + phongDTO.getMaPhong()));
+            if (phongKT.getSoGiuongThem() > 0) {
+                kiemTraSoLuongPhongExtra++;
+            }
+        }
+
+        if (soLuongExtraBed > 0 && kiemTraSoLuongPhongExtra < soLuongExtraBed) {
+            throw new AppException(ErrorCode.ERROR_SO_LUONG_PHONG_EXTRA);
+        }
+    }
+
+    /**
+     * Xử lý danh sách phòng chi tiết
+     */
+    private List<DanhSachPhongChiTiet> processDanhSachPhongChiTiet(
+            List<DanhSachPhongChiTietRequest> requests,
+            ChiTietBooking chiTietBooking,
+            List<Log_DanhSachPhongChiTiet> logList) {
+
+        List<DanhSachPhongChiTiet> dsPhong = new ArrayList<>();
+        for (DanhSachPhongChiTietRequest phongDTO : requests) {
+            Phong phong = phongRepository.findById(phongDTO.getMaPhong())
+                    .orElseThrow(() -> new AppException(ErrorCode.PHONG_NOT_FOUND, "Không tìm thấy phòng với mã: " + phongDTO.getMaPhong()));
+
+            DanhSachPhongChiTiet danhSachPhongChiTiet = new DanhSachPhongChiTiet();
+            danhSachPhongChiTiet.setMaPhong(phong.getMaPhong());
+            danhSachPhongChiTiet.setChiTietBooking(chiTietBooking);
+            danhSachPhongChiTiet.setSoGiuongThem(phongDTO.getSoGiuongThem());
+            dsPhong.add(danhSachPhongChiTiet);
+
+            // Lưu log
+            Log_DanhSachPhongChiTiet logDanhSachPhongChiTiet = new Log_DanhSachPhongChiTiet();
+            logDanhSachPhongChiTiet.setMaPhong(phong.getMaPhong());
+            logDanhSachPhongChiTiet.setSoGiuongThem(phongDTO.getSoGiuongThem());
+            logDanhSachPhongChiTiet.setMachiTietBooking(chiTietBooking.getMaChiTietBooking());
+            logDanhSachPhongChiTiet.setTrangThai("CREATED");
+            logDanhSachPhongChiTiet.setThoiGianTao(LocalDateTime.now());
+            logList.add(logDanhSachPhongChiTiet);
+        }
+        return dsPhong;
+    }
+
+    /**
+     * Xử lý giá phòng theo ngày
+     */
+    private BigDecimal processGiaPhongTheoNgay(
+            List<GiaPhongTheoNgayRequest> requests,
+            ChiTietBooking chiTietBooking,
+            List<GiaPhongTheoNgay> giaPhongTheoNgays,
+            List<Log_GiaPhongTheoNgay> logList) {
+
+        if (requests == null || requests.isEmpty()) {
+            throw new AppException(ErrorCode.GIA_PHONG_THEO_NGAY_EMPTY);
+        }
+
+        BigDecimal tienPhongTheoNgay = BigDecimal.ZERO;
+        for (GiaPhongTheoNgayRequest giaPhongTheoNgayRequest : requests) {
+            if (giaPhongTheoNgayRequest.getNgay() == null || giaPhongTheoNgayRequest.getGia() == null) {
+                throw new AppException(ErrorCode.GIA_PHONG_THEO_NGAY_EMPTY);
+            }
+
+            GiaPhongTheoNgay giaPhongTheoNgay = new GiaPhongTheoNgay();
+            giaPhongTheoNgay.setChiTietBooking(chiTietBooking);
+            giaPhongTheoNgay.setNgay(giaPhongTheoNgayRequest.getNgay());
+            giaPhongTheoNgay.setGia(giaPhongTheoNgayRequest.getGia());
+            giaPhongTheoNgay.setMaLoaiPhong(giaPhongTheoNgayRequest.getMaLoaiPhong());
+            giaPhongTheoNgay.setTrangThai("CREATED");
+            giaPhongTheoNgays.add(giaPhongTheoNgay);
+
+            // Lưu log
+            Log_GiaPhongTheoNgay log = new Log_GiaPhongTheoNgay();
+            log.setMaChiTietBooking(chiTietBooking.getMaChiTietBooking());
+            log.setNgay(giaPhongTheoNgayRequest.getNgay());
+            log.setGia(giaPhongTheoNgayRequest.getGia());
+            log.setMaLoaiPhong(giaPhongTheoNgayRequest.getMaLoaiPhong());
+            log.setThoiGianTao(LocalDateTime.now());
+            log.setTrangThai("CREATED");
+            logList.add(log);
+
+            tienPhongTheoNgay = tienPhongTheoNgay.add(giaPhongTheoNgayRequest.getGia());
+        }
+        return tienPhongTheoNgay;
+    }
+
+    /**
+     * Tính tổng tiền cho một chi tiết booking
+     */
+    private BigDecimal calculateTotalAmount(
+            BigDecimal tienPhongTheoNgay,
+            int soLuong,
+            int soDemThue,
+            ChiTietBooKingRequest request) {
+
+        BigDecimal tienExtra = request.getGiaExtraBed()
+                .multiply(BigDecimal.valueOf(soDemThue))
+                .multiply(BigDecimal.valueOf(request.getSoLuongExtraBed()));
+
+        BigDecimal tienPhuThuTreEm = request.getGiaPhuThuTreEm()
+                .multiply(BigDecimal.valueOf(soDemThue))
+                .multiply(BigDecimal.valueOf(request.getSoLuongPhuThuTreEm()));
+
+        BigDecimal tienPhuThuAnSang = request.getGiaPhuThuAnSang()
+                .multiply(BigDecimal.valueOf(soDemThue))
+                .multiply(BigDecimal.valueOf(request.getSoLuongPhuThuAnSang()));
+
+        return tienPhongTheoNgay.multiply(BigDecimal.valueOf(soLuong))
+                .add(tienExtra)
+                .add(tienPhuThuTreEm)
+                .add(tienPhuThuAnSang);
+    }
+
+    /**
+     * Class để lưu kết quả xử lý chi tiết booking
+     */
+    private static class ProcessChiTietBookingResult {
+        List<ChiTietBooking> chiTietBookings;
+        List<Log_DanhSachPhongChiTiet> logDanhSachPhongChiTietList;
+        List<Log_GiaPhongTheoNgay> logGiaPhongTheoNgay;
+        BigDecimal tongTien;
+        boolean khongCoPhong;
+
+        ProcessChiTietBookingResult(
+                List<ChiTietBooking> chiTietBookings,
+                List<Log_DanhSachPhongChiTiet> logDanhSachPhongChiTietList,
+                List<Log_GiaPhongTheoNgay> logGiaPhongTheoNgay,
+                BigDecimal tongTien,
+                boolean khongCoPhong) {
+            this.chiTietBookings = chiTietBookings;
+            this.logDanhSachPhongChiTietList = logDanhSachPhongChiTietList;
+            this.logGiaPhongTheoNgay = logGiaPhongTheoNgay;
+            this.tongTien = tongTien;
+            this.khongCoPhong = khongCoPhong;
+        }
+    }
+
+    /**
+     * Xử lý tất cả chi tiết booking
+     */
+    private ProcessChiTietBookingResult processChiTietBookings(BooKingRequest request, BooKing booKing) {
+        AtomicReference<BigDecimal> tongTien = new AtomicReference<>(BigDecimal.ZERO);
+        List<Log_DanhSachPhongChiTiet> logDanhSachPhongChiTietList = new ArrayList<>();
+        AtomicBoolean khongCoPhong = new AtomicBoolean(false);
+        List<Log_GiaPhongTheoNgay> logGiaPhongTheoNgay = new ArrayList<>();
+
+        List<ChiTietBooking> chiTietBookings = request.getChiTietBooKings().stream()
+                .map(chiTietBooKingRequest -> {
+                    // Validate cơ bản
+                    if (chiTietBooKingRequest.getSoLuong() > chiTietBooKingRequest.getSoLuongDuBaoPhong()) {
+                        throw new AppException(ErrorCode.SO_LUONG_ERROR);
+                    }
+                    if (chiTietBooKingRequest.getIndex() == 0) {
+                        throw new AppException(ErrorCode.INDEX_ERROR);
+                    }
+
+                    // Validate và tính số đêm thuê
+                    int soDemThue = validateAndCalculateNights(
+                            chiTietBooKingRequest.getNgayDen(),
+                            chiTietBooKingRequest.getNgayDi()
+                    );
+
+                    // Validate phòng
+                    validateRoomDuplication(
+                            chiTietBooKingRequest.getDanhSachPhongChiTiets(),
+                            chiTietBooKingRequest.getNgayDen(),
+                            chiTietBooKingRequest.getNgayDi()
+                    );
+
+                    // Validate extra bed
+                    if (!chiTietBooKingRequest.getDanhSachPhongChiTiets().isEmpty()) {
+                        if (chiTietBooKingRequest.getDanhSachPhongChiTiets().size() != chiTietBooKingRequest.getSoLuong()) {
+                            throw new AppException(ErrorCode.ERROR_SO_LUONG_PHONG);
+                        }
+                        validateExtraBedRooms(
+                                chiTietBooKingRequest.getDanhSachPhongChiTiets(),
+                                chiTietBooKingRequest.getSoLuongExtraBed()
+                        );
+                    } else {
+                        khongCoPhong.set(true);
+                    }
+
+                    // Tạo chi tiết booking
+                    ChiTietBooking chiTietBooking = chiTietBooKingMapper.toCreChiTietDatPhong(chiTietBooKingRequest);
+                    chiTietBooking.setBooKing(booKing);
+
+                    // Set các entity liên quan
+                    chiTietBooking.setLoaiPhong(findEntityOrThrow(
+                            () -> loaiPhongRepository.findById(chiTietBooKingRequest.getLoaiPhong().getMaLoaiPhong()),
+                            ErrorCode.LOAI_PHONG_NOT_FOUND,
+                            chiTietBooKingRequest.getLoaiPhong().getMaLoaiPhong()
+                    ));
+                    chiTietBooking.setLoaiGia(findEntityOrThrow(
+                            () -> loaiGiaRepository.findById(chiTietBooKingRequest.getLoaiGia().getMaLoaiGia()),
+                            ErrorCode.LOAI_GIA_NOT_FOUND,
+                            chiTietBooKingRequest.getLoaiGia().getMaLoaiGia()
+                    ));
+                    chiTietBooking.setGiaPhong(findEntityOrThrow(
+                            () -> giaPhongRepository.findById(chiTietBooKingRequest.getGiaPhong().getMaGiaPhong()),
+                            ErrorCode.GIA_PHONG_ERROR,
+                            chiTietBooKingRequest.getGiaPhong().getMaGiaPhong()
+                    ));
+
+                    // Xử lý danh sách phòng chi tiết
+                    List<DanhSachPhongChiTiet> dsPhong = processDanhSachPhongChiTiet(
+                            chiTietBooKingRequest.getDanhSachPhongChiTiets(),
+                            chiTietBooking,
+                            logDanhSachPhongChiTietList
+                    );
+                    chiTietBooking.setDanhSachPhongChiTiets(dsPhong);
+
+                    // Xử lý giá phòng theo ngày
+                    List<GiaPhongTheoNgay> giaPhongTheoNgays = new ArrayList<>();
+                    BigDecimal tienPhongTheoNgay = processGiaPhongTheoNgay(
+                            chiTietBooKingRequest.getGiaPhongTheoNgays(),
+                            chiTietBooking,
+                            giaPhongTheoNgays,
+                            logGiaPhongTheoNgay
+                    );
+                    chiTietBooking.setGiaPhongTheoNgays(giaPhongTheoNgays);
+
+                    // Tính tổng tiền
+                    BigDecimal tong = calculateTotalAmount(
+                            tienPhongTheoNgay,
+                            chiTietBooking.getSoLuong(),
+                            soDemThue,
+                            chiTietBooKingRequest
+                    );
+
+                    tongTien.updateAndGet(v -> v.add(tong));
+
+                    return chiTietBooking;
+                })
+                .collect(Collectors.toList());
+
+        return new ProcessChiTietBookingResult(
+                chiTietBookings,
+                logDanhSachPhongChiTietList,
+                logGiaPhongTheoNgay,
+                tongTien.get(),
+                khongCoPhong.get()
+        );
+    }
+
+    /**
+     * Validate tổng tiền
+     */
+    private void validateTotalAmount(BigDecimal tongTienTinhDuoc, BigDecimal tongTienRequest, BigDecimal tienCoc) {
+        BigDecimal tongTienSauCoc = tongTienTinhDuoc.subtract(tienCoc);
+        if (tongTienSauCoc.compareTo(tongTienRequest) != 0) {
+            throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
+        }
+    }
+
+    /**
+     * Tự động xếp phòng
+     */
+    private void autoAssignRooms(List<ChiTietBooking> chiTietBookings, BooKing booKing, Authentication authentication) {
+        int stt = 1;
+        for (ChiTietBooking chiTietBooking : chiTietBookings) {
+            List<DanhSachPhongChiTiet> phongChiTietList = chiTietBooking.getDanhSachPhongChiTiets();
+            int soPhongCanXep = chiTietBooking.getSoLuong();
+            int soExtraBed = chiTietBooking.getSoLuongExtraBed();
+            BigDecimal giaExtraBed = chiTietBooking.getGiaExtraBed();
+
+            for (int i = 0; i < soPhongCanXep && i < phongChiTietList.size(); i++) {
+                DanhSachPhongChiTiet phongDTO = phongChiTietList.get(i);
+                int extraBed = (i < soExtraBed) ? 1 : 0;
+                BigDecimal gia = (i < soExtraBed) ? giaExtraBed : BigDecimal.ZERO;
+
+                createSaveXepPhongBooKing(
+                        chiTietBooking,
+                        booKing,
+                        phongDTO.getMaPhong(),
+                        stt,
+                        extraBed,
+                        gia,
+                        authentication,
+                        chiTietBooking.getGiaPhongTheoNgays()
+                );
+                stt++;
+            }
+        }
     }
 
     // code phan tach chuc nang va gom gon dang loi phan xoa danhsách phòng chi tiết và xoa gia phòng theo ngày
@@ -1770,49 +1608,4 @@ public BooKingResponse updateBooKing1(String maBooking, BooKingRequest request) 
         xepPhongRepository.save(xepPhongBooKing);
     }
 
-    @Transactional
-    public void createAndSaveXepPhongBooKing(ChiTietBooking chiTietBooking, BooKing booKing, int index, Authentication authentication) {
-        List<PhongTrongThoiGian> dsPhong = phongRepository.getPhongTrongCurrent(
-                chiTietBooking.getLoaiPhong().getMaLoaiPhong(),
-                chiTietBooking.getNgayDen(),
-                chiTietBooking.getNgayDi()
-        );
-
-        if (dsPhong.isEmpty()) {
-            throw new AppException(ErrorCode.PHONG_NOT_FOUND, "Không còn phòng trống.");
-        }
-
-        int count = xepPhongRepository.countDaXepPhong(chiTietBooking.getMaChiTietBooking());
-
-
-        XepPhongBooKing xepPhongBooKing = new XepPhongBooKing();
-        xepPhongBooKing.setNgayDen(chiTietBooking.getNgayDen());
-        xepPhongBooKing.setGioDen(chiTietBooking.getGioDen());
-        xepPhongBooKing.setNgayDi(chiTietBooking.getNgayDi());
-        xepPhongBooKing.setGioDi(chiTietBooking.getGioDi());
-        xepPhongBooKing.setLoaiGia(chiTietBooking.getLoaiGia());
-        xepPhongBooKing.setGia(BigDecimal.valueOf(chiTietBooking.getGia()));
-        xepPhongBooKing.setStt(chiTietBooking.getLoaiPhong().getMaLoaiPhong() + '-' + (count + 1));
-        xepPhongBooKing.setNgayXep(LocalDate.now());
-        xepPhongBooKing.setGioXep(LocalTime.now());
-        xepPhongBooKing.setPhuThuTienGiuong(BigDecimal.ZERO);
-        xepPhongBooKing.setSoGiuong(0);
-        xepPhongBooKing.setPhuThuTienTre(BigDecimal.ZERO);
-        xepPhongBooKing.setSoTre(0);
-        xepPhongBooKing.setPhuThuNguoiLon(BigDecimal.ZERO);
-        xepPhongBooKing.setSoNguoiLon(0);
-        xepPhongBooKing.setChiTietBooking(chiTietBooking);
-        xepPhongBooKing.setBooKing(booKing);
-        xepPhongBooKing.setSoDem(chiTietBooking.getSoDem());
-        xepPhongBooKing.setThanhTien(chiTietBooking.getTienPhong());
-        xepPhongBooKing.setGhiChu(chiTietBooking.getGhiChu());
-        xepPhongBooKing.setGiaPhong(chiTietBooking.getGiaPhong());
-
-        Phong phongAuto = new Phong();
-        phongAuto.setMaPhong(dsPhong.getFirst().getMaPhong());
-        xepPhongBooKing.setPhong(phongAuto);
-        xepPhongBooKing.setNguoiTao(authentication.getName());
-
-        xepPhongRepository.save(xepPhongBooKing);
-    }
 }
