@@ -56,17 +56,6 @@ public class BooKingOnlineService {
         Log_GiaPhongTheoNgayRepository logGiaPhongTheoNgayRepository;
         private final Log_DanhSachPhongChiTietRepositoty log_DanhSachPhongChiTietRepositoty;
 
-        // tạo id mã string tự động tăng
-        public synchronized String generateNewBookingId() {
-            String datePrefix = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE); // Ví dụ: "20250303"
-            Optional<String> latestId = booKingRepository.findLatestMaBooKing();
-            if (latestId.isPresent() && latestId.get().startsWith("BK" + datePrefix)) {
-                int number = Integer.parseInt(latestId.get().substring(10)); // Sau "BK20250303"
-                return String.format("BK%s%03d", datePrefix, number + 1);
-            }
-            return "BK" + datePrefix + "001"; // Ví dụ: "BK20250303001"
-        }
-
         @Transactional
         public BooKingResponse createBooKing(BooKingOnlineRequest request) {
 
@@ -102,6 +91,7 @@ public class BooKingOnlineService {
             loaiThe.setMaLoaiThe(4); // UNKNOWN
 
 
+
             // Lưu KhachHangBooKing
             KhachHangBooKing khachHangBooKing = khachHangBooKingMapper.toCreateKhachHangBooKing(request.getKhachHangBooKing());
             khachHangBooKing.setMaKhachHangBooking(khachHangBooKingService.generateNewId());
@@ -121,12 +111,23 @@ public class BooKingOnlineService {
 
             // Tạo và lưu BooKing chính
             BooKing booKing = booKingMapper.toCreateBooKing(request);
-            booKing.setMaBooking(generateNewBookingId());
             booKing.setKhachHangBooKing(khachHangBooKing);
             booKing.setThongTinLienHeBooKing(thongTinLienHeBooKing);
 
+            booKing.setDanhXung(danhXung);
+            booKing.setNhomKhachHang(nhomKhachHang);
+            booKing.setKhuVuc(khuVuc);
+            booKing.setThiTruong(thiTruong);
+            booKing.setHinhThucThanhToan(hinhThucThanhToan);
+            booKing.setMucDichDen(mucDichDen);
+            booKing.setNguonKhach(nguonKhach);
+            booKing.setGiamGia(giamGia);
+            booKing.setTrangThaiBooKing(trangThaiBooKing);
+            booKing.setLoaiThe(loaiThe);
+            booKing.setGioDen(LocalTime.parse("14:00:00"));
+            booKing.setGioDi(LocalTime.parse("12:00:00"));
 
-            booKing.setNguoiTao("ONLINE");
+            booKing.setNguoiTao("online");
             booKing.setThoiGianTao(LocalDateTime.now());
             booKing.setLoaiNguonKhach("");
             booKing = booKingRepository.save(booKing);
@@ -172,6 +173,8 @@ public class BooKingOnlineService {
                         chiTietBooking.setGiaExtraBed(giaMacDinh);
                         chiTietBooking.setGiaPhuThuAnSang(giaMacDinh);
                         chiTietBooking.setGia(0.0);
+                        chiTietBooking.setGioDen(LocalTime.parse("14:00:00"));
+                        chiTietBooking.setGioDi(LocalTime.parse("12:00:00"));
 
                         chiTietBooking.setLoaiPhong(findEntityOrThrow(
                                 () -> loaiPhongRepository.findById(chiTietBooKingRequest.getLoaiPhong().getMaLoaiPhong()),
@@ -328,7 +331,7 @@ public class BooKingOnlineService {
             Phong phongAuto = new Phong();
             phongAuto.setMaPhong(maPhong);
             xepPhongBooKing.setPhong(phongAuto);
-            xepPhongBooKing.setNguoiTao("ONLINE");
+            xepPhongBooKing.setNguoiTao("online");
             xepPhongBooKing.setPhuThuCheckInSom(BigDecimal.ZERO);
             xepPhongBooKing.setPhuThuCheckInSom(BigDecimal.ZERO);
 

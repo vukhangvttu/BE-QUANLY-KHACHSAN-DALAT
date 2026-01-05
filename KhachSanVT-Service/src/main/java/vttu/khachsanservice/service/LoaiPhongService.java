@@ -35,8 +35,8 @@ public class LoaiPhongService {
     final LoaiPhongMapper loaiPhongMapper;
     final RestTemplate restTemplate;
 
-    @Value("${external.golden-era.base-url}")
-    String goldenEraBaseUrl;
+//    @Value("${external.golden-era.base-url}")
+//    String goldenEraBaseUrl;
 
     public List<LoaiPhongResponse> getAllLoaiPhong() {
         return loaiPhongRepository.findAll()
@@ -90,90 +90,91 @@ public class LoaiPhongService {
             log.warn("Không có loại phòng trống trong khoảng thời gian đã chọn.");
             return dsPhongTrong;
         }
+        return  dsPhongTrong;
 
         // Gọi API external để lấy thống kê booking
-        List<BookingStatsDTO> bookingStats = fetchBookingStats(ngayDen, ngayDi);
-
-        // Nếu không lấy được dữ liệu từ API external, trả về dữ liệu gốc
-        if (bookingStats == null || bookingStats.isEmpty()) {
-            log.warn("Không lấy được dữ liệu từ Golden Era API, sử dụng dữ liệu nội bộ");
-            return dsPhongTrong;
-        }
-
-        // Tạo map để tra cứu nhanh số phòng booking theo ngày và mã loại phòng
-        Map<String, Map<String, Integer>> bookingMap = buildBookingMap(bookingStats);
-
-        // Chuyển đổi và cập nhật số phòng trống
-        List<LoaiPhongTrongDTO> result = dsPhongTrong.stream()
-                .map(phong -> {
-                    LoaiPhongTrongDTOImpl impl = new LoaiPhongTrongDTOImpl(
-                            phong.getNgay(),
-                            phong.getMaLoaiPhong(),
-                            phong.getTenLoaiPhong(),
-                            phong.getTongSoPhong(),
-                            phong.getSoPhongTrong(),
-                            phong.getTongSoGiuongThem(),
-                            phong.getTongSoGiuongDaSuDung()
-                    );
-
-                    // Lấy số phòng booking từ API external
-                    String ngay = phong.getNgay();
-                    String maLoaiPhong = phong.getMaLoaiPhong();
-
-                    if (bookingMap.containsKey(ngay) && bookingMap.get(ngay).containsKey(maLoaiPhong)) {
-                        int totalRooms = bookingMap.get(ngay).get(maLoaiPhong);
-                        int newSoPhongTrong = phong.getSoPhongTrong() + totalRooms;
-                        impl.setSoPhongTrong(newSoPhongTrong);
-                        log.debug("Updated room availability for {} on {}: {} + {} = {}",
-                                maLoaiPhong, ngay, phong.getSoPhongTrong(), totalRooms, newSoPhongTrong);
-                    }
-
-                    return (LoaiPhongTrongDTO) impl;
-                })
-                .collect(Collectors.toList());
-
-        return result;
+//        List<BookingStatsDTO> bookingStats = fetchBookingStats(ngayDen, ngayDi);
+//
+//        // Nếu không lấy được dữ liệu từ API external, trả về dữ liệu gốc
+//        if (bookingStats == null || bookingStats.isEmpty()) {
+//            log.warn("Không lấy được dữ liệu từ Golden Era API, sử dụng dữ liệu nội bộ");
+//            return dsPhongTrong;
+//        }
+//
+//        // Tạo map để tra cứu nhanh số phòng booking theo ngày và mã loại phòng
+//        Map<String, Map<String, Integer>> bookingMap = buildBookingMap(bookingStats);
+//
+//        // Chuyển đổi và cập nhật số phòng trống
+//        List<LoaiPhongTrongDTO> result = dsPhongTrong.stream()
+//                .map(phong -> {
+//                    LoaiPhongTrongDTOImpl impl = new LoaiPhongTrongDTOImpl(
+//                            phong.getNgay(),
+//                            phong.getMaLoaiPhong(),
+//                            phong.getTenLoaiPhong(),
+//                            phong.getTongSoPhong(),
+//                            phong.getSoPhongTrong(),
+//                            phong.getTongSoGiuongThem(),
+//                            phong.getTongSoGiuongDaSuDung()
+//                    );
+//
+//                    // Lấy số phòng booking từ API external
+//                    String ngay = phong.getNgay();
+//                    String maLoaiPhong = phong.getMaLoaiPhong();
+//
+//                    if (bookingMap.containsKey(ngay) && bookingMap.get(ngay).containsKey(maLoaiPhong)) {
+//                        int totalRooms = bookingMap.get(ngay).get(maLoaiPhong);
+//                        int newSoPhongTrong = phong.getSoPhongTrong() + totalRooms;
+//                        impl.setSoPhongTrong(newSoPhongTrong);
+//                        log.debug("Updated room availability for {} on {}: {} + {} = {}",
+//                                maLoaiPhong, ngay, phong.getSoPhongTrong(), totalRooms, newSoPhongTrong);
+//                    }
+//
+//                    return (LoaiPhongTrongDTO) impl;
+//                })
+//                .collect(Collectors.toList());
+//
+//        return result;
     }
 
     /**
      * Gọi API external để lấy thống kê booking
      */
-    private List<BookingStatsDTO> fetchBookingStats(LocalDate checkInDate, LocalDate checkOutDate) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-
-            String url = UriComponentsBuilder
-                    .fromHttpUrl(goldenEraBaseUrl + "/booking-stats/daily")
-                    .queryParam("checkInDate", checkInDate.format(formatter))
-                    .queryParam("checkOutDate", checkOutDate.format(formatter))
-                    .queryParam("region", "VUNGTAU")
-                    .queryParam("status", "CONFIRMED")
-                    .build()
-                    .toUriString();
-
-            log.info("Calling Golden Era API: {}", url);
-
-            ResponseEntity<List<BookingStatsDTO>> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<BookingStatsDTO>>() {}
-            );
-
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                log.info("Successfully fetched {} booking stats from Golden Era API", response.getBody().size());
-                return response.getBody();
-            } else {
-                log.warn("Golden Era API returned non-successful status: {}", response.getStatusCode());
-                return Collections.emptyList();
-            }
-
-        } catch (Exception e) {
-            log.error("Lỗi khi gọi Golden Era API: {}", e.getMessage(), e);
-            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION,
-                    "Không thể kết nối đến Golden Era API: " + e.getMessage());
-        }
-    }
+//    private List<BookingStatsDTO> fetchBookingStats(LocalDate checkInDate, LocalDate checkOutDate) {
+//        try {
+//            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+//
+//            String url = UriComponentsBuilder
+//                    .fromHttpUrl(goldenEraBaseUrl + "/booking-stats/daily")
+//                    .queryParam("checkInDate", checkInDate.format(formatter))
+//                    .queryParam("checkOutDate", checkOutDate.format(formatter))
+//                    .queryParam("region", "VUNGTAU")
+//                    .queryParam("status", "CONFIRMED")
+//                    .build()
+//                    .toUriString();
+//
+//            log.info("Calling Golden Era API: {}", url);
+//
+//            ResponseEntity<List<BookingStatsDTO>> response = restTemplate.exchange(
+//                    url,
+//                    HttpMethod.GET,
+//                    null,
+//                    new ParameterizedTypeReference<List<BookingStatsDTO>>() {}
+//            );
+//
+//            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+//                log.info("Successfully fetched {} booking stats from Golden Era API", response.getBody().size());
+//                return response.getBody();
+//            } else {
+//                log.warn("Golden Era API returned non-successful status: {}", response.getStatusCode());
+//                return Collections.emptyList();
+//            }
+//
+//        } catch (Exception e) {
+//            log.error("Lỗi khi gọi Golden Era API: {}", e.getMessage(), e);
+//            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION,
+//                    "Không thể kết nối đến Golden Era API: " + e.getMessage());
+//        }
+//    }
 
     /**
      * Tạo map để tra cứu nhanh số phòng booking theo ngày và mã loại phòng

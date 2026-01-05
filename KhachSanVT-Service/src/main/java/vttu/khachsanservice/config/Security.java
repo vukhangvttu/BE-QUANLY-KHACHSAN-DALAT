@@ -30,7 +30,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Security {
 
     private final String [] PUBLIC_ENDPOINTS = {
-            "/auth/log-in","/auth/introspect","/auth/logout", "/auth/refresh" , "/api/room-availability/**",
+            "/auth/log-in","/auth/introspect","/auth/logout", "/auth/refresh" , "/api/room-availability/**", "/booking-online"
     };
 
 
