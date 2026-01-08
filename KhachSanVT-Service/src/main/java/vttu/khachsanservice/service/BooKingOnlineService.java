@@ -27,8 +27,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -52,6 +50,7 @@ public class BooKingOnlineService {
         private final XepPhongRepository xepPhongRepository;
         private final PhongRepository phongRepository;
         private final GiaPhongRepository giaPhongRepository;
+        private final DanhSachPhongChiTietRepository danhSachPhongChiTietRepository;
 
         Log_GiaPhongTheoNgayRepository logGiaPhongTheoNgayRepository;
         private final Log_DanhSachPhongChiTietRepositoty log_DanhSachPhongChiTietRepositoty;
@@ -145,6 +144,8 @@ public class BooKingOnlineService {
             List<Log_DanhSachPhongChiTiet> logDanhSachPhongChiTietList = new ArrayList<>();
 
             List<Log_GiaPhongTheoNgay> logGiaPhongTheoNgay = new ArrayList<>();
+            // Khai báo dsPhong một lần duy nhất
+            List<DanhSachPhongChiTiet> dsPhong = new ArrayList<>();
             List<ChiTietBooking> chiTietBookings = request.getChiTietBooKings().stream()
                     .map(chiTietBooKingRequest -> {
 
@@ -257,7 +258,6 @@ public class BooKingOnlineService {
 
                     int soPhongCanXep = chiTietBooking.getSoLuong();
 
-
                     for (int i = 0; i < soPhongCanXep ; i++) {
 
                         List<PhongTrongThoiGian> phongTrongThoiGianList = phongRepository.getPhongTrongCurrent(
@@ -281,8 +281,16 @@ public class BooKingOnlineService {
                                 chiTietBooking.getGiaPhongTheoNgays()
 
                         );
+
+                        DanhSachPhongChiTiet danhSachPhongChiTiet = new DanhSachPhongChiTiet();
+                        danhSachPhongChiTiet.setMaPhong( phongDTO.getMaPhong());
+                        danhSachPhongChiTiet.setChiTietBooking(chiTietBooking);
+                        danhSachPhongChiTiet.setSoGiuongThem(phongDTO.getSoGiuongThem());
+                        dsPhong.add(danhSachPhongChiTiet);
+
                         stt++;
                     }
+                    danhSachPhongChiTietRepository.saveAll(dsPhong);
                 }
 
                 booKingRepository.updateDa_xep_phong(true, booKing.getMaBooking());
