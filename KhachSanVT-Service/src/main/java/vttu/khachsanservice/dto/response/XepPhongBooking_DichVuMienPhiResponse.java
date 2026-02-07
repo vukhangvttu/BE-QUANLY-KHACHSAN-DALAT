@@ -18,4 +18,5 @@ public class XepPhongBooking_DichVuMienPhiResponse {
     XepPhongDTO xepPhongBooking;
     int soLuong;
     LocalDate ngayBoSung;
+    String nguoiTao;
 }

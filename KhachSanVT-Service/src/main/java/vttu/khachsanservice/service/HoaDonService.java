@@ -1,12 +1,10 @@
 package vttu.khachsanservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +14,7 @@ import vttu.khachsanservice.dto.request.ChiTietHoaDonRequest;
 import vttu.khachsanservice.dto.request.HoaDonRequest;
 import vttu.khachsanservice.dto.request.HoaDon_DichVuMienPhiRequest;
 import vttu.khachsanservice.dto.response.GiaPhongTheoNgayReponse;
-import vttu.khachsanservice.dto.response.HoaDonReponse;
 import vttu.khachsanservice.dto.response.HoaDon_DichVuMienPhiResponse;
-import vttu.khachsanservice.dto.response.XepPhongBooking_DichVuMienPhiResponse;
 import vttu.khachsanservice.entity.*;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.exception.ErrorCode;
@@ -590,8 +586,10 @@ public class HoaDonService {
         hoaDon.setNguoiTao(authentiaction.getName());
         hoaDon.setGhiChu(hoaDonRequestNew.getGhiChu());
         hoaDon.setMaHinhThucThanhToanPhu(hoaDonRequestNew.getMaHinhThucThanhToanPhu());
-        hoaDon.setGiaTriThanhToanPhu(hoaDonRequestNew.getGiaTriThanhToanPhu());
-        hoaDon.setGhiChuThanhToanPhu(hoaDonRequestNew.getGhiChuThanhToanPhu());
+        hoaDon.setGiaTriThanhToanPhu(hoaDonRequestNew.getGiaTriThanhToanPhu() == null ? BigDecimal.ZERO : hoaDonRequestNew.getGiaTriThanhToanPhu());
+        hoaDon.setGhiChuThanhToanPhu(hoaDonRequestNew.getGhiChuThanhToanPhu() == null ? "" : hoaDonRequestNew.getGhiChuThanhToanPhu());
+        hoaDon.setTongPhuThuCheckInSom(hoaDonRequestNew.getTongPhuThuCheckInSom() == null ? BigDecimal.ZERO : hoaDonRequestNew.getTongPhuThuCheckInSom());
+        hoaDon.setTongPhuThuCheckOutTre(hoaDonRequestNew.getTongPhuThuCheckOutTre() == null ? BigDecimal.ZERO : hoaDonRequestNew.getTongPhuThuCheckOutTre());
         hoaDonRepository.save(hoaDon);
         hoaDon_DichVuMienPhiRepository.saveAll(dichVuMienPhis);
 

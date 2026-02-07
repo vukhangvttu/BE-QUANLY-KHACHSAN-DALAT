@@ -23,9 +23,6 @@ public class HoaDonVat {
     @Column(columnDefinition = "serial", updatable = false, insertable = false)// Tự động tăng
     Long autoIncrementId;
 
-    LocalDate ngayDen;
-    LocalDate ngayDi;
-
     String tenKhach;
     LocalDate ngayLap;
     String mauHoaDon;

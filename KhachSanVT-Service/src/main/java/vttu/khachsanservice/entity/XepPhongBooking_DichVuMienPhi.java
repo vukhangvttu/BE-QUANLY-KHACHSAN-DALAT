@@ -31,5 +31,7 @@ public class XepPhongBooking_DichVuMienPhi {
     int  soLuong;
     LocalDate ngayBoSung;
     LocalDateTime thoiGianTao;
+    String nguoiTao;
+    boolean daXoa;
 
 }

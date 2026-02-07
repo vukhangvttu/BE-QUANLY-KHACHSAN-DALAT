@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -220,6 +221,7 @@ public class ThongKeController {
                 .body(new InputStreamResource(inputStream));
     }
 
+
     @GetMapping("/export/excel/thong-tin-luu-tru")
     public ResponseEntity<InputStreamResource> exportExcelKhachLuuTruKhoanThoiGian(
             @RequestParam LocalDate ngayDen, @RequestParam LocalDate ngayDi
@@ -240,13 +242,37 @@ public class ThongKeController {
                 .body(new InputStreamResource(inputStream));
     }
 
+    private LocalDate tinhNgayThongKe() {
+        LocalTime now = LocalTime.now();
+
+        // Sau 15h, 18h, 21h, 24h => +1 ngày
+        if (now.isAfter(LocalTime.of(15, 0)) ||
+                now.isAfter(LocalTime.of(18, 0)) ||
+                now.isAfter(LocalTime.of(21, 0)) ||
+                now.equals(LocalTime.MIDNIGHT)) {
+
+            return LocalDate.now().plusDays(1);
+        }
+
+        return LocalDate.now();
+    }
+
+//    private LocalDate tinhNgayThongKe() {
+//        return LocalTime.now().isBefore(LocalTime.of(15, 0))
+//                ? LocalDate.now().plusDays(1)
+//                : LocalDate.now();
+//    }
+
+
     @GetMapping("/thong-ke-an-sang")
     ApiResponse<List<Map<String,Object>>> getThongKeAnSang() {
         try {
 
-            return ApiResponse.<List<Map<String,Object>>>builder()
-                    .result(thongKeService.getThongKeAnSang(LocalDate.now(), LocalDate.now()))
 
+            LocalDate ngayThongKe = tinhNgayThongKe();
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .result(thongKeService.getThongKeAnSang(ngayThongKe, ngayThongKe))
                     .code(HttpStatus.OK.value())
                     .build();
         } catch (AccessDeniedException e) {
@@ -277,8 +303,10 @@ public class ThongKeController {
     ApiResponse<List<Map<String,Object>>> getDanhSachPhongAnSang() {
         try {
 
+            LocalDate ngayThongKe = tinhNgayThongKe();
+
             return ApiResponse.<List<Map<String,Object>>>builder()
-                    .result(thongKeService.getPhongAnSang(LocalDate.now(), LocalDate.now()))
+                    .result(thongKeService.getPhongAnSang(ngayThongKe, ngayThongKe))
 
                     .code(HttpStatus.OK.value())
                     .build();

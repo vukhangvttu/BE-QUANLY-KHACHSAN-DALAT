@@ -43,6 +43,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
                                      hd.ma_hinhthucthanhtoan,
                                      hd.ma_hinh_thuc_thanh_toan_phu,
                                      hd.gia_tri_thanh_toan_phu,
+                                     hd.ghi_chu,
                                      hd.ghi_chu_thanh_toan_phu,
                                      hd.ngay_lap,hd.nguoi_tao,nv.ten_nhan_vien
                                              FROM booking bk

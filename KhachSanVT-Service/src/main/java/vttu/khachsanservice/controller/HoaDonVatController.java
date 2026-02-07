@@ -134,7 +134,7 @@ public class HoaDonVatController {
     }
 
     @GetMapping("/print-hoa-don-vat-nhap/{ma_booking}/{ma_hoadon_vat}")
-    public ResponseEntity<?> xuatHoaDon(@PathVariable String ma_booking, @PathVariable String ma_hoadon_vat) {
+    public ResponseEntity<?> xuatHoaDonNhap(@PathVariable String ma_booking, @PathVariable String ma_hoadon_vat) {
         try {
 
 

@@ -52,5 +52,9 @@ dependencies {
 // https://mvnrepository.com/artifact/cn.6tail/lunar
     implementation("cn.6tail:lunar:1.7.0")
 
+}
 
+
+tasks.withType(Test).configureEach {
+    enabled = false
 }

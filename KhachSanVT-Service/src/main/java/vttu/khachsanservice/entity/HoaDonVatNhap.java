@@ -25,9 +25,6 @@ public class HoaDonVatNhap {
     @Column(name = "ngay_lap")
     private LocalDateTime ngayLap;
 
-    @Column(name = "tong_tien_phong", precision = 15, scale = 2)
-    private BigDecimal tongTienPhong;
-
     @Column(name = "tong_thanh_toan", precision = 15, scale = 2)
     private BigDecimal tongThanhToan;
 
@@ -36,12 +33,6 @@ public class HoaDonVatNhap {
 
     @Column(name = "nguoi_tao", length = 50)
     private String nguoiTao;
-
-    @Column(name = "ma_hinhthucthanhtoan")
-    private Integer maHinhThucThanhToan;
-
-    @Column(name = "ghi_chu")
-    private String ghiChu;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "thong_tin_hoa_don", columnDefinition = "json")

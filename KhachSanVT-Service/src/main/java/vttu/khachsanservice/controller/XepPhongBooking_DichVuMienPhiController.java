@@ -13,6 +13,7 @@ import vttu.khachsanservice.dto.response.XepPhongBooking_DichVuMienPhiResponse;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.service.XepPhongBooking_DichVuMienPhiService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,11 +25,13 @@ public class XepPhongBooking_DichVuMienPhiController {
     XepPhongBooking_DichVuMienPhiService xepPhongBookingDichVuMienPhiService;
 
     @PostMapping("/{ma_xepphong}")
-    ApiResponse<Boolean> saveDichVuMienPhi(@PathVariable String ma_xepphong, @RequestBody List<XepPhongBooking_DichVuMienPhiRequest> request) {
+    ApiResponse<Boolean> saveDichVuMienPhi(@PathVariable String ma_xepphong, @RequestBody List<XepPhongBooking_DichVuMienPhiRequest> request, @RequestParam LocalDate ngay) {
+
+
         try {
 
             return ApiResponse.<Boolean>builder()
-                    .result(xepPhongBookingDichVuMienPhiService.createdDichVuMienPhi(ma_xepphong, request))
+                    .result(xepPhongBookingDichVuMienPhiService.createdDichVuMienPhi(ma_xepphong, request, ngay))
                     .message("Cập nhât dịch vụ miễn phí thành công")
                     .code(HttpStatus.OK.value())
                     .build();

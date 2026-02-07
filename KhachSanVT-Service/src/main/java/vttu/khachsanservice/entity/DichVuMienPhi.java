@@ -21,6 +21,9 @@ public class DichVuMienPhi {
     @Column( nullable = false)
     String maDichVuMienPhi;
     String tenDichVuMienPhi;
+    @Column(length = 10)
+    String donViTinh;
+    Boolean trangThai;
 
 }
 

@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings( CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3001", "http://ge.vttu.edu.vn:6688")
+                        .allowedOrigins("http://localhost:3001", "http://ge.vttu.edu.vn:6688","http://192.168.99.66:6688" )
                         .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
                         .allowedHeaders("X-API-KEY", "Content-Type", "Accept", "Authorization")
                         .exposedHeaders("*")

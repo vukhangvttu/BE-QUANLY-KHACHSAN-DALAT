@@ -50,25 +50,25 @@ public class BooKing {
     @JoinColumn(name = "ma_hinh_thuc_thanh_toan")
     HinhThucThanhToan hinhThucThanhToan;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_nguon_khach")
-    NguonKhach nguonKhach;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_thi_truong")
-    ThiTruong thiTruong;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_khu_vuc")
-    KhuVuc khuVuc;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_muc_dich_den")
-    MucDichDen mucDichDen;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_giam_gia")
-    GiamGia giamGia;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ma_nguon_khach")
+//    NguonKhach nguonKhach;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ma_thi_truong")
+//    ThiTruong thiTruong;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ma_khu_vuc")
+//    KhuVuc khuVuc;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ma_muc_dich_den")
+//    MucDichDen mucDichDen;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ma_giam_gia")
+//    GiamGia giamGia;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ma_trang_thai_booking")

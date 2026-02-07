@@ -64,31 +64,14 @@ public class BooKingOnlineService {
             NhomKhachHang nhomKhachHang = new NhomKhachHang();
             nhomKhachHang.setMaNhomKhachHang("NKH2026010301");
 
-            KhuVuc khuVuc = new KhuVuc();
-            khuVuc.setMaKhuVuc(5); // Không xác định
-
-            ThiTruong thiTruong = new ThiTruong();
-            thiTruong.setMaThiTruong(7);  //WEB ONLINE GOLDEN ERA
-
             HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
             hinhThucThanhToan.setMaHinhThucThanhToan(5); //VNPAY
-
-            MucDichDen mucDichDen = new MucDichDen();
-            mucDichDen.setMaMucDich(5);  //Không xác định
-
-            NguonKhach nguonKhach = new NguonKhach();
-            nguonKhach.setMaNguonKhach(3); //Online
-
-            GiamGia giamGia = new GiamGia();
-            giamGia.setMaGiamGia(1); //NONE PROMOTION
-
 
             TrangThaiBooKing trangThaiBooKing = new TrangThaiBooKing();
             trangThaiBooKing.setMaTrangThaiBooKing(6); //Online
 
             LoaiThe loaiThe = new LoaiThe();
             loaiThe.setMaLoaiThe(4); // UNKNOWN
-
 
 
             // Lưu KhachHangBooKing
@@ -115,12 +98,7 @@ public class BooKingOnlineService {
 
             booKing.setDanhXung(danhXung);
             booKing.setNhomKhachHang(nhomKhachHang);
-            booKing.setKhuVuc(khuVuc);
-            booKing.setThiTruong(thiTruong);
             booKing.setHinhThucThanhToan(hinhThucThanhToan);
-            booKing.setMucDichDen(mucDichDen);
-            booKing.setNguonKhach(nguonKhach);
-            booKing.setGiamGia(giamGia);
             booKing.setTrangThaiBooKing(trangThaiBooKing);
             booKing.setLoaiThe(loaiThe);
             booKing.setGioDen(LocalTime.parse("14:00:00"));
@@ -129,6 +107,7 @@ public class BooKingOnlineService {
             booKing.setNguoiTao("online");
             booKing.setThoiGianTao(LocalDateTime.now());
             booKing.setLoaiNguonKhach("");
+            booKing.setTienCoc(request.getTienCoc());
             booKing = booKingRepository.save(booKing);
             // Kiểm tra giá trị sau khi lưu
             log.info("After saving BooKing - maBooking: {}, tongTien: {}",

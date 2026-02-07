@@ -56,5 +56,5 @@ public class HoaDon {
     @Column(columnDefinition = "DECIMAL(30,2)")
     BigDecimal tongPhuThuCheckInSom;
     @Column(columnDefinition = "DECIMAL(30,2)")
-    BigDecimal tongPhuThuCheckInTre;
+    BigDecimal tongPhuThuCheckOutTre;
 }

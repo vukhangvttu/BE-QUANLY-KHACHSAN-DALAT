@@ -55,13 +55,8 @@ public class BooKingService {
     YeuCauRepository yeuCauRepository;
     PhongHoiNghiMapper phongHoiNghiMapper;
     private final DanhXungRepository danhXungRepository;
-    private final KhuVucRepository khuVucRepository;
-    private final ThiTruongRepository thiTruongRepository;
     private final HinhThucThanhToanRepository hinhThucThanhToanRepository;
-    private final MucDichDenRepository mucDichDenRepository;
-    private final NguonKhachRepository nguonKhachRepository;
     private final NhomKhachHangRepository nhomKhachHangRepository;
-    private final GiamGiaRepository giamGiaRepository;
     private final TrangThaiBooKingRepository trangThaiBooKingRepository;
     private final LoaiTheRepository loaiTheRepository;
     private final LoaiGiaRepository loaiGiaRepository;
@@ -166,36 +161,13 @@ public BooKingResponse createBooKing(BooKingRequest request) {
       ErrorCode.NHOM_KHACH_HANG_NOT_FOUND,
       request.getNhomKhachHang().getMaNhomKhachHang()
     );
-    findEntityOrThrow(
-      () -> khuVucRepository.findById(request.getKhuVuc().getMaKhuVuc()),
-      ErrorCode.KHU_VUC_NOT_FOUND,
-      request.getKhuVuc().getMaKhuVuc()
-    );
-    findEntityOrThrow(
-      () -> thiTruongRepository.findById(request.getThiTruong().getMaThiTruong()),
-      ErrorCode.THI_TRUONG_NOT_FOUND,
-      request.getThiTruong().getMaThiTruong()
-    );
+
     findEntityOrThrow(
       () -> hinhThucThanhToanRepository.findById(request.getHinhThucThanhToan().getMaHinhThucThanhToan()),
       ErrorCode.HINH_THUC_THAN_TOAN_NOT_FOUND,
       request.getHinhThucThanhToan().getMaHinhThucThanhToan()
     );
-    findEntityOrThrow(
-      () -> mucDichDenRepository.findById(request.getMucDichDen().getMaMucDich()),
-      ErrorCode.MUC_DICH_DEN_NOT_FOUND,
-      request.getMucDichDen().getMaMucDich()
-    );
-    findEntityOrThrow(
-      () -> nguonKhachRepository.findById(request.getNguonKhach().getMaNguonKhach()),
-      ErrorCode.NGUON_KHACH_NOT_FOUND,
-      request.getNguonKhach().getMaNguonKhach()
-    );
-    findEntityOrThrow(
-      () -> giamGiaRepository.findById(request.getGiamGia().getMaGiamGia()),
-      ErrorCode.GIAM_GIA_NOT_FOUND,
-      request.getGiamGia().getMaGiamGia()
-    );
+
     findEntityOrThrow(
       () -> trangThaiBooKingRepository.findById(request.getTrangThaiBooKing().getMaTrangThaiBooKing()),
       ErrorCode.TRANG_THAI_BOOKING_NOT_FOUND,
@@ -235,7 +207,6 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     if (request.getChiTietBooKings() == null || request.getChiTietBooKings().isEmpty()) {
       throw new AppException(ErrorCode.CHI_TIET_BOOKING_NOT_EMPTY);
     }
-
 
 
     var authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -743,24 +714,10 @@ public BooKingResponse createBooKing(BooKingRequest request) {
         findEntityOrThrow(
                 () -> nhomKhachHangRepository.findById(request.getNhomKhachHang().getMaNhomKhachHang()),
                 ErrorCode.NHOM_KHACH_HANG_NOT_FOUND, request.getNhomKhachHang().getMaNhomKhachHang());
-        findEntityOrThrow(
-                () -> khuVucRepository.findById(request.getKhuVuc().getMaKhuVuc()),
-                ErrorCode.KHU_VUC_NOT_FOUND, request.getKhuVuc().getMaKhuVuc());
-        findEntityOrThrow(
-                () -> thiTruongRepository.findById(request.getThiTruong().getMaThiTruong()),
-                ErrorCode.THI_TRUONG_NOT_FOUND, request.getThiTruong().getMaThiTruong());
+
         findEntityOrThrow(
                 () -> hinhThucThanhToanRepository.findById(request.getHinhThucThanhToan().getMaHinhThucThanhToan()),
                 ErrorCode.HINH_THUC_THAN_TOAN_NOT_FOUND, request.getHinhThucThanhToan().getMaHinhThucThanhToan());
-        findEntityOrThrow(
-                () -> mucDichDenRepository.findById(request.getMucDichDen().getMaMucDich()),
-                ErrorCode.MUC_DICH_DEN_NOT_FOUND, request.getMucDichDen().getMaMucDich());
-        findEntityOrThrow(
-                () -> nguonKhachRepository.findById(request.getNguonKhach().getMaNguonKhach()),
-                ErrorCode.NGUON_KHACH_NOT_FOUND, request.getNguonKhach().getMaNguonKhach());
-        findEntityOrThrow(
-                () -> giamGiaRepository.findById(request.getGiamGia().getMaGiamGia()),
-                ErrorCode.GIAM_GIA_NOT_FOUND, request.getGiamGia().getMaGiamGia());
         findEntityOrThrow(
                 () -> trangThaiBooKingRepository.findById(request.getTrangThaiBooKing().getMaTrangThaiBooKing()),
                 ErrorCode.TRANG_THAI_BOOKING_NOT_FOUND, request.getTrangThaiBooKing().getMaTrangThaiBooKing());

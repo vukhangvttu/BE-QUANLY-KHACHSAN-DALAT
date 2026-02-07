@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vttu.khachsanservice.dto.request.XepPhongBooking_DichVuMienPhiRequest;
@@ -39,7 +40,7 @@ public class XepPhongBooking_DichVuMienPhiService {
     private final DichVuMienPhiRepository dichVuMienPhiRepository;
 
     @Transactional
-    public boolean createdDichVuMienPhi(String ma_xepphong, List<XepPhongBooking_DichVuMienPhiRequest> requests) {
+    public boolean createdDichVuMienPhi(String ma_xepphong, List<XepPhongBooking_DichVuMienPhiRequest> requests, LocalDate ngayBoSung) {
 
         XepPhongBooKing xepPhongBooKing = xepPhongRepository.findById(ma_xepphong)
                 .orElseThrow(() -> new AppException(ErrorCode.XEP_PHONG_IS_EMPTY));
@@ -48,8 +49,16 @@ public class XepPhongBooking_DichVuMienPhiService {
             throw new AppException(ErrorCode.DICH_VU_MIEN_PHI_IS_EMPTY);
         }
 
+        if(ngayBoSung == null){
+            throw new AppException(ErrorCode.ERROR_NGAY_BO_SUNG_DICH_VU_MIEN_PHI);
+        }
 
-        xepPhongBooking_dichVuMienPhiRepository.deleteByMaXepPhongBooking(ma_xepphong, LocalDate.now());
+        long soLuongTheoNgay = xepPhongBooking_dichVuMienPhiRepository.countByMaXepPhongBooking(ma_xepphong, ngayBoSung);
+        if(soLuongTheoNgay > 0){
+            xepPhongBooking_dichVuMienPhiRepository.deleteByMaXepPhongBookingAndNgayBoSung(ma_xepphong, ngayBoSung);
+        }
+
+        //xepPhongBooking_dichVuMienPhiRepository.deleteByMaXepPhongBooking(ma_xepphong, ngayBoSung);
 
         List<XepPhongBooking_DichVuMienPhi> dichVuMienPhis = new ArrayList<>();
         for (XepPhongBooking_DichVuMienPhiRequest request : requests) {
@@ -73,6 +82,9 @@ public class XepPhongBooking_DichVuMienPhiService {
             dichVuMienPhi.setMaXepPhongBooking(xepPhongBooKing);
             dichVuMienPhi.setMaDichVuMienPhi(ktdichVuMienPhi);
             dichVuMienPhi.setThoiGianTao(LocalDateTime.now());
+            dichVuMienPhi.setNgayBoSung(ngayBoSung);
+            dichVuMienPhi.setNguoiTao(SecurityContextHolder.getContext().getAuthentication().getName());
+            dichVuMienPhi.setDaXoa(false);
             dichVuMienPhis.add(dichVuMienPhi);
         }
 

@@ -26,6 +26,7 @@ public interface PhongStatusProjection {
     float gettong();
     int getsoLuongKhach();
     int getTrangthaibooking();
+    String getMaTang();
 
     String getTenNhomKhachHang();
     String getTrangThaiTuongLai();

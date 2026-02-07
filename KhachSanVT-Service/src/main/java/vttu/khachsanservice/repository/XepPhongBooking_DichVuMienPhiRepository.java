@@ -18,4 +18,11 @@ public interface XepPhongBooking_DichVuMienPhiRepository extends JpaRepository<X
     @Modifying
     @Query(value = "DELETE FROM xep_phong_booking_dich_vu_mien_phi WHERE ma_xep_phong_booking =?1 AND ngay_bo_sung =?2", nativeQuery = true)
     void deleteByMaXepPhongBooking(String maXepPhongBooking, LocalDate ngayBoSung);
+
+    @Query(value = "SELECT COUNT(*) FROM xep_phong_booking_dich_vu_mien_phi WHERE ma_xep_phong_booking =:maXepPhongBooking AND ngay_bo_sung = :ngayBoSung", nativeQuery = true)
+    long countByMaXepPhongBooking(String maXepPhongBooking, LocalDate ngayBoSung);
+
+    @Modifying
+    @Query(value = "UPDATE xep_phong_booking_dich_vu_mien_phi SET da_xoa = true WHERE ma_xep_phong_booking =:maXepPhongBooking AND ngay_bo_sung = :ngayBoSung", nativeQuery = true)
+    void deleteByMaXepPhongBookingAndNgayBoSung(String maXepPhongBooking, LocalDate ngayBoSung);
 }

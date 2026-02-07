@@ -341,11 +341,9 @@ public class HoaDonVatService {
 
                 HoaDonVatNhap hoaDonVatNhap = new HoaDonVatNhap();
                 hoaDonVatNhap.setNgayLap(LocalDateTime.now());
-                hoaDonVatNhap.setTongTienPhong(BigDecimal.ZERO);
-                hoaDonVatNhap.setTongThanhToan(BigDecimal.ZERO);
+                hoaDonVatNhap.setTongThanhToan(sumWithVat);
                 hoaDonVatNhap.setMaBooking(maBooking);
                 hoaDonVatNhap.setNguoiTao(authentiaction.getName()); // hardcoded, có thể lấy từ Auth sau này
-                hoaDonVatNhap.setMaHinhThucThanhToan(1); // giả định: mã 1 là TM/CK
                 hoaDonVatNhap.setHoaDonVat(hoaDonVatCheck);
 
 

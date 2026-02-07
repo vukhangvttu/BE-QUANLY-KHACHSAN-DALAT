@@ -20,8 +20,6 @@ public class TrangThaiBooKing {
     @Column( nullable = false)
     int maTrangThaiBooKing;
     String tenTrangThaiBooKing;
-    String ghiChu;
-    @Column(columnDefinition = "integer default 0")
     int vitri;
 
     @OneToMany(mappedBy = "trangThaiBooKing")
