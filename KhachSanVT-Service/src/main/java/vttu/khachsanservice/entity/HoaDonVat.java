@@ -25,6 +25,8 @@ public class HoaDonVat {
 
     String tenKhach;
     LocalDate ngayLap;
+    LocalDate ngayDen;
+    LocalDate ngayDi;
     String mauHoaDon;
     String kiHieu;
     String diaChi;

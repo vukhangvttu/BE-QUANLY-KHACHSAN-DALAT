@@ -35,9 +35,7 @@ public class BooKing {
     LocalTime  gioDi;
     int soNguoiLon;
     int soTreEm;
-    float tiLeChietKhau;
     BigDecimal tienCoc;
-    LocalDateTime ngayCoc;
     int tongSoLuong;
     String ghiChu;
     BigDecimal tongTien;
@@ -45,10 +43,6 @@ public class BooKing {
     String nguoiTao;
     boolean daXepPhong;
     String loaiNguonKhach;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ma_hinh_thuc_thanh_toan")
-    HinhThucThanhToan hinhThucThanhToan;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "ma_nguon_khach")
@@ -113,7 +107,4 @@ public class BooKing {
     List<HoaDon> hoaDons = new ArrayList<>();
 
 
-//    @OneToMany(mappedBy = "booKing",cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    List<PhongHoiNghi> phongHoiNghis;
 }

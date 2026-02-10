@@ -47,7 +47,6 @@ public class HoaDonVatService {
     HoaDonVatRepository hoaDonVatRepository;
     private final ObjectMapper objectMapper;
     private final HoaDonVatNhapRepository hoaDonVatNhapRepository;
-    private final HoaDonVatPhatHanhRepository hoaDonVatPhatHanhRepository;
     private final DichVuVATCustomeRepository dichVuVATCustomeRepository;
 
     // tạo id mã string tự động tăng

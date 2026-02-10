@@ -8,7 +8,16 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MucDichDenResponse {
-    int maMucDich;
-    String tenMucDich;
+public class NhapHangReponse {
+    long maNhapHang;
+
+    DichVuMienPhiResponse dichVuMienPhi;
+
+    Integer soLuong;
+
+    String loai;
+
+    String ghiChu;
+
+    boolean daXoa;
 }

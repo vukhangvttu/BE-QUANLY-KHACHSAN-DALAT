@@ -22,11 +22,4 @@ public class HinhThucThanhToan {
     int maHinhThucThanhToan;
     String tenHinhThucThanhToan;
     String tenHinhThucTiengAnh;
-    String loai;
-    String phi;
-
-    @OneToMany(mappedBy = "hinhThucThanhToan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<BooKing> booKings = new ArrayList<>();
-
-
 }

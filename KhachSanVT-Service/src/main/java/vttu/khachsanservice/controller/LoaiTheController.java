@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vttu.khachsanservice.dto.response.ApiResponse;
 import vttu.khachsanservice.dto.response.LoaiTheResponse;
-import vttu.khachsanservice.dto.response.MucDichDenResponse;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.service.LoaiTheService;
 

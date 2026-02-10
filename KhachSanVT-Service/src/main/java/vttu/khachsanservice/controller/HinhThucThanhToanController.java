@@ -6,12 +6,9 @@ import lombok.experimental.FieldDefaults;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vttu.khachsanservice.dto.response.ApiResponse;
 import vttu.khachsanservice.dto.response.HinhThucThanhToanResponse;
-import vttu.khachsanservice.dto.response.ThiTruongResponse;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.service.HinhThucThanhToanService;
 
@@ -84,5 +81,6 @@ public class HinhThucThanhToanController {
                     .build();
         }
     }
+
 
 }

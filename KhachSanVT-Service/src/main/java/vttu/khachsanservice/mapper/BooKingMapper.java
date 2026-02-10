@@ -21,12 +21,6 @@ public interface BooKingMapper {
 //    @Mapping(target = "chiTietBooKings", source = "chiTietBookings")
     BooKingResponse toBooKingResponse(BooKing booKing);
 
-    // Ánh xạ ChiTietBooKingRequest sang ChiTietBooking
-
-
-    // Ánh xạ danh sách ChiTietBooKingRequest
-    List<ChiTietBooking> toChiTietBookingList(List<ChiTietBooKingRequest> requests, @Context BooKing booking);
-
 
     // Phương thức updateBooKing
     @Mapping(target = "khachHangBooKing", ignore = true) // Bỏ qua quan hệ, xử lý trong service

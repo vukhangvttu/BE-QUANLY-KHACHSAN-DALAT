@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vttu.khachsanservice.dto.response.ApiResponse;
-import vttu.khachsanservice.dto.response.ThiTruongResponse;
 import vttu.khachsanservice.dto.response.TrangThaiBooKingResponse;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.service.TrangThaiBooKingService;

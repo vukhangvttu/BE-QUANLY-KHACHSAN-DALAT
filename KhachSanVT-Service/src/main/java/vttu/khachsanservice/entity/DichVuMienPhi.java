@@ -24,6 +24,7 @@ public class DichVuMienPhi {
     @Column(length = 10)
     String donViTinh;
     Boolean trangThai;
+    String loai;
 
 }
 

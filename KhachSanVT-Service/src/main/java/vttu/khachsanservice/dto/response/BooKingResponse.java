@@ -27,9 +27,7 @@ public class BooKingResponse {
     LocalTime  gioDi;
     int soNguoiLon;
     int soTreEm;
-    float tiLeChietKhau;
     BigDecimal tienCoc;
-    LocalDateTime ngayCoc;
     int tongSoLuong;
     BigDecimal tongTien;
     LocalDateTime thoiGianTao;
@@ -42,18 +40,6 @@ public class BooKingResponse {
 
     ThongTinLienHeBooKingResponse thongTinLienHeBooKing;
 
-    HinhThucThanhToanResponse hinhThucThanhToan;
-
-    NguonKhachResponse nguonKhach;
-
-    ThiTruongResponse thiTruong;
-
-    KhuVucResponse khuVuc;
-
-    MucDichDenResponse mucDichDen;
-
-    GiamGiaResponse giamGia;
-
     TrangThaiBooKingResponse trangThaiBooKing;
 
     LoaiTheResponse loaiThe;
@@ -62,6 +48,4 @@ public class BooKingResponse {
 
     List<YeuCauResponse> yeuCaus;
 
-//    List<PhongHoiNghiResponse> phongHoiNghis;
-//    List<ChiTietBooKingResponse> chiTietBooKings;
 }

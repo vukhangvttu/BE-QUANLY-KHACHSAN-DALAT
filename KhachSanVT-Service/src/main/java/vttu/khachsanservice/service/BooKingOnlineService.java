@@ -98,7 +98,6 @@ public class BooKingOnlineService {
 
             booKing.setDanhXung(danhXung);
             booKing.setNhomKhachHang(nhomKhachHang);
-            booKing.setHinhThucThanhToan(hinhThucThanhToan);
             booKing.setTrangThaiBooKing(trangThaiBooKing);
             booKing.setLoaiThe(loaiThe);
             booKing.setGioDen(LocalTime.parse("14:00:00"));

@@ -267,8 +267,6 @@ public class ThongKeController {
     @GetMapping("/thong-ke-an-sang")
     ApiResponse<List<Map<String,Object>>> getThongKeAnSang() {
         try {
-
-
             LocalDate ngayThongKe = tinhNgayThongKe();
 
             return ApiResponse.<List<Map<String,Object>>>builder()

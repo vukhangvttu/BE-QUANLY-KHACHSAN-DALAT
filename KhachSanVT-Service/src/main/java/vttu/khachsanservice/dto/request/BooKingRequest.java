@@ -46,16 +46,6 @@ public class BooKingRequest {
 
     ThongTinLienHeBooKingRequest thongTinLienHeBooKing;
 
-    HinhThucThanhToanRequest hinhThucThanhToan;
-
-    NguonKhachRequest nguonKhach;
-
-    ThiTruongRequest thiTruong;
-
-    KhucVucRequest khuVuc;
-
-    MucDichDenRequest mucDichDen;
-
     GiamGiaRequest giamGia;
 
     TrangThaiBooKingRequest trangThaiBooKing;
@@ -68,6 +58,4 @@ public class BooKingRequest {
 
     List<ChiTietBooKingRequest> chiTietBooKings;
 
-
-//    List<PhongHoiNghiRequest> phongHoiNghis;
 }

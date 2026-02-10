@@ -142,7 +142,20 @@ public enum ErrorCode {
     CCCD_NOT_VALID(1130,"", HttpStatus.NOT_FOUND),
     TEN_CONG_TY_NOT_FOUND(1131,"Tên công ty không được để trống", HttpStatus.NOT_FOUND),
     DIA_CHI_NOT_FOUND(1132,"Địa chỉ không được để trống", HttpStatus.NOT_FOUND),
-    PHONG_KHONG_DU_TRONG(1133,"Không đủ phòng trống để xếp cho booking: ", HttpStatus.INTERNAL_SERVER_ERROR)
+    PHONG_KHONG_DU_TRONG(1133,"Không đủ phòng trống để xếp cho booking: ", HttpStatus.INTERNAL_SERVER_ERROR),
+    NHAP_HANG_REQUEST_EMPTY(1134,"Danh sách nhập hàng không được để trống", HttpStatus.BAD_REQUEST),
+    MA_DICH_VU_EMPTY(1135,"Mã dịch vụ không được để trống", HttpStatus.BAD_REQUEST),
+    SO_LUONG_NHAP_HANG_INVALID(1136,"Số lượng nhập hàng phải lớn hơn 0", HttpStatus.BAD_REQUEST),
+    LOAI_NHAP_HANG_EMPTY(1137,"Loại nhập hàng không được để trống", HttpStatus.BAD_REQUEST),
+    DICH_VU_MIEN_PHI_KHONG_TON_TAI(1138,"Dịch vụ miễn phí không tồn tại", HttpStatus.NOT_FOUND),
+    DICH_VU_MIEN_PHI_BI_KHOA(1139,"Dịch vụ miễn phí đã bị khóa", HttpStatus.BAD_REQUEST),
+    PHIEU_NHAP_HANG_KHONG_TON_TAI(1140,"Phiếu nhập hàng không tồn tại", HttpStatus.NOT_FOUND),
+    PHIEU_NHAP_HANG_DA_XOA(1141,"Phiếu nhập hàng đã được xóa trước đó", HttpStatus.BAD_REQUEST),
+    TON_KHO_KHONG_DU(1142,"Số lượng tồn kho không đủ để xóa phiếu nhập hàng", HttpStatus.BAD_REQUEST),
+    NHAP_HANG_KHONG_TON_TAI(1143,"Nhập hàng không tồn tại", HttpStatus.NOT_FOUND),
+    SO_LUONG_UPDATE_INVALID(1144,"Số lượng update không hợp lệ (phải điều chỉnh tồn kho trước)", HttpStatus.BAD_REQUEST),
+    NHAP_HANG_DA_XOA(1145,"Không thể cập nhật nhập hàng đã bị xóa", HttpStatus.BAD_REQUEST)
+            ;
             ;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {
