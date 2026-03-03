@@ -52,6 +52,8 @@ dependencies {
 // https://mvnrepository.com/artifact/cn.6tail/lunar
     implementation("cn.6tail:lunar:1.7.0")
 
+    // Source: https://mvnrepository.com/artifact/com.google.cloud/google-cloud-vision
+    implementation("com.google.cloud:google-cloud-vision:3.81.0")
 }
 
 

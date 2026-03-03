@@ -5,16 +5,23 @@ services:
       dockerfile: Dockerfile
     container_name: khachsan-service
     volumes:
+      - D:/docker/back-end-ks/app_logs:/var/log/app
       - D:/docker/docker-khach-san:/app/config
     ports:
-      - "8310:8310"
+      - "3366:8310"
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
+      - DB_HOST=${DB_HOST:-host.docker.internal}
+      - DB_PORT=${DB_PORT:-5432}
+      - TZ=Asia/Ho_Chi_Minh
       - CONFIG_DIR=/app/config
     networks:
       - microservicesks-network
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8310/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging:
       driver: json-file
       options:

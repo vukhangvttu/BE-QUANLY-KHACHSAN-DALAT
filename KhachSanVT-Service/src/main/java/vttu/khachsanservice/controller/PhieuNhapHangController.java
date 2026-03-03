@@ -9,14 +9,15 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import vttu.khachsanservice.dto.request.NhapHangRequest;
 import vttu.khachsanservice.dto.response.ApiResponse;
-import vttu.khachsanservice.dto.response.HinhThucThanhToanResponse;
 import vttu.khachsanservice.dto.response.NhapHangReponse;
-import vttu.khachsanservice.entity.NhapHang;
+import vttu.khachsanservice.dto.response.TonKhoReponse;
 import vttu.khachsanservice.entity.PhieuNhapHang;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.service.PhieuNhapHangService;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/phieu-nhap-hang")
@@ -153,9 +154,9 @@ public class PhieuNhapHangController {
 
     ///
     @PutMapping("/{maPhieuNhapHang}")
-    ApiResponse<Boolean> updatePhieuNhapHang(@RequestBody List<NhapHangRequest> request) {
+    ApiResponse<Boolean> updatePhieuNhapHang(@PathVariable String maPhieuNhapHang,@RequestBody List<NhapHangRequest> request) {
         try {
-            boolean result = phieuDichVuService.updateOrCreateNhapHang(request);
+            boolean result = phieuDichVuService.updateOrCreateNhapHang(maPhieuNhapHang,request);
 
             if (result) {
                 return ApiResponse.<Boolean>builder()
@@ -191,5 +192,64 @@ public class PhieuNhapHangController {
                     .build();
         }
     }
+    @GetMapping("ton-kho")
+    ApiResponse<List<Map<String, Object>>> getDanhSachTonKho() {
+        try {
 
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .result(phieuDichVuService.getAllTonKho())
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(PhieuNhapHangController.class).error("Error list phiếu nhập hàng", e);
+
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+
+    }
+    @GetMapping("thong-ke-nhap-xuat")
+    ApiResponse<List<Map<String, Object>>> getThongKeNhapXuatTheoKhoanThoiGian(@RequestParam LocalDate ngayBatDau, @RequestParam LocalDate ngayKetThuc) {
+        try {
+
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .result(phieuDichVuService.getThongKeNhapXuat(ngayBatDau, ngayKetThuc))
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(PhieuNhapHangController.class).error("Error thống kê nhập xuất", e);
+
+            return ApiResponse.<List<Map<String, Object>>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+
+    }
 }

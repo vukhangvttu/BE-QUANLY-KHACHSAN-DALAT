@@ -11,14 +11,11 @@ import vttu.khachsanservice.dto.ThongTinPhongDto;
 import vttu.khachsanservice.dto.XemHoaDonThanhToanDTO;
 import vttu.khachsanservice.dto.request.HoaDonRequest;
 import vttu.khachsanservice.dto.response.ApiResponse;
-import vttu.khachsanservice.dto.response.HoaDonReponse;
-import vttu.khachsanservice.entity.HoaDon_DichVuMienPhi;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.service.HoaDonService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/hoa-don")
@@ -189,38 +186,6 @@ public class HoaDonController {
         }
     }
 
-    @GetMapping("/hoa-don-dich-vu-mien-phi/{ma_hoa_don}")
-    ApiResponse<List<HoaDon_DichVuMienPhi>> getHoaDonDichVuMienPhi(@PathVariable String ma_hoa_don) {
-        try {
-
-            return ApiResponse.<List<HoaDon_DichVuMienPhi>>builder()
-                    .result(hoaDonService.getHoaDonDichVuMienPhiByMaHoaDon(ma_hoa_don))
-
-                    .code(HttpStatus.OK.value())
-                    .build();
-        } catch (AccessDeniedException e) {
-            return ApiResponse.<List<HoaDon_DichVuMienPhi>>builder()
-                    .message("Bạn không có quyền thực hiện thao tác này")
-                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
-                    .build();
-        } catch (AppException e) {
-            // Handle custom exceptions (e.g., validation or business logic errors)
-            return ApiResponse.<List<HoaDon_DichVuMienPhi>>builder()
-                    .message(e.getMessage())
-                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
-                    .build();
-        } catch (Exception e) {
-            // Log unexpected errors
-            LoggerFactory.getLogger(HoaDonController.class).error("Erro load thông tin xuất phiếu đăng ký", e);
-
-            return ApiResponse.<List<HoaDon_DichVuMienPhi>>builder()
-                    .message("Internal Server Error!")
-                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
-                    .build();
-        }
-
-
-    }
 
     @GetMapping("/xem-thong-tin-thanh-toan/{ma_booking}")
     ApiResponse<List<XemHoaDonThanhToanDTO>> xemThongTinThanhToan(@PathVariable String ma_booking) {

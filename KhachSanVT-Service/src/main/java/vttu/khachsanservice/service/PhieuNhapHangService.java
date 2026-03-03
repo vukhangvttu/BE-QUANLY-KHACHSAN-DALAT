@@ -6,8 +6,10 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import vttu.khachsanservice.dto.request.NhapHangRequest;
 import vttu.khachsanservice.dto.response.NhapHangReponse;
+import vttu.khachsanservice.dto.response.TonKhoReponse;
 import vttu.khachsanservice.entity.DichVuMienPhi;
 import vttu.khachsanservice.entity.NhapHang;
 import vttu.khachsanservice.entity.PhieuNhapHang;
@@ -15,6 +17,7 @@ import vttu.khachsanservice.entity.TonKho;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.exception.ErrorCode;
 import vttu.khachsanservice.mapper.NhapHangMapper;
+import vttu.khachsanservice.mapper.TonKhoMapper;
 import vttu.khachsanservice.repository.DichVuMienPhiRepository;
 import vttu.khachsanservice.repository.NhapHangRepository;
 import vttu.khachsanservice.repository.PhieuNhapHangRepository;
@@ -25,6 +28,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +42,7 @@ public class PhieuNhapHangService {
     DichVuMienPhiRepository dichVuMienPhiRepository;
     TonKhoRepository tonKhoRepository;
     NhapHangMapper nhapHangMapper;
+    TonKhoMapper tonKhoMapper;
 
     /**
      * Lưu phiếu nhập hàng và cập nhật tồn kho
@@ -84,6 +90,7 @@ public class PhieuNhapHangService {
         phieuNhapHang.setTongSoLuong(tongSoLuong);
         phieuNhapHang.setNgayNhap(LocalDate.now());
         phieuNhapHang.setNguoiTao(SecurityUtil.getUsername());
+        phieuNhapHang.setDaXoa(false);
         phieuNhapHang.setThoiGianTao(LocalDateTime.now());
 
         PhieuNhapHang savedPhieuNhapHang = phieuNhapHangRepository.save(phieuNhapHang);
@@ -230,17 +237,27 @@ public class PhieuNhapHangService {
      * Logic:
      * - Nếu maNhapHang có giá trị → Update (điều chỉnh tồn kho)
      * - Nếu maNhapHang rỗng/null → Thêm mới (tăng tồn kho)
+     * - Sau khi xử lý xong → Cập nhật lại tongSoLuong của PhieuNhapHang
      *
+     * @param maPhieuNhapHang Mã phiếu nhập hàng
      * @param requests Danh sách NhapHangRequest
      * @return true nếu thành công, false nếu có lỗi
      */
     @Transactional
-    public boolean updateOrCreateNhapHang(List<NhapHangRequest> requests) {
+    public boolean updateOrCreateNhapHang(String maPhieuNhapHang, List<NhapHangRequest> requests) {
         try {
             // Kiểm tra danh sách không rỗng
             if (requests == null || requests.isEmpty()) {
                 log.error("❌ Danh sách nhập hàng rỗng");
                 return false;
+            }
+
+            // Tìm và kiểm tra phiếu nhập hàng
+            PhieuNhapHang phieuNhapHang = phieuNhapHangRepository.findById(maPhieuNhapHang)
+                    .orElseThrow(() -> new AppException(ErrorCode.PHIEU_NHAP_HANG_KHONG_TON_TAI));
+
+            if (phieuNhapHang.getDaXoa() != null && phieuNhapHang.getDaXoa()) {
+                throw new AppException(ErrorCode.PHIEU_NHAP_HANG_DA_XOA);
             }
 
             // Xử lý từng request
@@ -250,13 +267,19 @@ public class PhieuNhapHangService {
 
                 // Kiểm tra maNhapHang để quyết định update hay create
                 if (request.getMaNhapHang() == null || request.getMaNhapHang().trim().isEmpty()) {
-                    // Thêm mới
-                    createNhapHang(request);
+                    // Thêm mới - liên kết với phiếu nhập hàng
+                    createNhapHangWithPhieu(request, phieuNhapHang);
                 } else {
                     // Update
                     updateNhapHang(request);
                 }
             }
+
+            // Cập nhật lại tổng số lượng của phiếu nhập hàng
+            updateTongSoLuongPhieu(phieuNhapHang);
+
+            // Cập nhật lại tồn kho cho từng dịch vụ đã xử lý
+            recalculateTonKhoForAffectedServices(phieuNhapHang.getMaPhieuNhapHang());
 
             log.info("✅ Xử lý {} nhập hàng thành công - Người thực hiện: {}",
                     requests.size(), SecurityUtil.getUsername());
@@ -265,8 +288,129 @@ public class PhieuNhapHangService {
 
         } catch (Exception e) {
             log.error("❌ Lỗi khi xử lý nhập hàng: {}", e.getMessage(), e);
+
+            // Đánh dấu transaction cần rollback - đảm bảo tồn kho KHÔNG được cập nhật
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
             return false;
         }
+    }
+
+    /**
+     * Cập nhật tổng số lượng của phiếu nhập hàng
+     */
+    private void updateTongSoLuongPhieu(PhieuNhapHang phieuNhapHang) {
+        // Lấy tất cả nhập hàng thuộc phiếu này
+        List<NhapHang> nhapHangList = nhapHangRepository.findByMaPhieuNhapHang(
+                phieuNhapHang.getMaPhieuNhapHang());
+
+        // Tính tổng số lượng
+        float tongSoLuong = 0;
+        for (NhapHang nhapHang : nhapHangList) {
+            tongSoLuong += nhapHang.getSoLuong();
+        }
+
+        // Cập nhật vào phiếu
+        float soLuongCu = phieuNhapHang.getTongSoLuong();
+        phieuNhapHang.setTongSoLuong(tongSoLuong);
+        phieuNhapHangRepository.save(phieuNhapHang);
+
+        log.info("📊 Cập nhật tổng số lượng phiếu {} - SL cũ: {}, SL mới: {}",
+                phieuNhapHang.getMaPhieuNhapHang(), soLuongCu, tongSoLuong);
+    }
+
+    /**
+     * Cập nhật lại tồn kho cho tất cả dịch vụ liên quan đến phiếu nhập hàng
+     * Tính lại tổng số lượng từ tất cả các bản ghi nhập hàng theo từng dịch vụ
+     */
+    private void recalculateTonKhoForAffectedServices(String maPhieuNhapHang) {
+        // Lấy tất cả nhập hàng thuộc phiếu này
+        List<NhapHang> nhapHangList = nhapHangRepository.findByMaPhieuNhapHang(maPhieuNhapHang);
+
+        // Nhóm theo dịch vụ và cập nhật tồn kho
+        nhapHangList.stream()
+                .map(NhapHang::getDichVuMienPhi)
+                .distinct()
+                .forEach(this::recalculateTonKhoForService);
+    }
+
+    /**
+     * Tính lại tồn kho cho một dịch vụ cụ thể
+     * Dựa trên tổng số lượng từ TẤT CẢ các bản ghi nhập hàng của dịch vụ đó
+     */
+    private void recalculateTonKhoForService(DichVuMienPhi dichVuMienPhi) {
+        // Lấy tất cả nhập hàng của dịch vụ này từ TẤT CẢ các phiếu
+        List<NhapHang> allNhapHangForService = nhapHangRepository.findAll().stream()
+                .filter(nh -> nh.getDichVuMienPhi().getMaDichVuMienPhi()
+                        .equals(dichVuMienPhi.getMaDichVuMienPhi()))
+                .filter(nh -> nh.getPhieuNhapHang() != null)
+                .filter(nh -> nh.getPhieuNhapHang().getDaXoa() == null
+                        || !nh.getPhieuNhapHang().getDaXoa())
+                .toList();
+
+        // Tính tổng số lượng
+        int tongSoLuongMoi = allNhapHangForService.stream()
+                .mapToInt(NhapHang::getSoLuong)
+                .sum();
+
+        // Tìm hoặc tạo tồn kho
+        TonKho tonKho = tonKhoRepository.findByDichVuMienPhi(dichVuMienPhi)
+                .orElseGet(() -> {
+                    TonKho newTonKho = new TonKho();
+                    newTonKho.setDichVuMienPhi(dichVuMienPhi);
+                    newTonKho.setSoLuong(0);
+                    return newTonKho;
+                });
+
+        int soLuongCu = tonKho.getSoLuong();
+        tonKho.setSoLuong(tongSoLuongMoi);
+        tonKhoRepository.save(tonKho);
+
+        log.info("🔄 Tính lại tồn kho - Mã DV: {}, SL cũ: {}, SL mới: {} (Tổng từ {} phiếu nhập)",
+                dichVuMienPhi.getMaDichVuMienPhi(),
+                soLuongCu,
+                tongSoLuongMoi,
+                allNhapHangForService.stream()
+                        .map(nh -> nh.getPhieuNhapHang().getMaPhieuNhapHang())
+                        .distinct()
+                        .count());
+    }
+
+    /**
+     * Thêm mới nhập hàng và liên kết với phiếu
+     */
+    private NhapHangReponse createNhapHangWithPhieu(NhapHangRequest request, PhieuNhapHang phieuNhapHang) {
+        // Kiểm tra dịch vụ miễn phí
+        DichVuMienPhi dichVuMienPhi = dichVuMienPhiRepository
+                .findById(request.getMaDichVu())
+                .orElseThrow(() -> new AppException(ErrorCode.DICH_VU_MIEN_PHI_KHONG_TON_TAI));
+
+        if (dichVuMienPhi.getTrangThai() == null || !dichVuMienPhi.getTrangThai()) {
+            throw new AppException(ErrorCode.DICH_VU_MIEN_PHI_BI_KHOA,
+                    "Mã: " + request.getMaDichVu());
+        }
+
+        // Tạo NhapHang entity
+        NhapHang nhapHang = new NhapHang();
+        nhapHang.setDichVuMienPhi(dichVuMienPhi);
+        nhapHang.setSoLuong(request.getSoLuong());
+        nhapHang.setLoai(request.getLoai());
+        nhapHang.setGhiChu(request.getGhiChu());
+        nhapHang.setPhieuNhapHang(phieuNhapHang);  // Liên kết với phiếu
+
+        NhapHang savedNhapHang = nhapHangRepository.save(nhapHang);
+
+        // Cập nhật tồn kho - tăng số lượng
+        updateTonKhoForCreate(dichVuMienPhi, request.getSoLuong());
+
+        log.info("✅ Thêm mới nhập hàng - Mã: {}, Dịch vụ: {}, SL: {}, Phiếu: {}, Người tạo: {}",
+                savedNhapHang.getMaNhapHang(),
+                dichVuMienPhi.getMaDichVuMienPhi(),
+                request.getSoLuong(),
+                phieuNhapHang.getMaPhieuNhapHang(),
+                SecurityUtil.getUsername());
+
+        return nhapHangMapper.toNhapHangReponse(savedNhapHang);
     }
 
     /**
@@ -323,7 +467,7 @@ public class PhieuNhapHangService {
                 .orElseThrow(() -> new AppException(ErrorCode.NHAP_HANG_KHONG_TON_TAI,
                         "Mã: " + maNhapHang));
 
-        // Kiểm tra phiếu nhập hàng có bị xóa không
+        // Kiểm tra phiếu nhập hàng có bị xóa không (trước khi update tồn kho)
         if (nhapHang.getPhieuNhapHang() != null) {
             PhieuNhapHang phieuNhapHang = nhapHang.getPhieuNhapHang();
             if (phieuNhapHang.getDaXoa() != null && phieuNhapHang.getDaXoa()) {
@@ -434,4 +578,11 @@ public class PhieuNhapHangService {
                 soLuongKetQua);
     }
 
+
+    public List<Map<String, Object>> getAllTonKho() {
+        return tonKhoRepository.getTonKho();
+    }
+    public List<Map<String, Object>> getThongKeNhapXuat(LocalDate ngayBatDau, LocalDate ngayKetThuc) {
+        return tonKhoRepository.getThongKeNhapXuatPhong(ngayBatDau, ngayKetThuc);
+    }
 }

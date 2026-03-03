@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "autobackupdatabase",
+  "private_key_id": "71d46e6fbc34400fe5d5dc2624748f308d4ff47c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCWtpYxWH2Yfee1\nMc4LdROUTcgBpk4lWHd8SKEa31QKd0wet3MW6JH5MWcS+zH/S+2diXUxSb7hXH7v\nBmvz5JRPAANnfpfYhy0iv7FBQp+sL+74KEY8FaO1reOdZaePCi4MI8KP5lMQZgwe\n8AB+s5zJItBFtzcfDQoejI1WKKxrVilSBVoWPzibChxuBB/oRvC3+Ps95kU4mZhn\nASlrX70cEI3o2tTt392BkNNo4oRdKjYM3iGVw6q9YMk5ZGT8bFCtrFt8v8ong78N\nRsWOUyHuWakVRU9I3jckPe3FvwgVvodUel+nVrkDsFtk9LMLg7yXIweRJNwO5NA/\nN09bkaM9AgMBAAECggEADv091s6MPzxWbSj06yLLvbY2rCNUJla0G4JFs5x+iUPw\nKCXqpl6fFf+Z1sNw54kvqrlfFHXXLCa84RzsY6daMLk5nXNzuq9HB+u0v17W7pMd\n20R2J8enLoyK1L6leY5zofV0hkdL/5eGoRURl4hZkY+K00QzkT0EwqEL9YO6Ejqq\ncwL2Z2kMaIkLWIQ/gspylQmI7EN+dlN97MRYv2tu1vWO9ZvSi2HVm/Mymj0mG+P9\njZDFhX4GpAapDLvSjupCtS9zHRLWmFJ7IKz6f5eVjP1avmz9cv/Gq7i/4DRkC2Yq\nh42IyxM4e4ChMr5YUfXHb3JS6mZK1pw8CFLNVnx+qQKBgQDFLwd77oUH34AEPDjl\ny/knE/tL5XMD/6rZ1tcgfPBL9FmQnN3+u1MOfvn4OnFGzMB23KCW1qqQ2oDIvzNw\nCG3pQz656XWHzwB9+oaPnzdgrvt0j5QE1pqP1ZSowxo+ZA+QJAdJCVIoR2Hlcr76\nWHixVYwyIVeqtK/pz5pn/dyRLwKBgQDDqxD6k4WRXhWbZKH8fDeVB/uQy/u/xrhg\ncrJXVc1hMZjADyhtSJuxzB8LCqHtyxZYxkLrWs4oVnO3IkHzqtR44D/m/pf1tlb4\n/vOdravuUEyy143KVDWbEqukVamR2iEaoIpTeIxR8cGrJnb0x4qOoASOZccsmpOv\n0hV+cuw/UwKBgA1iyO5H3e4P5R/kerRW6X4WpCud0vYFiDKrnAUPljyBxQbFL2jY\njKXiRtPsG76Drdkj1x8GSaP1wWJfYH2NhPCd6Qcz6w+iJNVoiXP8igTdPCLIkHLX\norx68lGWlRSBNHFDkN8La/FiDypFZOOX1/Gp7g+FJe9nvr1vo3rFyBBvAoGBAJj1\ngbBg4mlhQ0LWyEq4UDsQonfu/j5M+pVrFD9xs7vnKaH6N4A24n97MklPZoad3DpJ\nwsZ5le+ypYLkJOp3AOH9a/cHz4Mlp5e+tnLs8Rq7aznjh9RDQCSZ09QDoyuBeZ93\nIKtf8VGdy+gfiZ6Q3p/gN6+ZoLodnJY1hNf0vvpBAoGBAL1da4d+wfGSbon4Xj0S\n4UfiaIB19bWN+UCjBLPnjh4Az2seGA1TLPQEsbgPE+orKHygDXZNWLsH2knGr5SS\niL1VSFoJRlSj8LdSTXDSs8d7ShMDRzmLwJIzAUyqFAfZH9yMlbztO7YY8zxVLSJE\nre42/vUa3rATLV6kAyRs+EoR\n-----END PRIVATE KEY-----\n",
+  "client_email": "api-gg-doc-cccd@autobackupdatabase.iam.gserviceaccount.com",
+  "client_id": "113031840718940692143",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/api-gg-doc-cccd%40autobackupdatabase.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

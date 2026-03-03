@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import vttu.khachsanservice.dto.response.GiaPhongTheoNgayReponse;
 import vttu.khachsanservice.dto.response.HoaDon_DichVuMienPhiResponse;
-import vttu.khachsanservice.entity.HoaDon_DichVuMienPhi;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

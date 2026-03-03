@@ -2,10 +2,6 @@ package vttu.khachsanservice.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import vttu.khachsanservice.dto.request.ChiTietHoaDonRequest;
-import vttu.khachsanservice.dto.request.HinhThucThanhToanRequest;
-import vttu.khachsanservice.dto.request.HoaDon_DichVuMienPhiRequest;
-import vttu.khachsanservice.entity.HoaDon_DichVuMienPhi;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,5 +25,4 @@ public class HoaDonReponse {
 
     HinhThucThanhToanResponse hinhThucThanhToan;
     List<ChiTietHoaDonResponse> chiTietHoaDon;
-    List<HoaDon_DichVuMienPhi> hoaDonDichVuMienPhi;
 }

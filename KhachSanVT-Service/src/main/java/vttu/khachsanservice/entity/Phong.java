@@ -44,14 +44,14 @@ public class Phong {
     @JoinColumn(name = "ma_loaiphong")
     LoaiPhong loaiPhong;
 
-    @OneToMany(mappedBy = "phong", cascade = CascadeType.ALL)
-    List<TrangBi_Phong> trangBi_phongs;
+//    @OneToMany(mappedBy = "phong", cascade = CascadeType.ALL)
+//    List<TrangBi_Phong> trangBi_phongs;
 
-    @OneToMany(mappedBy = "phong", cascade = CascadeType.ALL)
-    List<DonPhong> donPhongs;
+//    @OneToMany(mappedBy = "phong", cascade = CascadeType.ALL)
+//    List<DonPhong> donPhongs;
 
-    @OneToMany(mappedBy = "phong", cascade = CascadeType.ALL)
-    List<BaoTri> baoTris;
+//    @OneToMany(mappedBy = "phong", cascade = CascadeType.ALL)
+//    List<BaoTri> baoTris;
 
 
 //    @ManyToMany(fetch = FetchType.LAZY)

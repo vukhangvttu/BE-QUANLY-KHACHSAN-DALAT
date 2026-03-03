@@ -46,7 +46,6 @@ public class HoaDonService {
     private final ObjectMapper objectMapper;
     private final HinhThucThanhToanRepository hinhThucThanhToanRepository;
     private final DichVuMienPhiRepository dichVuMienPhiRepository;
-    private final HoaDon_DichVuMienPhiRepository hoaDon_DichVuMienPhiRepository;
     private final ChiTietBooKingRepository chiTietBooKingRepository;
     private final GiaPhongTheoNgayRepository giaPhongTheoNgayRepository;
 
@@ -174,41 +173,6 @@ public class HoaDonService {
 
         // 26-05-2025 bổ sung thêm danh sách dịch vụ miễn phí
 
-        if(hoaDonRequest.getHoaDonDichVuMienPhi() == null || hoaDonRequest.getHoaDonDichVuMienPhi().isEmpty()) {
-            throw new AppException(ErrorCode.DICH_VU_MIEN_PHI_IS_EMPTY);
-        }
-        List<HoaDon_DichVuMienPhi> dichVuMienPhis = new ArrayList<>();
-
-        for (HoaDon_DichVuMienPhiRequest hoaDonDichVuMienPhiRequest : hoaDonRequest.getHoaDonDichVuMienPhi()) {
-            if (hoaDonDichVuMienPhiRequest.getDichVuMienPhi().getMaDichVuMienPhi() == null || hoaDonDichVuMienPhiRequest.getDichVuMienPhi().getMaDichVuMienPhi().isEmpty()) {
-                throw new AppException(ErrorCode.DICH_VU_MIEN_PHI_IS_EMPTY);
-
-
-            }
-            if (hoaDonDichVuMienPhiRequest.getTongSoLuong() < 0) {
-                throw new AppException(ErrorCode.ERROR_SO_LUONGDICH_VU_MIEN_PHI);
-            }
-
-            if(hoaDonDichVuMienPhiRequest.getTongSoLuongConLai() < 0) {
-                throw new AppException(ErrorCode.ERROR_SO_LUONGDICH_VU_MIEN_PHI);
-            }
-
-            DichVuMienPhi dichVuMienPhi = dichVuMienPhiRepository.findById(hoaDonDichVuMienPhiRequest.getDichVuMienPhi().getMaDichVuMienPhi())
-                    .orElseThrow(() -> new AppException(ErrorCode.DICH_VU_MIEN_PHI_NOT_FOUND));
-
-
-            HoaDon_DichVuMienPhi hoaDon_dichVuMienPhi = new HoaDon_DichVuMienPhi();
-            hoaDon_dichVuMienPhi.setHoaDon(hoaDon);
-            hoaDon_dichVuMienPhi.setMaDichVuMienPhi(dichVuMienPhi);
-            hoaDon_dichVuMienPhi.setTongSoLuong(hoaDonDichVuMienPhiRequest.getTongSoLuong());
-            hoaDon_dichVuMienPhi.setTongSoLuongConLai(hoaDonDichVuMienPhiRequest.getTongSoLuongConLai());
-            hoaDon_dichVuMienPhi.setGhiChu(hoaDonDichVuMienPhiRequest.getGhiChu());
-            hoaDon_dichVuMienPhi.setThoiGianTao(LocalDateTime.now());
-            hoaDon_dichVuMienPhi.setXepPhongBooKing(xepPhongBooKing);
-            dichVuMienPhis.add(hoaDon_dichVuMienPhi);
-        }
-
-
 
         var authentiaction = SecurityContextHolder.getContext().getAuthentication();
         // 8. Lưu dữ liệu vào database
@@ -216,7 +180,6 @@ public class HoaDonService {
         hoaDon.setNguoiTao(authentiaction.getName());
         hoaDonRepository.save(hoaDon);
         chiTietHoaDonRepository.saveAll(danhSachChiTietHoaDon);
-        hoaDon_DichVuMienPhiRepository.saveAll(dichVuMienPhis);
 
 //        xepPhongRepository.updateDaTraPhong(true, LocalDateTime.now(), maXepPhong);
         xepPhongRepository.updateDaTraPhongAndThanhToan(true,true, LocalDateTime.now(), hoaDonRequest.getNgayDi(),maXepPhong, hoaDonRequest.getTongPhuThuCheckOutTre());
@@ -316,8 +279,6 @@ public class HoaDonService {
                 phong.setDanhSachDichVu(danhSachDichVu);
                 phong.setDanhSachPhuThu(danhSachPhuThu);
                 phong.setDanhSachGiaPhongTheoNgay(danhSachGiaPhongTheoNgay);
-                phong.setDanhSachDichVuMienPhi(dichVuMienPhiResponses);
-
 
                 results.add(phong);
             } catch (Exception e) {
@@ -453,7 +414,6 @@ public class HoaDonService {
 
       // Tạo và lưu hóa đơn
         HoaDon hoaDon = new HoaDon();
-        List<HoaDon_DichVuMienPhi> dichVuMienPhis = new ArrayList<>();
 
         for (XepPhongBooKing xpb : xepPhongBookings) {
 
@@ -501,46 +461,6 @@ public class HoaDonService {
                 calculatedTongTienPhuThu = calculatedTongTienPhuThu.add(tienPhuThu.multiply(BigDecimal.valueOf(soDemThue)));
 
 
-        }
-
-        // 26-05-2025 bổ sung thêm danh sách dịch vụ miễn phí
-
-        if (hoaDonRequestNew.getHoaDonDichVuMienPhi() == null || hoaDonRequestNew.getHoaDonDichVuMienPhi().isEmpty()) {
-            throw new AppException(ErrorCode.DICH_VU_MIEN_PHI_IS_EMPTY);
-        }
-
-
-        for (HoaDon_DichVuMienPhiRequest hoaDonDichVuMienPhiRequest : hoaDonRequestNew.getHoaDonDichVuMienPhi()) {
-            if (hoaDonDichVuMienPhiRequest.getDichVuMienPhi().getMaDichVuMienPhi() == null || hoaDonDichVuMienPhiRequest.getDichVuMienPhi().getMaDichVuMienPhi().isEmpty()) {
-                throw new AppException(ErrorCode.DICH_VU_MIEN_PHI_IS_EMPTY);
-
-
-            }
-            if (hoaDonDichVuMienPhiRequest.getTongSoLuong() < 0) {
-                throw new AppException(ErrorCode.ERROR_SO_LUONGDICH_VU_MIEN_PHI);
-            }
-
-            if (hoaDonDichVuMienPhiRequest.getTongSoLuongConLai() < 0) {
-                throw new AppException(ErrorCode.ERROR_SO_LUONGDICH_VU_MIEN_PHI);
-            }
-
-            DichVuMienPhi dichVuMienPhi = dichVuMienPhiRepository.findById(hoaDonDichVuMienPhiRequest.getDichVuMienPhi().getMaDichVuMienPhi())
-                    .orElseThrow(() -> new AppException(ErrorCode.DICH_VU_MIEN_PHI_NOT_FOUND));
-
-
-            HoaDon_DichVuMienPhi hoaDon_dichVuMienPhi = new HoaDon_DichVuMienPhi();
-            hoaDon_dichVuMienPhi.setHoaDon(hoaDon);
-            hoaDon_dichVuMienPhi.setMaDichVuMienPhi(dichVuMienPhi);
-            hoaDon_dichVuMienPhi.setTongSoLuong(hoaDonDichVuMienPhiRequest.getTongSoLuong());
-            hoaDon_dichVuMienPhi.setTongSoLuongConLai(hoaDonDichVuMienPhiRequest.getTongSoLuongConLai());
-            hoaDon_dichVuMienPhi.setGhiChu(hoaDonDichVuMienPhiRequest.getGhiChu());
-            hoaDon_dichVuMienPhi.setThoiGianTao(LocalDateTime.now());
-
-            XepPhongBooKing xp = xepPhongRepository.findById((hoaDonDichVuMienPhiRequest.getXepPhongBooKing().getMaXepPhongBooking()
-            )).orElseThrow(() -> new AppException(ErrorCode.XEP_PHONG_IS_EMPTY));
-
-            hoaDon_dichVuMienPhi.setXepPhongBooKing(xp);
-            dichVuMienPhis.add(hoaDon_dichVuMienPhi);
         }
 
         if (hoaDonRequestNew.getTongTienPhong().compareTo(calculatedTongTienPhong) != 0) {
@@ -591,7 +511,6 @@ public class HoaDonService {
         hoaDon.setTongPhuThuCheckInSom(hoaDonRequestNew.getTongPhuThuCheckInSom() == null ? BigDecimal.ZERO : hoaDonRequestNew.getTongPhuThuCheckInSom());
         hoaDon.setTongPhuThuCheckOutTre(hoaDonRequestNew.getTongPhuThuCheckOutTre() == null ? BigDecimal.ZERO : hoaDonRequestNew.getTongPhuThuCheckOutTre());
         hoaDonRepository.save(hoaDon);
-        hoaDon_DichVuMienPhiRepository.saveAll(dichVuMienPhis);
 
         // Tạo và lưu chi tiết hóa đơn
         List<ChiTietHoaDon> danhSachChiTietHoaDon = new ArrayList<>();
@@ -647,14 +566,6 @@ public class HoaDonService {
         return true;
     }
 
-
-    public List<HoaDon_DichVuMienPhi> getHoaDonDichVuMienPhiByMaHoaDon(String maHoaDon) {
-         hoaDonRepository.findById(maHoaDon)
-                .orElseThrow(() -> new AppException(ErrorCode.MA_HOA_DON_VAT_NOT_FOUND, maHoaDon));
-
-        return hoaDon_DichVuMienPhiRepository.getHoaDonDichVuMienPhiByMaHoaDon(maHoaDon);
-    }
-
     public List<XemHoaDonThanhToanDTO> getThongTinHoaDonThanhToan(String maBooking) {
 
         booKingRepository.findById(maBooking)
@@ -686,11 +597,6 @@ public class HoaDonService {
                         }
                 );
 
-                List<HoaDon_DichVuMienPhiResponse> dichVuMienPhiResponses = objectMapper.readValue(
-                        row.get("danh_sach_dich_vu_mien_phi").toString(),
-                        new TypeReference<List<HoaDon_DichVuMienPhiResponse>>() {
-                        }
-                );
 
                 // Tạo DTO
                 XemHoaDonThanhToanDTO phong = new XemHoaDonThanhToanDTO();
@@ -761,8 +667,6 @@ public class HoaDonService {
                 phong.setDanhSachDichVu(danhSachDichVu);
                 phong.setDanhSachPhuThu(danhSachPhuThu);
                 phong.setDanhSachGiaPhongTheoNgay(danhSachGiaPhongTheoNgay);
-                phong.setDanhSachDichVuMienPhi(dichVuMienPhiResponses);
-
 
                 results.add(phong);
             } catch (Exception e) {

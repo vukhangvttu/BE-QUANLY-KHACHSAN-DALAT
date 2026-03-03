@@ -21,7 +21,7 @@ public class ThongTinPhongDto {
      String tenLoaiPhong;
      Double giaPhong;
      String ngayDen;
- String ngayDi;
+     String ngayDi;
      Integer soNgayO;
      String ghiChu;
      boolean daThanhToan;
@@ -35,6 +35,6 @@ public class ThongTinPhongDto {
      List<DichVuDto> danhSachDichVu;
      List<PhuThuDto> danhSachPhuThu;
      List<GiaPhongTheoNgayReponse> danhSachGiaPhongTheoNgay;
-     List<XepPhongBooking_DichVuMienPhiDTO> danhSachDichVuMienPhi;
+//     List<XepPhongBooking_DichVuMienPhiDTO> danhSachDichVuMienPhi;
 
 }

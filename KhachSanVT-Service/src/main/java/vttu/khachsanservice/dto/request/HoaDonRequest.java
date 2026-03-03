@@ -34,7 +34,7 @@ public class HoaDonRequest {
 
     HinhThucThanhToanRequest hinhThucThanhToan;
     List<ChiTietHoaDonRequest> chiTietHoaDon;
-    List<HoaDon_DichVuMienPhiRequest> hoaDonDichVuMienPhi;
+//    List<HoaDon_DichVuMienPhiRequest> hoaDonDichVuMienPhi;
 
     int maHinhThucThanhToanPhu;
     BigDecimal giaTriThanhToanPhu;
