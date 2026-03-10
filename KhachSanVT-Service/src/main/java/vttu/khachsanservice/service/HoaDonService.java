@@ -303,6 +303,12 @@ public class HoaDonService {
         return hoaDonRepository.getThongTinXuatPhieuDangKy(mabooking);
     }
 
+    public List<Map<String,Object>> getThongTinXuatPhieuDangKyOTA_TA(String mabooking) {
+        booKingRepository.findById(mabooking)
+                .orElseThrow(() -> new AppException(ErrorCode.MA_BOOKING_NOT_FOUND));
+        return hoaDonRepository.getThongTinXuatPhieuDangKyOTA_TA(mabooking);
+    }
+
     @Transactional
     public boolean createHoaDonFromData(String ma_booking, HoaDonRequest hoaDonRequestNew) {
         // Xác thực yêu cầu

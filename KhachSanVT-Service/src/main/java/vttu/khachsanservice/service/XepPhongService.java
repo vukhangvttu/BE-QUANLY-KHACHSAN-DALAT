@@ -823,4 +823,15 @@ xepPhongBooKing.setSoNguoiLon(0);
         }
     }
 
+    public Boolean traPhongDonBooking(String maXepPhong) {
+        XepPhongBooKing xepPhongBooKing = xepPhongRepository.findById(maXepPhong)
+                .orElseThrow(() -> new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND));
+
+        xepPhongBooKing.setDaTraPhong(true);
+        xepPhongBooKing.setThoiGianTra(LocalDateTime.now());
+        xepPhongRepository.save(xepPhongBooKing);
+
+        return true;
+    }
+
 }

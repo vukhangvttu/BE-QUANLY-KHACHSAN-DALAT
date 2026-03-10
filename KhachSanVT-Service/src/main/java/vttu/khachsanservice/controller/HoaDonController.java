@@ -155,6 +155,39 @@ public class HoaDonController {
 
     }
 
+    @GetMapping("/thong-tin-xuat-phieu-dang-ky-ota-ta/{ma_booking}")
+    ApiResponse<List<Map<String,Object>>> getThongTinXuatPhieuDangKyOTA_TA(@PathVariable String ma_booking) {
+        try {
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .result(hoaDonService.getThongTinXuatPhieuDangKyOTA_TA(ma_booking))
+
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(HoaDonController.class).error("Erro load thông tin xuất phiếu đăng ký", e);
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+
+
+    }
+
     @PostMapping("/add-all-thong-tin-thanh-toan/{ma_booking}")
     ApiResponse<Boolean> createAllThongTinThanhToan(@PathVariable String ma_booking,@RequestBody HoaDonRequest request) {
         try {

@@ -44,6 +44,8 @@ public class Phong {
     @JoinColumn(name = "ma_loaiphong")
     LoaiPhong loaiPhong;
 
+    boolean trangThai = true;
+
 //    @OneToMany(mappedBy = "phong", cascade = CascadeType.ALL)
 //    List<TrangBi_Phong> trangBi_phongs;
 

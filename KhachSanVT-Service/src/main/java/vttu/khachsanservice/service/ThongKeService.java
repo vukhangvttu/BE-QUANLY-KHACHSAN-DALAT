@@ -806,7 +806,7 @@ public class ThongKeService {
                 createCell(row, 12, item.get("dia_chi") != null ? item.get("dia_chi").toString() : "", cellStyle);
                 createCell(row, 13, item.get("ngay_den") != null ? DateUtils.convertDateFormat(item.get("ngay_den").toString() ): "", cellStyle);
                 createCell(row, 14, item.get("ngay_di") != null ? DateUtils.convertDateFormat(item.get("ngay_di").toString() ): "", cellStyle);
-                createCell(row, 15, item.get("ten_muc_dich") != null ? item.get("ten_muc_dich").toString() : "", cellStyle);
+                createCell(row, 15, "Du Lịch", cellStyle);
                 createCell(row, 16, item.get("ma_phong") != null ? item.get("ma_phong").toString() : "", cellStyle);
 
 

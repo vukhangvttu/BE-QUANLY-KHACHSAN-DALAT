@@ -24,7 +24,7 @@ public interface KhachHangPhongRepository extends JpaRepository<KhachHangPhong, 
     int getCountByXepPhongBooking(String ma_xepphong);
 
     // hiển thị danh sách trước khi xuất
-    @Query(value = "SELECT * FROM thong_ke_khach_hang_phong_xuat_excel_cca(:ngayDen, :ngayDi)", nativeQuery = true)
+    @Query(value = "SELECT * FROM thong_ke_khach_hang_phong_xuat_excel_asm(:ngayDen, :ngayDi)", nativeQuery = true)
     List<Map<String, Object>> getThongTinLuuTruKhoanThoiGian(
             @Param("ngayDen") LocalDate ngayDen,
             @Param("ngayDi") LocalDate ngayDi);

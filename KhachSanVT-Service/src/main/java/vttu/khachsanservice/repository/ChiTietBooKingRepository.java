@@ -45,11 +45,11 @@ public interface ChiTietBooKingRepository extends JpaRepository<ChiTietBooking, 
         SELECT
          ctbk.ngay_den, ctbk.ngay_di, lp.ten_loai_phong,
          (ctbk.gia_extra_bed * so_luong_extra_bed * so_dem) AS tong_tien_phu_thu_extra,
-         (ctbk.gia_phu_thu_tre_em * so_luong_phu_thu_tre_em * so_dem) AS tong_tien,
+         (ctbk.gia_phu_thu_tre_em * so_luong_phu_thu_tre_em * so_dem) AS tong_tien_phu_thu_tre_em,
          ctbk.gia_phu_thu_tre_em as gia,
          ctbk.gia_phu_thu_tre_em,so_luong_phu_thu_tre_em, so_dem,gia_extra_bed,so_luong_extra_bed,
         ctbk.so_luong_phu_thu_an_sang, ctbk.gia_phu_thu_an_sang
-        FROM chi_tiet_booking ctbk\s
+        FROM chi_tiet_booking ctbk
         LEFT JOIN loai_phong lp ON lp.ma_loai_phong = ctbk.ma_loai_phong
         WHERE ma_booking = :mabooking
 """, nativeQuery = true)

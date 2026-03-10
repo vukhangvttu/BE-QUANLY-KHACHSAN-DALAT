@@ -66,7 +66,11 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
 """,nativeQuery = true)
     List<Map<String, Object>> getThongTinXuatPhieuDangKy(String mabooking);
 
-
+ // lấy thông tin dành cho xuất phiếu đăng ký khách sạn danh cho khách OTA
+ @Query(value = """
+         SELECT * FROM xuat_phieu_dang_ky_bk_ota_ta(:mabooking)
+""",nativeQuery = true)
+ List<Map<String, Object>> getThongTinXuatPhieuDangKyOTA_TA(String mabooking);
 
 
     // danh cho thống kê
@@ -130,7 +134,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
     );
 
     // Lấy thông kê khách lưu trú xuất excel
-    @Query(value = "SELECT * FROM thong_ke_khach_hang_phong_xuat_excel_cca(:ngayDen, :ngayDi)", nativeQuery = true)
+    @Query(value = "SELECT * FROM thong_ke_khach_hang_phong_xuat_excel_asm(:ngayDen, :ngayDi)", nativeQuery = true)
     List<Map<String, Object>> getThongTinLuuTruKhoanThoiGian(
             @Param("ngayDen") LocalDate ngayDen,
             @Param("ngayDi") LocalDate ngayDi);

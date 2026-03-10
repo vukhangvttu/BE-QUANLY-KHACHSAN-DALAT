@@ -418,5 +418,34 @@ public class XepPhongBooKingController {
                     .build();
         }
     }
+    @PutMapping("/tra-phong-booking/{ma_xepphong}")
+    ApiResponse<Boolean> updateTraPhongBooking(@PathVariable String ma_xepphong) {
+        try {
 
+            return ApiResponse.<Boolean>builder()
+                    .result(xepPhongService.traPhongDonBooking(ma_xepphong))
+                    .message("Cập nhật trả phòng thành công")
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<Boolean>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<Boolean>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(XepPhongBooKingController.class).error("Error cập nhật ngày đi", e);
+
+            return ApiResponse.<Boolean>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
 }
