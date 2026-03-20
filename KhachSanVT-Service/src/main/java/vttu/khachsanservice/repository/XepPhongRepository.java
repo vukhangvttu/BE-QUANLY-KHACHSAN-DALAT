@@ -3,6 +3,7 @@ package vttu.khachsanservice.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import vttu.khachsanservice.dto.PhongTrongThoiGian;
 import vttu.khachsanservice.entity.XepPhongBooKing;
@@ -17,8 +18,6 @@ import java.util.Optional;
 
 public interface XepPhongRepository extends JpaRepository<XepPhongBooKing, String> {
 
-    @Query("SELECT k.maXepPhongBooking FROM XepPhongBooKing k ORDER BY k.maXepPhongBooking DESC LIMIT 1")
-    Optional<String> findLatestXepPhongBooKingId();
 
     @Query("SELECT xp FROM XepPhongBooKing xp WHERE xp.booKing.maBooking = :ma_booking AND xp.thoiGianXoa IS NULL")
     List<XepPhongBooKing> getXepPhongBooKingsByMaBooking(String ma_booking);

@@ -73,10 +73,4 @@ public interface PhongRepository extends JpaRepository<Phong, String> {
 """, nativeQuery = true)
     Map<String, Object> getThongTinKhachHangBooking(String ma_xepphong);
 
-
-    @Modifying
-    @Query("UPDATE Phong p SET p.daDo = :daDo WHERE p.maPhong IN :maPhongs")
-    int updateDaDoStatus(@Param("maPhongs") List<String> maPhongs,
-                         @Param("daDo") boolean daDo);
-
 }

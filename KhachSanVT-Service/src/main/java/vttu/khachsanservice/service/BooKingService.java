@@ -53,9 +53,8 @@ public class BooKingService {
     KhachHangBooKingService khachHangBooKingService;
 
     YeuCauRepository yeuCauRepository;
-    PhongHoiNghiMapper phongHoiNghiMapper;
+
     private final DanhXungRepository danhXungRepository;
-    private final HinhThucThanhToanRepository hinhThucThanhToanRepository;
     private final NhomKhachHangRepository nhomKhachHangRepository;
     private final TrangThaiBooKingRepository trangThaiBooKingRepository;
     private final LoaiTheRepository loaiTheRepository;
@@ -64,7 +63,6 @@ public class BooKingService {
     private final XepPhongRepository xepPhongRepository;
     private final PhongRepository phongRepository;
     private final GiaPhongRepository giaPhongRepository;
-    private final PhongHoiNghiRepository phongHoiNghiRepository;
     private final DanhSachPhongChiTietRepository danhSachPhongChiTietRepository;
     private final GiaPhongTheoNgayRepository giaPhongTheoNgayRepository;
 
