@@ -240,14 +240,15 @@ public BooKingResponse createBooKing(BooKingRequest request) {
 
           for (XepPhongBooKing xp : getXepPhongBooKings) {
             int countTrung = xepPhongRepository.kiemTraPhongDaTonTai(
-              xp.getPhong().getMaPhong(), chiTietBooKingRequest.getNgayDen(), chiTietBooKingRequest.getNgayDi(), xp.getMaXepPhongBooking());
+              xp.getPhong().getMaPhong(), xp.getNgayDen(), xp.getNgayDi(), xp.getMaXepPhongBooking());
 
-            log.info(xp.getPhong().getMaPhong() + " - " + chiTietBooKingRequest.getNgayDen() + " - " + chiTietBooKingRequest.getNgayDi() + " - " + xp.getMaXepPhongBooking());
+            log.info(xp.getPhong().getMaPhong() + " - " + xp.getNgayDen() + " - " + xp.getNgayDi() + " - " + xp.getMaXepPhongBooking());
 
             if (countTrung > 0) {
+              System.out.println("Oke");
               throw new AppException(ErrorCode.ERROR_CAP_NHAT_NGAY_BOOKING,
-                "Ngày đến: " + DateConverter.converDate(chiTietBooKingRequest.getNgayDen()) +
-                  ", Ngày đi: " + DateConverter.converDate(chiTietBooKingRequest.getNgayDi()) +
+                "Ngày đến: " + DateConverter.converDate(xp.getNgayDen()) +
+                  ", Ngày đi: " + DateConverter.converDate(xp.getNgayDi()) +
                   " do đã xếp phòng nên bị trùng với booking khác, Phòng: " + xp.getPhong().getMaPhong() + " đã tồn tại.");
             }
           }
