@@ -240,7 +240,7 @@ public BooKingResponse createBooKing(BooKingRequest request) {
 
           for (XepPhongBooKing xp : getXepPhongBooKings) {
             int countTrung = xepPhongRepository.kiemTraPhongDaTonTai(
-              xp.getPhong().getMaPhong(), xp.getNgayDen(), xp.getNgayDi(), xp.getMaXepPhongBooking());
+              xp.getPhong().getMaPhong(), chiTietBooKingRequest.getNgayDen(), chiTietBooKingRequest.getNgayDi(), xp.getMaXepPhongBooking());
 
             log.info(xp.getPhong().getMaPhong() + " - " + xp.getNgayDen() + " - " + xp.getNgayDi() + " - " + xp.getMaXepPhongBooking());
 
