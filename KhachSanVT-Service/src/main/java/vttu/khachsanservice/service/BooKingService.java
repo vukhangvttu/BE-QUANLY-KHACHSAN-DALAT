@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import vttu.khachsanservice.dto.LoaiPhongTrongDTO;
 import vttu.khachsanservice.dto.PhongTrongThoiGian;
 import vttu.khachsanservice.dto.request.*;
@@ -231,28 +232,68 @@ public BooKingResponse createBooKing(BooKingRequest request) {
       // Kiểm tra ngày đến và ngày đi nếu đã xếp phòng
 //      if (kiemTraNgayDenVaNgayDi) {
 
-        if(chiTietBooKingRequest.getMaChiTietBooking() != null && !chiTietBooKingRequest.getMaChiTietBooking().isEmpty()) {
-          ChiTietBooking chiTietBooking = chiTietBooKingRepository.findById(chiTietBooKingRequest.getMaChiTietBooking())
-            .orElseThrow(() -> new AppException(ErrorCode.CHI_TIET_BOOKING_NOT_EMPTY,
-              "Chi tiết booking không tồn tại: " + chiTietBooKingRequest.getMaChiTietBooking()));
+//        if(chiTietBooKingRequest.getMaChiTietBooking() != null && !chiTietBooKingRequest.getMaChiTietBooking().isEmpty()) {
+//          ChiTietBooking chiTietBooking = chiTietBooKingRepository.findById(chiTietBooKingRequest.getMaChiTietBooking())
+//            .orElseThrow(() -> new AppException(ErrorCode.CHI_TIET_BOOKING_NOT_EMPTY,
+//              "Chi tiết booking không tồn tại: " + chiTietBooKingRequest.getMaChiTietBooking()));
+//
+//          List<XepPhongBooKing> getXepPhongBooKings = xepPhongRepository.getXepPhongBooKingsByMaBooking(maBooking);
+//
+//          for (XepPhongBooKing xp : getXepPhongBooKings) {
+//            int countTrung = xepPhongRepository.kiemTraPhongDaTonTai(
+//              xp.getPhong().getMaPhong(), chiTietBooKingRequest.getNgayDen(), chiTietBooKingRequest.getNgayDi(), xp.getMaXepPhongBooking());
+//
+//            log.info(xp.getPhong().getMaPhong() + " - " + xp.getNgayDen() + " - " + xp.getNgayDi() + " - " + xp.getMaXepPhongBooking());
+//
+//            if (countTrung > 0) {
+//              System.out.println("Oke");
+//              throw new AppException(ErrorCode.ERROR_CAP_NHAT_NGAY_BOOKING,
+//                "Ngày đến: " + DateConverter.converDate(chiTietBooKingRequest.getNgayDen()) +
+//                  ", Ngày đi: " + DateConverter.converDate(chiTietBooKingRequest.getNgayDi()) +
+//                  " do đã xếp phòng nên bị trùng với booking khác, Phòng: " + xp.getPhong().getMaPhong() + " đã tồn tại.");
+//            }
+//          }
+//        }
+      String maChiTietBooking = chiTietBooKingRequest.getMaChiTietBooking();
 
-          List<XepPhongBooKing> getXepPhongBooKings = xepPhongRepository.getXepPhongBooKingsByMaBooking(maBooking);
+      if (StringUtils.hasText(maChiTietBooking)) {
 
-          for (XepPhongBooKing xp : getXepPhongBooKings) {
-            int countTrung = xepPhongRepository.kiemTraPhongDaTonTai(
-              xp.getPhong().getMaPhong(), chiTietBooKingRequest.getNgayDen(), chiTietBooKingRequest.getNgayDi(), xp.getMaXepPhongBooking());
+        chiTietBooKingRepository.findById(maChiTietBooking)
+                .orElseThrow(() ->
+                        new AppException(
+                                ErrorCode.CHI_TIET_BOOKING_NOT_EMPTY,
+                                "Chi tiết booking không tồn tại: " + maChiTietBooking));
 
-            log.info(xp.getPhong().getMaPhong() + " - " + xp.getNgayDen() + " - " + xp.getNgayDi() + " - " + xp.getMaXepPhongBooking());
+        List<XepPhongBooKing> dsXepPhong =
+                xepPhongRepository.getXepPhongBooKingsByMaBooking(maBooking);
 
-            if (countTrung > 0) {
-              System.out.println("Oke");
-              throw new AppException(ErrorCode.ERROR_CAP_NHAT_NGAY_BOOKING,
-                "Ngày đến: " + DateConverter.converDate(xp.getNgayDen()) +
-                  ", Ngày đi: " + DateConverter.converDate(xp.getNgayDi()) +
-                  " do đã xếp phòng nên bị trùng với booking khác, Phòng: " + xp.getPhong().getMaPhong() + " đã tồn tại.");
+        for (XepPhongBooKing xp : dsXepPhong) {
+
+          log.info("Kiểm tra phòng {}, từ {} đến {}",
+                  xp.getPhong().getMaPhong(),
+                  chiTietBooKingRequest.getNgayDen(),
+                  chiTietBooKingRequest.getNgayDi());
+          if(xp.getChiTietBooking().getMaChiTietBooking() == chiTietBooKingRequest.getMaChiTietBooking()) {
+            boolean biTrung = xepPhongRepository.kiemTraPhongDaTonTai(
+                    xp.getPhong().getMaPhong(),
+                    chiTietBooKingRequest.getNgayDen(),
+                    chiTietBooKingRequest.getNgayDi(),
+                    xp.getMaXepPhongBooking()) > 0;
+
+            if (biTrung) {
+              System.out.println("oke");
+              throw new AppException(
+                      ErrorCode.ERROR_CAP_NHAT_NGAY_BOOKING,
+                      String.format(
+                              "Phòng %s đã được đặt trong khoảng %s - %s.",
+                              xp.getPhong().getMaPhong(),
+                              DateConverter.converDate(chiTietBooKingRequest.getNgayDen()),
+                              DateConverter.converDate(chiTietBooKingRequest.getNgayDi())));
             }
           }
-        }else {
+        }
+      }
+        else {
           // Lấy danh sách phòng từ request
           List<DanhSachPhongChiTietRequest> dsPhongkt = chiTietBooKingRequest.getDanhSachPhongChiTiets();
           if (dsPhongkt == null || dsPhongkt.isEmpty()) {

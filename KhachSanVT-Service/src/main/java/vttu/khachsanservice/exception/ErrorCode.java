@@ -154,7 +154,10 @@ public enum ErrorCode {
     TON_KHO_KHONG_DU(1142,"Số lượng tồn kho không đủ để xóa phiếu nhập hàng", HttpStatus.BAD_REQUEST),
     NHAP_HANG_KHONG_TON_TAI(1143,"Nhập hàng không tồn tại", HttpStatus.NOT_FOUND),
     SO_LUONG_UPDATE_INVALID(1144,"Số lượng update không hợp lệ (phải điều chỉnh tồn kho trước)", HttpStatus.BAD_REQUEST),
-    NHAP_HANG_DA_XOA(1145,"Không thể cập nhật nhập hàng đã bị xóa", HttpStatus.BAD_REQUEST)
+    NHAP_HANG_DA_XOA(1145,"Không thể cập nhật nhập hàng đã bị xóa", HttpStatus.BAD_REQUEST),
+    THANG_INVALID(1146,"Tháng phải từ 1 đến 12",HttpStatus.NOT_FOUND),
+    NAM_INVALID(1147, "Năm không hợp lệ trong hệ thống",HttpStatus.NOT_FOUND),
+    DATA_IS_EMPTY(1148, "Dữ liệu trả về trống không có dữ liệu",HttpStatus.NOT_FOUND),
             ;
             ;
 

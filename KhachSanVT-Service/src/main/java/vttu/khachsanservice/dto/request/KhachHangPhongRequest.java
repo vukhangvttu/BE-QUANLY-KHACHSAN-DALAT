@@ -26,6 +26,8 @@ public class KhachHangPhongRequest {
     @NotBlank(message = "Địa chỉ không được phép trống")
     String diaChi;
 
+    @NotBlank(message = "Lý do cư trú không được phép trống")
+    String lyDoLuuTru;
 
     String soGiayTo;
     String sdt;
@@ -40,7 +42,7 @@ public class KhachHangPhongRequest {
     LoaiGiayToRequest loaiGiayTo;
 
     TinhThanhRequest tinhThanh;
-    HuyenRequest huyen;
+//    HuyenRequest huyen;
     PhuongXaRequest phuongXa;
 
     @NotNull(message = "Quốc gia không được phép trống")

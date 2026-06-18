@@ -26,12 +26,42 @@ public class PhuongXaController {
 
     PhuongXaService phuongXaService;
 
-    @GetMapping("/{ma_huyen}")
-    ApiResponse<List<PhuongXaResponse>> getlPhuongXaByMaHuyen(@PathVariable String ma_huyen)  {
+//    @GetMapping("/{ma_huyen}")
+//    ApiResponse<List<PhuongXaResponse>> getlPhuongXaByMaHuyen(@PathVariable String ma_huyen)  {
+//        try {
+//
+//            return ApiResponse.<List<PhuongXaResponse>>builder()
+//                    .result(phuongXaService.getPhuongXaByMaHuyen(ma_huyen))
+//                    .code(HttpStatus.OK.value())
+//                    .build();
+//        } catch (AccessDeniedException e) {
+//            return ApiResponse.<List<PhuongXaResponse>>builder()
+//                    .message("Bạn không có quyền thực hiện thao tác này")
+//                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+//                    .build();
+//        } catch (AppException e) {
+//            // Handle custom exceptions (e.g., validation or business logic errors)
+//            return ApiResponse.<List<PhuongXaResponse>>builder()
+//                    .message(e.getMessage())
+//                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+//                    .build();
+//        } catch (Exception e) {
+//            // Log unexpected errors
+//            LoggerFactory.getLogger(PhuongXaController.class).error("Error list phường xã", e);
+//
+//            return ApiResponse.<List<PhuongXaResponse>>builder()
+//                    .message("Internal Server Error!")
+//                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+//                    .build();
+//        }
+//    }
+    // bổ sung 2026
+    @GetMapping("/{ma_tinh}")
+    ApiResponse<List<PhuongXaResponse>> getlPhuongXaByMaTinh(@PathVariable String ma_tinh)  {
         try {
 
             return ApiResponse.<List<PhuongXaResponse>>builder()
-                    .result(phuongXaService.getPhuongXaByMaHuyen(ma_huyen))
+                    .result(phuongXaService.getPhuongXaByMaTinh(ma_tinh))
                     .code(HttpStatus.OK.value())
                     .build();
         } catch (AccessDeniedException e) {

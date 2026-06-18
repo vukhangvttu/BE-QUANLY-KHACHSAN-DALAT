@@ -227,7 +227,8 @@ public class ThongKeController {
             @RequestParam LocalDate ngayDen, @RequestParam LocalDate ngayDi
     ) throws IOException {
 
-        String templatePath = "templates/MauXuatCA.xlsx";
+//        String templatePath = "templates/MauXuatCA.xlsx";
+        String templatePath = "templates/MAU-ASM-2026.xlsx";
 
         ByteArrayInputStream inputStream = thongKeService.exportToExcelThongTinLuuTru(ngayDen, ngayDi, templatePath);
 
@@ -387,5 +388,59 @@ public class ThongKeController {
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
                     .build();
         }
+    }
+
+    @GetMapping("/thong-ke-phong-da-ban-theo-khoan-thoi-gian")
+    ApiResponse<List<Map<String,Object>>> getThongKePhongDaBanTheoKhoanThoiGianController(@RequestParam int thangBD, @RequestParam int namBD, @RequestParam int thangKT, @RequestParam int namKT) {
+        try {
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .result(thongKeService.thongKePhongDaBanTheoKhoanThoiGianService(thangBD, namBD, thangKT, namKT))
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(ThongKeController.class).error("Error thống kê phòng đã bán theo khoản thời gian", e);
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
+
+    // Sử dụng Apache POI
+    @GetMapping("/export/excel/bao-cao-doanh-so-kpi-nhan-vien")
+    public ResponseEntity<InputStreamResource> exportExcelBaoCaoDoanhSoKPINhanVien(
+            @RequestParam LocalDate ngayDen, @RequestParam LocalDate ngayDi
+    ) throws IOException {
+
+        String templatePath = "templates/template-export-thong-ke-doanh-so-kpi-nhan-vien.xlsx";
+
+        ByteArrayInputStream inputStream = thongKeService.exportThongKeDoanhThuKPINhanVienKhoanThoiGian(ngayDen, ngayDi,"all","0","", templatePath);
+
+        HttpHeaders headers = new HttpHeaders();
+        // Lấy ngày giờ hiện tại
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        String timestamp = LocalDateTime.now().format(formatter);
+
+        headers.add("Content-Disposition", "attachment; filename=thongke" + timestamp + ".xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(new InputStreamResource(inputStream));
     }
 }

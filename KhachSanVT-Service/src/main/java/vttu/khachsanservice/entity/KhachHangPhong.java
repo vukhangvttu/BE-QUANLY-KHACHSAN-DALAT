@@ -33,6 +33,7 @@ public class KhachHangPhong {
     String ghiChu;
     LocalDateTime thoiGianTao;
     String nguoiTao;
+    String lyDoLuuTru;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ma_danh_xung" )

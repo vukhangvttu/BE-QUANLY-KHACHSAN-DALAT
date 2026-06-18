@@ -26,8 +26,14 @@ public class PhuongXaService {
     PhuongXaMapper phuongXaMapper;
     private final HuyenRepository huyenRepository;
 
-    public List<PhuongXaResponse> getPhuongXaByMaHuyen(String maTinh) {
-        return phuongXaRepository.getPhuongXaByMaHuyen(maTinh)
+//    public List<PhuongXaResponse> getPhuongXaByMaHuyen(String maTinh) {
+//        return phuongXaRepository.getPhuongXaByMaHuyen(maTinh)
+//                .stream().map(phuongXaMapper::toPhuongXaRePhuongXa)
+//                .collect(Collectors.toList());
+//    }
+
+    public List<PhuongXaResponse> getPhuongXaByMaTinh(String maTinh) {
+        return phuongXaRepository.getPhuongXaByMaTinh(maTinh)
                 .stream().map(phuongXaMapper::toPhuongXaRePhuongXa)
                 .collect(Collectors.toList());
     }

@@ -144,8 +144,8 @@ public KhachHangPhongResponse createKhachHangPhong(String ma_xepphong, KhachHang
   tinhThanhRepository.findById(request.getTinhThanh().getMaTinh())
     .orElseThrow(() -> new AppException(ErrorCode.TINH_THANH_NOT_FOUND));
 
-  huyenRepository.findById(request.getHuyen().getMaHuyen())
-    .orElseThrow(() -> new AppException(ErrorCode.HUYEN_NOT_FOUND));
+//  huyenRepository.findById(request.getHuyen().getMaHuyen())
+//    .orElseThrow(() -> new AppException(ErrorCode.HUYEN_NOT_FOUND));
 
   phuongXaRepository.findById(request.getPhuongXa().getMaPhuongXa())
     .orElseThrow(() -> new AppException(ErrorCode.PHUONG_XA_NOT_FOUND));
