@@ -8,13 +8,12 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import vttu.khachsanservice.dto.response.RolePermissionResponse;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.exception.ErrorCode;
-import vttu.khachsanservice.repository.HoaDonRepository;
-import vttu.khachsanservice.repository.KhachHangPhongRepository;
-import vttu.khachsanservice.repository.ThongKeRepository;
-import vttu.khachsanservice.repository.XepPhongRepository;
+import vttu.khachsanservice.repository.*;
 import vttu.khachsanservice.utils.DateConverter;
 
 import java.io.ByteArrayInputStream;
@@ -39,6 +38,7 @@ public class ThongKeService {
     private final XepPhongRepository xepPhongRepository;
     private final KhachHangPhongRepository khachHangPhongRepository;
     private final ThongKeRepository thongKeRepository;
+    private final AccountRepository accountRepository;
     // Lấy thống kê ngày hiện tại
 //    public Map<String, Object> getTodayStatistics() {
 //        return hoaDonRepository.getDailyStatistics(LocalDate.now());
@@ -118,7 +118,7 @@ public class ThongKeService {
             contentCell.setCellValue(content);
             contentCell.setCellStyle(style);
 
-            List<Map<String, Object>> data = hoaDonRepository.getThongKeLoaiPhongExcelKhoanThoiGian(ngayDen,ngayDi,nhomKhachHang,loaiKhachHang,loaiPhong);
+            List<Map<String, Object>> data = hoaDonRepository.getThongKeLoaiPhongExcelKhoanThoiGian(ngayDen,ngayDi,nhomKhachHang,loaiKhachHang,loaiPhong, true, "ADMIN");
 
             BigDecimal sumTongTienPhong = BigDecimal.ZERO; // Tổng tiền phòng
             BigDecimal sumTongChiecKhau = BigDecimal.ZERO; // Tổng chiết khấu
@@ -1048,6 +1048,19 @@ public class ThongKeService {
             totalNumberStyle.setBorderRight(BorderStyle.THIN);
             totalNumberStyle.setDataFormat(format.getFormat("#,##0"));
 
+            // Xuất excel theo phân quyền
+            var authentiaction = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentiaction.getName();
+
+            List<RolePermissionResponse> danhSachPhanQuyen = accountRepository.findPermissionsByUsername(userName);
+            boolean xuatFull = false;
+
+            for(RolePermissionResponse rolePermissionResponse : danhSachPhanQuyen){
+                 if(rolePermissionResponse.getPermissionName().equals("XUATEXCELDOANHSOKPINHANVIEN")){
+                     xuatFull = true;
+                 }
+            }
+
             // ===================== SHEET 1 (index=1): BÁO CÁO THEO NHÂN VIÊN =====================
             Sheet sheet1 = workbook.getSheetAt(1);
 
@@ -1062,7 +1075,7 @@ public class ThongKeService {
             contentCell1.setCellStyle(headerTitleStyle);
 
             // Lấy dữ liệu sheet 1
-            List<Map<String, Object>> data1 = hoaDonRepository.getThongKeLoaiPhongExcelKhoanThoiGian(ngayDen, ngayDi, nhomKhachHang, loaiKhachHang, loaiPhong);
+            List<Map<String, Object>> data1 = hoaDonRepository.getThongKeLoaiPhongExcelKhoanThoiGian(ngayDen, ngayDi, nhomKhachHang, loaiKhachHang, loaiPhong, xuatFull, userName);
 
             // Nhóm theo nguoi_tao (giữ thứ tự)
             Map<String, List<Map<String, Object>>> groupedByNguoiTao1 = new LinkedHashMap<>();
@@ -1325,7 +1338,7 @@ public class ThongKeService {
             contentCell0.setCellValue(content0);
             contentCell0.setCellStyle(headerTitleStyle);
 
-            List<Map<String, Object>> data0 = thongKeRepository.getThongKeDanhSoKPINhanVienExcelKhoanThoiGian(ngayDen, ngayDi);
+            List<Map<String, Object>> data0 = thongKeRepository.getThongKeDanhSoKPINhanVienExcelKhoanThoiGian(ngayDen, ngayDi, xuatFull, userName);
 
 // Tổng cuối trang
             BigDecimal grandSumPhuThuGiuong0      = BigDecimal.ZERO;

@@ -90,14 +90,16 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
             @Param("ngayDi") LocalDate ngayDi);
 
     // Lấy thống kê doanh thu all loại phòng theo khoản thời gian
-    @Query(value = "SELECT * FROM thong_ke_doanh_thu_xuat_excel_khoan_thoi_gian_theo_bk_id_nguon_(:ngayBD, :ngayKT, :nhomKhachHang,:loaiKhachHang,:maLoaiPhong)", nativeQuery = true)
+    @Query(value = "SELECT * FROM thong_ke_doanh_thu_xuat_excel_khoan_thoi_gian_theo_bk_id_nguon_(:ngayBD, :ngayKT, :nhomKhachHang,:loaiKhachHang,:maLoaiPhong,:xuatFull,:userName)", nativeQuery = true)
     List<Map<String, Object>> getThongKeLoaiPhongExcelKhoanThoiGian(
             @Param("ngayBD") LocalDate ngayBD,
             @Param("ngayKT") LocalDate ngayKT,
             @Param("nhomKhachHang") String nhomKhachHang,
             @Param("loaiKhachHang") String loaiKhachHang,
-            @Param("maLoaiPhong") String maLoaiPhong)
-    ;
+            @Param("maLoaiPhong") String maLoaiPhong,
+            @Param("xuatFull") Boolean xuatFull,
+            @Param("userName") String userName
+    );
 
     // Lấy thống kê doanh thu từng phòng theo khoản thời gian
     @Query(value = "SELECT * FROM thong_ke_doanh_thu_xuat_excel_khoan_thoi_gian_theo_phong_nguon_(:ngayBD, :ngayKT, :nhomKhachHang,:loaiKhachHang,:maLoaiPhong)", nativeQuery = true)

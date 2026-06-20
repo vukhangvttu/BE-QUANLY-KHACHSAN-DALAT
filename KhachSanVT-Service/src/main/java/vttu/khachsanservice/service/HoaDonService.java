@@ -504,7 +504,7 @@ public class HoaDonService {
         hoaDon.setTongTienPhong(hoaDonRequestNew.getTongTienPhong());
         hoaDon.setTongTienDichVu(hoaDonRequestNew.getTongTienDichVu());
         hoaDon.setGiamGia(hoaDonRequestNew.getGiamGia());
-        hoaDon.setPhuThu(hoaDonRequestNew.getPhuThu());
+        hoaDon.setPhuThu(hoaDonRequestNew.getTongTienPhuThu());
         hoaDon.setNgayDi(hoaDonRequestNew.getNgayDi());
         hoaDon.setTongThanhToan(hoaDonRequestNew.getTongThanhToan());
         hoaDon.setHinhThucThanhToan(hinhThucThanhToan);

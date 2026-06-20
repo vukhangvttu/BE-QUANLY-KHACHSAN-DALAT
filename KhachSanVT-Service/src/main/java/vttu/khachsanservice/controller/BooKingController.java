@@ -10,9 +10,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import vttu.khachsanservice.dto.request.BooKingRequest;
 import vttu.khachsanservice.dto.request.KhachHangBooKingRequest;
+import vttu.khachsanservice.dto.request.KhachHangPhongRequest;
 import vttu.khachsanservice.dto.response.ApiResponse;
 import vttu.khachsanservice.dto.response.BooKingResponse;
 import vttu.khachsanservice.dto.response.KhachHangBooKingResponse;
+import vttu.khachsanservice.dto.response.KhachHangPhongResponse;
 import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.service.BooKingService;
 
@@ -146,6 +148,40 @@ public class BooKingController {
 
             return ApiResponse.<BooKingResponse>builder()
                     .message("Thêm không thành công.Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
+
+    @PutMapping("/update-trang-thai/{maBooking}/{maTrangThai}")
+    ApiResponse<Boolean> updateTrangThai(
+            @PathVariable String maBooking,
+            @PathVariable int maTrangThai
+    ) {
+    try {
+
+            return ApiResponse.<Boolean>builder()
+                    .result(booKingService.updateTrangThai(maTrangThai, maBooking).getResult())
+                    .message("Update thông tin khách vào phòng thành công")
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<Boolean>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<Boolean>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(KhachHangPhongResponse.class).error("Error update khách hàng trong phòng", e);
+
+            return ApiResponse.<Boolean>builder()
+                    .message("Internal Server Error!")
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
                     .build();
         }

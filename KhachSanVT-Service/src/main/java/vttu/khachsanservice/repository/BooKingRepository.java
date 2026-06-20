@@ -46,5 +46,10 @@ public interface BooKingRepository extends JpaRepository<BooKing, String> {
     @Modifying
     @Query("UPDATE BooKing b set b.tongTien = :tongTien WHERE b.maBooking = :maBooking")
     void updateTongTien(BigDecimal tongTien, String maBooking);
+
+    // Update trạng thái booking
+    @Modifying
+    @Query("UPDATE BooKing b set b.trangThaiBooKing.maTrangThaiBooKing = :maTrangThai WHERE b.maBooking = :maBooking")
+    int updateTrangThai(int maTrangThai, String maBooking);
 }
 

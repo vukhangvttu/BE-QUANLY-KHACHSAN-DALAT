@@ -16,9 +16,11 @@ public interface ThongKeRepository extends JpaRepository<ChiTietBooking,String> 
     List<Map<String, Object>> thongKePhongDaBanTheoKhoanThoiGian(int thangBatDau, int namBatDau, int thangKetThuc, int namKetThuc);
 
     // Lấy thống kê BÁO CÁO DOANH SỐ KPI NHÂN VIÊN
-    @Query(value = "SELECT * FROM thong_ke_doanh_so_kpi_nhan_vien(:ngayBD, :ngayKT)", nativeQuery = true)
+    @Query(value = "SELECT * FROM thong_ke_doanh_so_kpi_nhan_vien(:ngayBD, :ngayKT, :xuatFull, :userName)", nativeQuery = true)
     List<Map<String, Object>> getThongKeDanhSoKPINhanVienExcelKhoanThoiGian(
             @Param("ngayBD") LocalDate ngayBD,
-            @Param("ngayKT") LocalDate ngayKT
+            @Param("ngayKT") LocalDate ngayKT,
+            @Param("xuatFull") Boolean xuatFull,
+            @Param("userName") String userName
     );
 }

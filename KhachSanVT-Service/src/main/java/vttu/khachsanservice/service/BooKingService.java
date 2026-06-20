@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import vttu.khachsanservice.dto.LoaiPhongTrongDTO;
 import vttu.khachsanservice.dto.PhongTrongThoiGian;
 import vttu.khachsanservice.dto.request.*;
+import vttu.khachsanservice.dto.response.ApiResponse;
 import vttu.khachsanservice.dto.response.BooKingResponse;
 import vttu.khachsanservice.entity.*;
 import vttu.khachsanservice.entity.log.Log_DanhSachPhongChiTiet;
@@ -1216,4 +1217,29 @@ public BooKingResponse createBooKing(BooKingRequest request) {
         xepPhongRepository.save(xepPhongBooKing);
     }
 
+  @Transactional
+  public ApiResponse<Boolean> updateTrangThai(int maTrangThai, String maBooking) {
+     booKingRepository.findById(maBooking)
+            .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND, maBooking));
+
+    trangThaiBooKingRepository.findById(maTrangThai)
+            .orElseThrow(() -> new AppException(ErrorCode.TRANG_THAI_BOOKING_NOT_FOUND));
+
+    int rows = booKingRepository.updateTrangThai(maTrangThai, maBooking);
+
+    if (rows > 0) {
+      return new ApiResponse<>(
+              1000,
+              "Cập nhật thành công",
+              true
+      );
+    }
+
+    return new ApiResponse<>(
+            1001,
+            "Cập nhật thất bại",
+            false
+    );
+  }
 }
+
