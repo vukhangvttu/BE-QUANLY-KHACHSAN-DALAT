@@ -1224,8 +1224,8 @@ public class ThongKeService {
                     } else createCellSO(row, 23, 0, numberStyle);
 
                     BigDecimal tienDichVuSetMonAn = (BigDecimal) item.get("tong_tien_set_mon_an");
-                    if (tienCheckOutTre != null) {
-                        createCellSO(row, 24, tienCheckOutTre.doubleValue(), numberStyle);
+                    if (tienDichVuSetMonAn != null) {
+                        createCellSO(row, 24, tienDichVuSetMonAn.doubleValue(), numberStyle);
                         subSumDichVuSetMonAn = subSumDichVuSetMonAn.add(tienDichVuSetMonAn);
                     } else createCellSO(row, 24, 0, numberStyle);
 
