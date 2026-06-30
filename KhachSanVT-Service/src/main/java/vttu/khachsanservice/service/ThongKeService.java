@@ -15,6 +15,7 @@ import vttu.khachsanservice.exception.AppException;
 import vttu.khachsanservice.exception.ErrorCode;
 import vttu.khachsanservice.repository.*;
 import vttu.khachsanservice.utils.DateConverter;
+import vttu.khachsanservice.utils.SecurityUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -1514,6 +1515,81 @@ public class ThongKeService {
         return new BigDecimal(value.toString());
     }
 
+
+
+    public List<Map<String,Object>> thongKeAllKPINhanVienService (LocalDate ngayBatDau, LocalDate ngayKetThuc) throws Exception {
+
+        if (ngayBatDau == null || ngayKetThuc == null) {
+            throw new AppException(ErrorCode.ERROR_NGAYDI);
+        }
+
+        if (ngayKetThuc.isBefore(ngayBatDau)) {
+            throw new AppException(
+                    ErrorCode.ERROR_NGAYDEN,
+                    "Ngày kết thúc không được trước ngày bắt đầu"
+            );
+        }
+
+        String userName = SecurityUtil.getUsername();
+        if ("ANONYMOUS".equalsIgnoreCase(userName)) {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+
+        List<RolePermissionResponse> danhSachPhanQuyen = accountRepository.findPermissionsByUsername(userName);
+        boolean xuatFull = false;
+
+        for(RolePermissionResponse rolePermissionResponse : danhSachPhanQuyen){
+            if(rolePermissionResponse.getPermissionName().equals("XUATEXCELDOANHSOKPINHANVIEN")){
+                xuatFull = true;
+            }
+        }
+
+        List<Map<String, Object>> data = thongKeRepository.getThongKeDanhSoKPINhanVienExcelKhoanThoiGian(ngayBatDau, ngayKetThuc, xuatFull, userName);
+
+        if (data == null || data.isEmpty()) {
+            throw new AppException(ErrorCode.DATA_IS_EMPTY);
+        }
+
+        return  data;
+
+    }
+
+    public List<Map<String,Object>> thongKeChiTietKPINhanVienService (LocalDate ngayBatDau, LocalDate ngayKetThuc) throws Exception {
+
+        if (ngayBatDau == null || ngayKetThuc == null) {
+            throw new AppException(ErrorCode.ERROR_NGAYDI);
+        }
+
+        if (ngayKetThuc.isBefore(ngayBatDau)) {
+            throw new AppException(
+                    ErrorCode.ERROR_NGAYDEN,
+                    "Ngày kết thúc không được trước ngày bắt đầu"
+            );
+        }
+
+        String userName = SecurityUtil.getUsername();
+        if ("ANONYMOUS".equalsIgnoreCase(userName)) {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+
+        List<RolePermissionResponse> danhSachPhanQuyen = accountRepository.findPermissionsByUsername(userName);
+        boolean xuatFull = false;
+
+        for(RolePermissionResponse rolePermissionResponse : danhSachPhanQuyen){
+            if(rolePermissionResponse.getPermissionName().equals("XUATEXCELDOANHSOKPINHANVIEN")){
+                xuatFull = true;
+            }
+        }
+
+        List<Map<String, Object>> data = hoaDonRepository.getThongKeLoaiPhongExcelKhoanThoiGian(ngayBatDau, ngayKetThuc, "0", "", "all", xuatFull, userName);
+
+        if (data == null || data.isEmpty()) {
+            throw new AppException(ErrorCode.DATA_IS_EMPTY);
+        }
+
+        return  data;
+
+    }
 }
 
 

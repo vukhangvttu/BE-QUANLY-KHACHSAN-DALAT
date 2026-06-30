@@ -443,4 +443,64 @@ public class ThongKeController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(new InputStreamResource(inputStream));
     }
+
+    @GetMapping("/thong-ke-all-kpi-nhan-vien-theo-khoan-thoi-gian")
+    ApiResponse<List<Map<String,Object>>> getThongKeAllKPINhanVienTheoKhoanThoiGianController(@RequestParam LocalDate ngayBD, @RequestParam LocalDate ngayKT) {
+        try {
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .result(thongKeService.thongKeAllKPINhanVienService(ngayBD, ngayKT))
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(ThongKeController.class).error("Error thống kê phòng đã bán theo khoản thời gian", e);
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
+
+    @GetMapping("/thong-ke-chi-tiet-kpi-nhan-vien-theo-khoan-thoi-gian")
+    ApiResponse<List<Map<String,Object>>> getThongKeChiTietKPINhanVienTheoKhoanThoiGianController(@RequestParam LocalDate ngayBD, @RequestParam LocalDate ngayKT) {
+        try {
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .result(thongKeService.thongKeChiTietKPINhanVienService(ngayBD, ngayKT))
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(ThongKeController.class).error("Error thống kê phòng đã bán theo khoản thời gian", e);
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
 }
