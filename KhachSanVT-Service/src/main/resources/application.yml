@@ -60,6 +60,9 @@ jwt:
 mst:
   mk: 8V+MLk0eREGSIaqpefv2D4QE+X3tanteeZqu7Cbjh50=
 
+#mst:
+#  mk: h/l+q0yOLBt+p9wPyciqmsV8c/ruzj5fN/Eaq6XdLsM=
+
 #external:
 #  golden-era:
 #    base-url: ${GOLDEN_ERA_BASE_URL:http://localhost:8010/api/v1/golden-era}

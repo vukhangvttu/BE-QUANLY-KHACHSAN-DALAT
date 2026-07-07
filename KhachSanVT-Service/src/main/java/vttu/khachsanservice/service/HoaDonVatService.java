@@ -54,7 +54,7 @@ public class HoaDonVatService {
         String datePrefix = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE); // Ví dụ: "20250303"
         Optional<String> latestId = hoaDonVatRepository.findLatestMaHoaDonVat();
         if (latestId.isPresent() && latestId.get().startsWith("HDVAT" + datePrefix)) {
-            int number = Integer.parseInt(latestId.get().substring(13)); // Sau "BK20250303"
+            int number = Integer.parseInt(latestId.get().substring(14)); // Sau "BK20250303"
             return String.format("HDVAT%s%03d", datePrefix, number + 1);
         }
         return "HDVAT" + datePrefix + "001"; // Ví dụ: "BK20250303001"
@@ -81,22 +81,34 @@ public class HoaDonVatService {
         if(hoaDonVat.getTenCongTy() == null || hoaDonVat.getTenCongTy().isEmpty()) {
            throw new AppException(ErrorCode.TEN_CONG_TY_NOT_FOUND);
         }
-        if(hoaDonVat.getDiaChi() == null || hoaDonVat.getDiaChi().isEmpty()) {
-          throw new AppException(ErrorCode.TEN_CONG_TY_NOT_FOUND);
-        }
 
-        if(hoaDonVat.getCodeVat().isEmpty()){
+        if(!hoaDonVat.getLoaiGiayTo().equals("KHONG")) {
+            if (hoaDonVat.getDiaChi() == null || hoaDonVat.getDiaChi().isEmpty()) {
+                throw new AppException(ErrorCode.TEN_CONG_TY_NOT_FOUND);
+            }
 
-          if(hoaDonVat.getLoaiGiayTo().equals("CCCD")) {
-            if (hoaDonVat.getCccd().length() != 12)
-              throw new AppException(ErrorCode.CCCD_NOT_VALID, "CCCD phải có 12 ký tự");
-          }else {
-            if (hoaDonVat.getCccd().length() < 8)
-              throw new AppException(ErrorCode.CCCD_NOT_VALID, "Hộ chiếu phải có ít nhất 8 ký tự");
-          }
-        }else {
-          if(hoaDonVat.getCodeVat().length() != 10 && hoaDonVat.getCodeVat().length() != 13)
-            throw new AppException(ErrorCode.CCCD_NOT_VALID, "Code Vat phải có 10 hoặc 13 ký tự");
+            if (hoaDonVat.getCodeVat().isEmpty()) {
+
+                if (hoaDonVat.getLoaiGiayTo().equals("CCCD")) {
+                    if (hoaDonVat.getCccd().length() != 12)
+                        throw new AppException(ErrorCode.CCCD_NOT_VALID, "CCCD phải có 12 ký tự");
+                } else {
+                    if (hoaDonVat.getCccd().length() < 8)
+                        throw new AppException(ErrorCode.CCCD_NOT_VALID, "Hộ chiếu phải có ít nhất 8 ký tự");
+                }
+            } else {
+                if (hoaDonVat.getCodeVat().length() != 10 && hoaDonVat.getCodeVat().length() != 14)
+                    throw new AppException(ErrorCode.CCCD_NOT_VALID, "Code Vat phải có 10 hoặc 14 ký tự");
+            }
+            if (!hoaDonVat.getCodeVat().isEmpty()) {
+                if (hoaDonVat.getLoaiGiayTo().equals("CCCD")) {
+                    if (hoaDonVat.getCccd().length() != 12)
+                        throw new AppException(ErrorCode.CCCD_NOT_VALID, "CCCD phải có 12 ký tự");
+                } else {
+                    if (hoaDonVat.getCccd().length() < 8)
+                        throw new AppException(ErrorCode.CCCD_NOT_VALID, "Hộ chiếu phải có ít nhất 8 ký tự");
+                }
+            }
         }
 
         hoaDonVatRepository.save(hoaDonVat);
@@ -126,23 +138,25 @@ public class HoaDonVatService {
       if(hoaDonVat.getTenCongTy() == null || hoaDonVat.getTenCongTy().isEmpty()) {
         throw new AppException(ErrorCode.TEN_CONG_TY_NOT_FOUND);
       }
-      if(hoaDonVat.getDiaChi() == null || hoaDonVat.getDiaChi().isEmpty()) {
-        throw new AppException(ErrorCode.TEN_CONG_TY_NOT_FOUND);
-      }
+        if(!hoaDonVat.getLoaiGiayTo().equals("KHONG")) {
+            if (hoaDonVat.getDiaChi() == null || hoaDonVat.getDiaChi().isEmpty()) {
+                throw new AppException(ErrorCode.TEN_CONG_TY_NOT_FOUND);
+            }
 
-      if(hoaDonVat.getCodeVat().isEmpty()){
+            if (hoaDonVat.getCodeVat().isEmpty()) {
 
-        if(hoaDonVat.getLoaiGiayTo().equals("CCCD")) {
-          if (hoaDonVat.getCccd().length() != 12)
-            throw new AppException(ErrorCode.CCCD_NOT_VALID, "CCCD phải có 12 ký tự");
-        }else {
-          if (hoaDonVat.getCccd().length() < 8)
-            throw new AppException(ErrorCode.CCCD_NOT_VALID, "Hộ chiếu phải có ít nhất 8 ký tự");
+                if (hoaDonVat.getLoaiGiayTo().equals("CCCD")) {
+                    if (hoaDonVat.getCccd().length() != 12)
+                        throw new AppException(ErrorCode.CCCD_NOT_VALID, "CCCD phải có 12 ký tự");
+                } else {
+                    if (hoaDonVat.getCccd().length() < 8)
+                        throw new AppException(ErrorCode.CCCD_NOT_VALID, "Hộ chiếu phải có ít nhất 8 ký tự");
+                }
+            } else {
+                if (hoaDonVat.getCodeVat().length() != 10 && hoaDonVat.getCodeVat().length() != 14)
+                    throw new AppException(ErrorCode.CCCD_NOT_VALID, "Code Vat phải có 10 hoặc 14 ký tự");
+            }
         }
-      }else {
-        if(hoaDonVat.getCodeVat().length() != 10 && hoaDonVat.getCodeVat().length() != 13)
-          throw new AppException(ErrorCode.CCCD_NOT_VALID, "Code Vat phải có 10 hoặc 13 ký tự");
-      }
 
         hoaDonVatRepository.save(hoaDonVatupdate);
 
@@ -184,31 +198,31 @@ public class HoaDonVatService {
                 // 03-07-2025 CAP NHAT CHON LOAI GIAY TO
                 BuyerInfo buyerInfo = objectMapper.readValue(rawData.get("thong_tin_nguoi_mua").toString(), BuyerInfo.class);
 
-                if(hoaDonVatCheck.getCodeVat() != null && !hoaDonVatCheck.getCodeVat().isEmpty()) {
+                if (!hoaDonVatCheck.getLoaiGiayTo().equals("KHONG")) {
+                    if (hoaDonVatCheck.getCodeVat() != null && !hoaDonVatCheck.getCodeVat().isEmpty()) {
 
+                        if (hoaDonVatCheck.getCodeVat().length() != 10 && hoaDonVatCheck.getCodeVat().length() != 14) {
+                            throw new AppException(ErrorCode.CCCD_NOT_VALID, "Mã số thuế phải có 10 hoặc 14 ký tự");
+                        } else {
+                            buyerInfo.setBuyerIdType("");
+                        }
 
-                  if(hoaDonVatCheck.getCodeVat().length() != 10 && hoaDonVatCheck.getCodeVat().length() != 13)
-                  {
-                    throw new AppException(ErrorCode.CCCD_NOT_VALID, "Mã số thuế phải có 10 hoặc 13 ký tự");
-                  } else {
-                    buyerInfo.setBuyerIdType("");
-                  }
-
-                } else {
-                  if (hoaDonVatCheck.getLoaiGiayTo().equals("CCCD")) {
-
-                  if (hoaDonVatCheck.getCccd() != null && !hoaDonVatCheck.getCccd().isEmpty()) {
-                    buyerInfo.setBuyerIdType("1");
-                  } else {
-                    throw new AppException(ErrorCode.CCCD_NOT_VALID, "CCCD không được để trống khi không có mã số thuế");
-                  }
-                } else {
-                    if (hoaDonVatCheck.getCccd() != null && !hoaDonVatCheck.getCccd().isEmpty()) {
-                        buyerInfo.setBuyerIdType("2");
                     } else {
-                        throw new AppException(ErrorCode.CCCD_NOT_VALID, "Hộ chiếu không được để trống khi không có mã số thuế");
+                        if (hoaDonVatCheck.getLoaiGiayTo().equals("CCCD")) {
+
+                            if (hoaDonVatCheck.getCccd() != null && !hoaDonVatCheck.getCccd().isEmpty()) {
+                                buyerInfo.setBuyerIdType("1");
+                            } else {
+                                throw new AppException(ErrorCode.CCCD_NOT_VALID, "CCCD không được để trống khi không có mã số thuế");
+                            }
+                        } else {
+                            if (hoaDonVatCheck.getCccd() != null && !hoaDonVatCheck.getCccd().isEmpty()) {
+                                buyerInfo.setBuyerIdType("2");
+                            } else {
+                                throw new AppException(ErrorCode.CCCD_NOT_VALID, "Hộ chiếu không được để trống khi không có mã số thuế");
+                            }
+                        }
                     }
-                  }
                 }
 
                 SellerInfo sellerInfo = objectMapper.readValue(rawData.get("thong_tin_nguoi_ban").toString(), SellerInfo.class);

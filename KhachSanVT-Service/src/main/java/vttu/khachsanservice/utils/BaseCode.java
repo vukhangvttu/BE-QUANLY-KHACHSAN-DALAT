@@ -11,7 +11,7 @@ public class BaseCode {
 
         System.out.println("p  "+ AES.encrypt("Khangpostgresql2026@","Aa@123456","vukhangvttu"));
 
-//        System.out.println("mst  "+ AES.encrypt("111111a@A","Aa@123456","khangkhongnoi"));
+        System.out.println("mst  "+ AES.encrypt("2wsxCDE#","Aa@123456","khangkhongnoi"));
 
     }
 }
