@@ -55,7 +55,20 @@ public class ThongKeService {
             return null;
         else {
 
-            return hoaDonRepository.getThongKeLoaiPhongKhoanThoiGian(ngayDen, ngayDi,loaiPhong,nhomKhachHang,loaiKhachHang);
+            String userName = SecurityUtil.getUsername();
+            if ("ANONYMOUS".equalsIgnoreCase(userName)) {
+                throw new AppException(ErrorCode.UNAUTHENTICATED);
+            }
+
+            boolean xuatFull = false;
+            List<RolePermissionResponse> danhSachPhanQuyen = accountRepository.findPermissionsByUsername(userName);
+            for(RolePermissionResponse rolePermissionResponse : danhSachPhanQuyen){
+                if(rolePermissionResponse.getPermissionName().equals("XUATEXCELDOANHSOKPINHANVIEN")){
+                    xuatFull = true;
+                }
+            }
+
+            return hoaDonRepository.getThongKeLoaiPhongKhoanThoiGian(ngayDen, ngayDi,loaiPhong,nhomKhachHang,loaiKhachHang,xuatFull,userName);
         }
 
     }
@@ -119,7 +132,22 @@ public class ThongKeService {
             contentCell.setCellValue(content);
             contentCell.setCellStyle(style);
 
-            List<Map<String, Object>> data = hoaDonRepository.getThongKeLoaiPhongExcelKhoanThoiGian(ngayDen,ngayDi,nhomKhachHang,loaiKhachHang,loaiPhong, true, "ADMIN");
+
+            // Xuất excel theo phân quyền
+            var authentiaction = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentiaction.getName();
+
+            List<RolePermissionResponse> danhSachPhanQuyen = accountRepository.findPermissionsByUsername(userName);
+            boolean xuatFull = false;
+
+            for(RolePermissionResponse rolePermissionResponse : danhSachPhanQuyen){
+                if(rolePermissionResponse.getPermissionName().equals("XUATEXCELDOANHSOKPINHANVIEN")){
+                    xuatFull = true;
+                }
+            }
+
+
+            List<Map<String, Object>> data = hoaDonRepository.getThongKeLoaiPhongExcelKhoanThoiGian(ngayDen,ngayDi,nhomKhachHang,loaiKhachHang,loaiPhong, xuatFull, userName);
 
             BigDecimal sumTongTienPhong = BigDecimal.ZERO; // Tổng tiền phòng
             BigDecimal sumTongChiecKhau = BigDecimal.ZERO; // Tổng chiết khấu
@@ -263,10 +291,9 @@ public class ThongKeService {
 
                 BigDecimal tongThanhToan = (BigDecimal) item.get("tong_tien");
                 BigDecimal tienCoc = (BigDecimal) item.get("tien_coc");
-                BigDecimal tongAddTienCoc = tongThanhToan.add(tienCoc);
+                BigDecimal tongAddTienCoc = tongThanhToan.subtract(tienCoc);
 
-                createCellSO(row, 23, tongAddTienCoc.doubleValue(), numberStyle);
-                sumTongCongThanhToan = sumTongCongThanhToan.add(tongAddTienCoc);
+
 
 
                 if (tienCoc != null) {
@@ -276,10 +303,13 @@ public class ThongKeService {
                     createCellSO(row, 24, 0, numberStyle);
                 }
 
-                BigDecimal tongTienCuoi = tongAddTienCoc.subtract(tienCoc);
-                createCellSO(row, 25,  tongTienCuoi.doubleValue(), numberStyle);
-                sumTongTienCuoi = sumTongTienCuoi.add(tongTienCuoi);
+//                BigDecimal tongTienCuoi = tongAddTienCoc.subtract(tienCoc);
+                createCellSO(row, 23,  tongThanhToan.doubleValue(), numberStyle);
+                sumTongTienCuoi = sumTongTienCuoi.add(tongThanhToan);
 
+
+                createCellSO(row, 25, tongAddTienCoc.doubleValue(), numberStyle);
+                sumTongCongThanhToan = sumTongCongThanhToan.add(tongAddTienCoc);
 
             }
 
@@ -351,7 +381,7 @@ public class ThongKeService {
             contentCell1.setCellValue(content1);
             contentCell1.setCellStyle(style);
 
-            List<Map<String, Object>> data0 = hoaDonRepository.getThongKePhongExcelKhoanThoiGian(ngayDen,ngayDi,nhomKhachHang,loaiKhachHang,loaiPhong);
+            List<Map<String, Object>> data0 = hoaDonRepository.getThongKePhongExcelKhoanThoiGian(ngayDen,ngayDi,nhomKhachHang,loaiKhachHang,loaiPhong , xuatFull, userName);
 
             BigDecimal sumTongTienPhong1 = BigDecimal.ZERO; // Tổng tiền phòng
             BigDecimal sumTongChiecKhau1 = BigDecimal.ZERO; // Tổng chiết khấu
@@ -1233,16 +1263,18 @@ public class ThongKeService {
 
                     BigDecimal tongThanhToan = (BigDecimal) item.get("tong_tien");
                     BigDecimal tienCoc = item.get("tien_coc") != null ? (BigDecimal) item.get("tien_coc") : BigDecimal.ZERO;
-                    BigDecimal tongAddTienCoc = tongThanhToan != null ? tongThanhToan.add(tienCoc) : tienCoc;
-                    createCellSO(row, 25, tongAddTienCoc.doubleValue(), numberStyle);
-                    subSumCongThanhToan = subSumCongThanhToan.add(tongAddTienCoc);
+                    BigDecimal tongAddTienCoc = tongThanhToan != null ? tongThanhToan.subtract(tienCoc) : tienCoc;
+
 
                     createCellSO(row, 26, tienCoc.doubleValue(), numberStyle);
                     subSumTienCoc = subSumTienCoc.add(tienCoc);
 
-                    BigDecimal tongTienCuoi = tongAddTienCoc.subtract(tienCoc);
-                    createCellSO(row, 27, tongTienCuoi.doubleValue(), numberStyle);
-                    subSumTienCuoi = subSumTienCuoi.add(tongTienCuoi);
+//                    BigDecimal tongTienCuoi = tongAddTienCoc.subtract(tienCoc);
+                    createCellSO(row, 25, tongThanhToan.doubleValue(), numberStyle);
+                    subSumTienCuoi = subSumTienCuoi.add(tongThanhToan);
+
+                    createCellSO(row, 27, tongAddTienCoc.doubleValue(), numberStyle);
+                    subSumCongThanhToan = subSumCongThanhToan.add(tongAddTienCoc);
                 }
 
                 // ---- Dòng tổng phụ (subtotal) của từng nguoi_tao ----

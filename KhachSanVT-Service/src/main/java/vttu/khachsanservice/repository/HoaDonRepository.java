@@ -102,13 +102,15 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
     );
 
     // Lấy thống kê doanh thu từng phòng theo khoản thời gian
-    @Query(value = "SELECT * FROM thong_ke_doanh_thu_xuat_excel_khoan_thoi_gian_theo_phong_nguon_(:ngayBD, :ngayKT, :nhomKhachHang,:loaiKhachHang,:maLoaiPhong)", nativeQuery = true)
+    @Query(value = "SELECT * FROM thong_ke_doanh_thu_xuat_excel_khoan_thoi_gian_theo_phong_nguon_(:ngayBD, :ngayKT, :nhomKhachHang,:loaiKhachHang,:maLoaiPhong, :xuatFull, :userName)", nativeQuery = true)
     List<Map<String, Object>> getThongKePhongExcelKhoanThoiGian(
             @Param("ngayBD") LocalDate ngayBD,
             @Param("ngayKT") LocalDate ngayKT,
              @Param("nhomKhachHang") String nhomKhachHang,
             @Param("loaiKhachHang") String loaiKhachHang,
-            @Param("maLoaiPhong") String maLoaiPhong
+            @Param("maLoaiPhong") String maLoaiPhong,
+            @Param("xuatFull") Boolean xuatFull,
+            @Param("userName") String userName
     );
 
 
@@ -118,13 +120,15 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
     List<Map<String, Object>> getThongKeDoanThuTheoThang();
 
     // Lấy thống kê theo loại phòng trong khoản thời gian
-    @Query(value = "SELECT * FROM thong_ke_loai_phong_khoan_thoi_gian_nguon_khach(:ngayDen, :ngayDi,:nhomKhachHang,:loaiKhachHang ,:loaiPhong)", nativeQuery = true)
+    @Query(value = "SELECT * FROM thong_ke_loai_phong_khoan_thoi_gian_nguon_khach(:ngayDen, :ngayDi,:nhomKhachHang,:loaiKhachHang ,:loaiPhong, :xuatFull, :userName)", nativeQuery = true)
     Map<String, Object> getThongKeLoaiPhongKhoanThoiGian(
             @Param("ngayDen") LocalDate ngayDen,
             @Param("ngayDi") LocalDate ngayDi,
             @Param("loaiPhong") String loaiPhong,
             @Param("nhomKhachHang") String nhomKhachHang,
-            @Param("loaiKhachHang") String loaiKhachHang)
+            @Param("loaiKhachHang") String loaiKhachHang,
+            @Param("xuatFull") Boolean xuatFull,
+            @Param("userName") String userName)
             ;
 
     // Lấy thống kê doanh theo buồng phon
