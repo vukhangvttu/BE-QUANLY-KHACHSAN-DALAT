@@ -981,10 +981,10 @@ public class ThongKeService {
             );
         }
 
-        int namHienTai = java.time.Year.now().getValue();
-        if (namBD < 2025 || namBD > namHienTai || namKT > namHienTai) {
-            throw new AppException(ErrorCode.NAM_INVALID, " Năm phải từ 2025 đến " + namHienTai);
-        }
+//        int namHienTai = java.time.Year.now().getValue();
+//        if (namBD < 2025 || namBD > namHienTai || namKT > namHienTai) {
+//            throw new AppException(ErrorCode.NAM_INVALID, " Năm phải từ 2025 đến " + namHienTai);
+//        }
 
         List<Map<String,Object>> map = thongKeRepository.thongKePhongDaBanTheoKhoanThoiGian(thangBD,namBD, thangKT, namKT);
         if(map.isEmpty())
