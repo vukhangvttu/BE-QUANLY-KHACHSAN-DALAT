@@ -245,6 +245,7 @@ public class ThongKeService {
                     createCellSO(row, 16, 0, numberStyle);
                 }
 
+
                 BigDecimal tongTienDichVuMinibar = (BigDecimal) item.get("tong_tien_dich_vu_minibar");
                 if (tongTienDichVuMinibar != null) {
                     createCellSO(row, 17, tongTienDichVuMinibar.doubleValue(), numberStyle);
@@ -393,6 +394,10 @@ public class ThongKeService {
             BigDecimal sumTongTienDichVuKhac1 = BigDecimal.ZERO;// Tổng tiền dịch vụ khác
             BigDecimal sumTongCongThanhToan1 = BigDecimal.ZERO;// Tổng thanh toán
             BigDecimal sumTongPhuThuNguoiLon1 = BigDecimal.ZERO;// Tổng phụ thu người lớn
+            BigDecimal sumTongTienSetMonAn1 = BigDecimal.ZERO;
+            BigDecimal sumTongTienDenBu1 = BigDecimal.ZERO;
+            BigDecimal sumTongTienHoiTruong1 = BigDecimal.ZERO;
+            BigDecimal sumTongTienGala1 = BigDecimal.ZERO;
 
             // Bổ sung 27-10
             BigDecimal sunTongTienPhuThuCheckInSom1 = BigDecimal.ZERO;
@@ -465,55 +470,89 @@ public class ThongKeService {
                     createCellSO(row, 16, 0, numberStyle);
                 }
 
-                BigDecimal tienDichVuMinibar = (BigDecimal) item.get("tien_dich_vu_minibar");
-                if (tienDichVuMinibar != null) {
-                    createCellSO(row, 17, tienDichVuMinibar.doubleValue(), numberStyle);
-                    sumTongTienDichVuMinibar1 = sumTongTienDichVuMinibar1.add(tienDichVuMinibar);
+                BigDecimal tienDichVuSetMonAn = (BigDecimal) item.get("tien_set_mon_an");
+                if (tienDichVuSetMonAn != null) {
+                    createCellSO(row, 17, tienDichVuSetMonAn.doubleValue(), numberStyle);
+                    sumTongTienSetMonAn1 = sumTongTienSetMonAn1.add(tienDichVuSetMonAn);
                 } else {
                     createCellSO(row, 17, 0, numberStyle);
                 }
 
-                BigDecimal tienDicVuGiatUi = (BigDecimal) item.get("tien_dich_vu_giatui");
-                if (tienDicVuGiatUi != null) {
-                    createCellSO(row, 18, tienDicVuGiatUi.doubleValue(), numberStyle);
-                    sumTongTienDichVuGiatUi1 = sumTongTienDichVuGiatUi1.add(tienDicVuGiatUi);
+                BigDecimal tienDichVuMinibar = (BigDecimal) item.get("tien_dich_vu_minibar");
+                if (tienDichVuMinibar != null) {
+                    createCellSO(row, 18, tienDichVuMinibar.doubleValue(), numberStyle);
+                    sumTongTienDichVuMinibar1 = sumTongTienDichVuMinibar1.add(tienDichVuMinibar);
                 } else {
                     createCellSO(row, 18, 0, numberStyle);
+                }
+
+                BigDecimal tienDicVuGiatUi = (BigDecimal) item.get("tien_dich_vu_giatui");
+                if (tienDicVuGiatUi != null) {
+                    createCellSO(row, 19, tienDicVuGiatUi.doubleValue(), numberStyle);
+                    sumTongTienDichVuGiatUi1 = sumTongTienDichVuGiatUi1.add(tienDicVuGiatUi);
+                } else {
+                    createCellSO(row, 19, 0, numberStyle);
                 }
 
 
                 BigDecimal tienDichVu = (BigDecimal) item.get("tien_dich_vu_khac");
                 if (tienDichVu != null) {
-                    createCellSO(row, 19, tienDichVu.doubleValue(), numberStyle);
+                    createCellSO(row, 20, tienDichVu.doubleValue(), numberStyle);
                     sumTongTienDichVuKhac1 = sumTongTienDichVuKhac1.add(tienDichVu);
                 } else {
-                    createCellSO(row, 19, 0, numberStyle);
+                    createCellSO(row, 20, 0, numberStyle);
                 }
 
-                createCell(row, 20,  "0", cellStyle);
 
-                BigDecimal tienPhuThuChecInSom = (BigDecimal) item.get("phu_thu_check_in_som");
-                if (tienDichVu != null) {
-                    createCellSO(row, 21, tienPhuThuChecInSom.doubleValue(), numberStyle);
-                    sunTongTienPhuThuCheckInSom1 = sunTongTienPhuThuCheckInSom1.add(tienPhuThuChecInSom);
+                BigDecimal tienDenBu = (BigDecimal) item.get("tien_den_bu");
+                if (tienDenBu != null) {
+                    createCellSO(row, 21, tienDenBu.doubleValue(), numberStyle);
+                    sumTongTienDenBu1 = sumTongTienDenBu1.add(tienDenBu);
                 } else {
                     createCellSO(row, 21, 0, numberStyle);
                 }
 
-                BigDecimal tienPhuThuChecOutTre = (BigDecimal) item.get("phu_thu_check_out_tre");
-                if (tienDichVu != null) {
-                    createCellSO(row, 22, tienPhuThuChecOutTre.doubleValue(), numberStyle);
-                    sunTongTienPhuThuCheckOutTre1 = sunTongTienPhuThuCheckOutTre1.add(tienPhuThuChecOutTre);
+
+                BigDecimal tienHoiTruong = (BigDecimal) item.get("tien_hoi_truong");
+                if (tienHoiTruong != null) {
+                    createCellSO(row, 22, tienHoiTruong.doubleValue(), numberStyle);
+                    sumTongTienHoiTruong1 = sumTongTienHoiTruong1.add(tienHoiTruong);
                 } else {
                     createCellSO(row, 22, 0, numberStyle);
                 }
 
+                BigDecimal tienDichVuGala = (BigDecimal) item.get("tien_dich_vu_gala");
+                if (tienDichVuGala != null) {
+                    createCellSO(row, 23, tienDichVuGala.doubleValue(), numberStyle);
+                    sumTongTienGala1 = sumTongTienGala1.add(tienDichVuGala);
+                } else {
+                    createCellSO(row, 23, 0, numberStyle);
+                }
+
+                createCell(row, 24,  "0", cellStyle);
+
+                BigDecimal tienPhuThuChecInSom = (BigDecimal) item.get("phu_thu_check_in_som");
+                if (tienDichVu != null) {
+                    createCellSO(row, 25, tienPhuThuChecInSom.doubleValue(), numberStyle);
+                    sunTongTienPhuThuCheckInSom1 = sunTongTienPhuThuCheckInSom1.add(tienPhuThuChecInSom);
+                } else {
+                    createCellSO(row, 25, 0, numberStyle);
+                }
+
+                BigDecimal tienPhuThuChecOutTre = (BigDecimal) item.get("phu_thu_check_out_tre");
+                if (tienDichVu != null) {
+                    createCellSO(row, 26, tienPhuThuChecOutTre.doubleValue(), numberStyle);
+                    sunTongTienPhuThuCheckOutTre1 = sunTongTienPhuThuCheckOutTre1.add(tienPhuThuChecOutTre);
+                } else {
+                    createCellSO(row, 26, 0, numberStyle);
+                }
+
                 BigDecimal tongThanhToan = (BigDecimal) item.get("tong_thanh_toan");
                 if (tongThanhToan != null) {
-                    createCellSO(row, 23, tongThanhToan.doubleValue(), numberStyle);
+                    createCellSO(row, 27, tongThanhToan.doubleValue(), numberStyle);
                     sumTongCongThanhToan1 = sumTongCongThanhToan1.add(tongThanhToan);
                 } else {
-                    createCellSO(row, 23,0, numberStyle);
+                    createCellSO(row, 27,0, numberStyle);
                 }
 
             }
@@ -559,13 +598,18 @@ public class ThongKeService {
             createCellSO(totalRow, 14, sumTongPhuThuAnSang1.doubleValue(), numberStyle);
             createCellSO(totalRow, 15, sumTongPhuThuTreEm1.doubleValue(), numberStyle);
             createCellSO(totalRow, 16, sumTongPhuThuNguoiLon1.doubleValue(), numberStyle);
-            createCellSO(totalRow, 17, sumTongTienDichVuMinibar1.doubleValue(), numberStyle);
-            createCellSO(totalRow, 18, sumTongTienDichVuGiatUi1.doubleValue(), numberStyle);
-            createCellSO(totalRow, 19, sumTongTienDichVuKhac1.doubleValue(), numberStyle);
-            createCell(totalRow, 20, "0", cellStyle);
-            createCellSO(totalRow, 21, sunTongTienPhuThuCheckOutTre1.doubleValue(), numberStyle);
-            createCellSO(totalRow, 22, sunTongTienPhuThuCheckInSom1.doubleValue(), numberStyle);
-            createCellSO(totalRow, 23, sumTongCongThanhToan1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 17, sumTongTienSetMonAn1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 18, sumTongTienDichVuMinibar1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 19, sumTongTienDichVuGiatUi1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 20, sumTongTienDichVuKhac1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 21, sumTongTienDenBu1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 22, sumTongTienHoiTruong1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 23, sumTongTienGala1.doubleValue(), numberStyle);
+
+            createCell(totalRow, 24, "0", cellStyle);
+            createCellSO(totalRow, 25, sunTongTienPhuThuCheckOutTre1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 26, sunTongTienPhuThuCheckInSom1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 27, sumTongCongThanhToan1.doubleValue(), numberStyle);
 
             // Xuất file
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -1096,7 +1140,7 @@ public class ThongKeService {
             Sheet sheet1 = workbook.getSheetAt(1);
 
             // Tiêu đề dòng 1
-            String content1 = "BÁO CÁO DOANH THU THEO NHÂN VIÊN \n"
+            String content1 = "BÁO CÁO DOANH THU CHI TIẾT (THEO NHÂN VIÊN) \n"
                     + "Từ ngày " + DateConverter.converDate(ngayDen)
                     + " Đến ngày " + DateConverter.converDate(ngayDi);
             Row headerRow1 = sheet1.getRow(1);
@@ -1159,6 +1203,7 @@ public class ThongKeService {
                 BigDecimal subSumTienCoc = BigDecimal.ZERO;
                 BigDecimal subSumTienCuoi = BigDecimal.ZERO;
                 BigDecimal subSumDichVuSetMonAn = BigDecimal.ZERO;
+                BigDecimal subSumDichVuGaLa = BigDecimal.ZERO;
 
                 for (Map<String, Object> item : items) {
                     Row row = sheet1.createRow(rowIndex1++);
@@ -1212,53 +1257,62 @@ public class ThongKeService {
                         subSumPhuThuNguoiLon = subSumPhuThuNguoiLon.add(tongPhuThuNguoiLon);
                     } else createCellSO(row, 16, 0, numberStyle);
 
-                    BigDecimal tongTienMinibar = (BigDecimal) item.get("tong_tien_dich_vu_minibar");
-                    if (tongTienMinibar != null) {
-                        createCellSO(row, 17, tongTienMinibar.doubleValue(), numberStyle);
-                        subSumDichVuMinibar = subSumDichVuMinibar.add(tongTienMinibar);
-                    } else createCellSO(row, 17, 0, numberStyle);
-
-                    BigDecimal tongTienGiatUi = (BigDecimal) item.get("tong_tien_dich_vu_giatui");
-                    if (tongTienGiatUi != null) {
-                        createCellSO(row, 18, tongTienGiatUi.doubleValue(), numberStyle);
-                        subSumDichVuGiatUi = subSumDichVuGiatUi.add(tongTienGiatUi);
-                    } else createCellSO(row, 18, 0, numberStyle);
-
-                    BigDecimal tienDichVuKhac = (BigDecimal) item.get("tong_tien_dich_vu_khac");
-                    if (tienDichVuKhac != null) {
-                        createCellSO(row, 19, tienDichVuKhac.doubleValue(), numberStyle);
-                        subSumDichVuKhac = subSumDichVuKhac.add(tienDichVuKhac);
-                    } else createCellSO(row, 19, 0, numberStyle);
-
-                    BigDecimal tienDenBu = (BigDecimal) item.get("tong_tien_den_bu");
-                    if (tienDenBu != null) {
-                        createCellSO(row, 20, tienDenBu.doubleValue(), numberStyle);
-                        subSumDenBu = subSumDenBu.add(tienDenBu);
-                    } else createCellSO(row, 20, 0, numberStyle);
-
-                    BigDecimal tienHoiNghi = (BigDecimal) item.get("tong_tien_hoi_nghi");
-                    if (tienHoiNghi != null) {
-                        createCellSO(row, 21, tienHoiNghi.doubleValue(), numberStyle);
-                        subSumHoiGhi = subSumHoiGhi.add(tienHoiNghi);
-                    } else createCellSO(row, 21, 0, numberStyle);
-
-                    BigDecimal tienCheckInSom = (BigDecimal) item.get("tong_phu_thu_check_in_som");
-                    if (tienCheckInSom != null) {
-                        createCellSO(row, 22, tienCheckInSom.doubleValue(), numberStyle);
-                        subSumCheckInSom = subSumCheckInSom.add(tienCheckInSom);
-                    } else createCellSO(row, 22, 0, numberStyle);
-
-                    BigDecimal tienCheckOutTre = (BigDecimal) item.get("tong_phu_thu_check_out_tre");
-                    if (tienCheckOutTre != null) {
-                        createCellSO(row, 23, tienCheckOutTre.doubleValue(), numberStyle);
-                        subSumCheckOutTre = subSumCheckOutTre.add(tienCheckOutTre);
-                    } else createCellSO(row, 23, 0, numberStyle);
 
                     BigDecimal tienDichVuSetMonAn = (BigDecimal) item.get("tong_tien_set_mon_an");
                     if (tienDichVuSetMonAn != null) {
-                        createCellSO(row, 24, tienDichVuSetMonAn.doubleValue(), numberStyle);
+                        createCellSO(row, 17, tienDichVuSetMonAn.doubleValue(), numberStyle);
                         subSumDichVuSetMonAn = subSumDichVuSetMonAn.add(tienDichVuSetMonAn);
-                    } else createCellSO(row, 24, 0, numberStyle);
+                    } else createCellSO(row, 17, 0, numberStyle);
+
+                    BigDecimal tongTienMinibar = (BigDecimal) item.get("tong_tien_dich_vu_minibar");
+                    if (tongTienMinibar != null) {
+                        createCellSO(row, 18, tongTienMinibar.doubleValue(), numberStyle);
+                        subSumDichVuMinibar = subSumDichVuMinibar.add(tongTienMinibar);
+                    } else createCellSO(row, 18, 0, numberStyle);
+
+                    BigDecimal tongTienGiatUi = (BigDecimal) item.get("tong_tien_dich_vu_giatui");
+                    if (tongTienGiatUi != null) {
+                        createCellSO(row, 19, tongTienGiatUi.doubleValue(), numberStyle);
+                        subSumDichVuGiatUi = subSumDichVuGiatUi.add(tongTienGiatUi);
+                    } else createCellSO(row, 19, 0, numberStyle);
+
+                    BigDecimal tienDichVuKhac = (BigDecimal) item.get("tong_tien_dich_vu_khac");
+                    if (tienDichVuKhac != null) {
+                        createCellSO(row, 20, tienDichVuKhac.doubleValue(), numberStyle);
+                        subSumDichVuKhac = subSumDichVuKhac.add(tienDichVuKhac);
+                    } else createCellSO(row, 20, 0, numberStyle);
+
+                    BigDecimal tienDenBu = (BigDecimal) item.get("tong_tien_den_bu");
+                    if (tienDenBu != null) {
+                        createCellSO(row, 21, tienDenBu.doubleValue(), numberStyle);
+                        subSumDenBu = subSumDenBu.add(tienDenBu);
+                    } else createCellSO(row, 21, 0, numberStyle);
+
+                    BigDecimal tienHoiNghi = (BigDecimal) item.get("tong_tien_hoi_nghi");
+                    if (tienHoiNghi != null) {
+                        createCellSO(row, 22, tienHoiNghi.doubleValue(), numberStyle);
+                        subSumHoiGhi = subSumHoiGhi.add(tienHoiNghi);
+                    } else createCellSO(row, 22, 0, numberStyle);
+
+                    BigDecimal tienDichVuGaLa = (BigDecimal) item.get("tong_tien_dich_vu_gala");
+                    if (tienHoiNghi != null) {
+                        createCellSO(row, 23, tienDichVuGaLa.doubleValue(), numberStyle);
+                        subSumDichVuGaLa = subSumDichVuGaLa.add(tienDichVuGaLa);
+                    } else createCellSO(row, 23, 0, numberStyle);
+
+                    createCellSO(row, 24, 0, numberStyle);
+
+                    BigDecimal tienCheckInSom = (BigDecimal) item.get("tong_phu_thu_check_in_som");
+                    if (tienCheckInSom != null) {
+                        createCellSO(row, 25, tienCheckInSom.doubleValue(), numberStyle);
+                        subSumCheckInSom = subSumCheckInSom.add(tienCheckInSom);
+                    } else createCellSO(row, 25, 0, numberStyle);
+
+                    BigDecimal tienCheckOutTre = (BigDecimal) item.get("tong_phu_thu_check_out_tre");
+                    if (tienCheckOutTre != null) {
+                        createCellSO(row, 26, tienCheckOutTre.doubleValue(), numberStyle);
+                        subSumCheckOutTre = subSumCheckOutTre.add(tienCheckOutTre);
+                    } else createCellSO(row, 26, 0, numberStyle);
 
 
                     BigDecimal tongThanhToan = (BigDecimal) item.get("tong_tien");
@@ -1266,14 +1320,16 @@ public class ThongKeService {
                     BigDecimal tongAddTienCoc = tongThanhToan != null ? tongThanhToan.subtract(tienCoc) : tienCoc;
 
 
-                    createCellSO(row, 26, tienCoc.doubleValue(), numberStyle);
-                    subSumTienCoc = subSumTienCoc.add(tienCoc);
-
-//                    BigDecimal tongTienCuoi = tongAddTienCoc.subtract(tienCoc);
-                    createCellSO(row, 25, tongThanhToan.doubleValue(), numberStyle);
+                    BigDecimal tongTienCuoi = tongAddTienCoc.subtract(tienCoc);
+                    createCellSO(row, 27, tongThanhToan.doubleValue(), numberStyle);
                     subSumTienCuoi = subSumTienCuoi.add(tongThanhToan);
 
-                    createCellSO(row, 27, tongAddTienCoc.doubleValue(), numberStyle);
+                    createCellSO(row, 28, tienCoc.doubleValue(), numberStyle);
+                    subSumTienCoc = subSumTienCoc.add(tienCoc);
+
+//
+
+                    createCellSO(row, 29, tongAddTienCoc.doubleValue(), numberStyle);
                     subSumCongThanhToan = subSumCongThanhToan.add(tongAddTienCoc);
                 }
 
@@ -1296,16 +1352,19 @@ public class ThongKeService {
                 createCellSO(subtotalRow, 14, subSumPhuThuAnSang.doubleValue(), subtotalNumberStyle);
                 createCellSO(subtotalRow, 15, subSumPhuThuTreEm.doubleValue(), subtotalNumberStyle);
                 createCellSO(subtotalRow, 16, subSumPhuThuNguoiLon.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 17, subSumDichVuMinibar.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 18, subSumDichVuGiatUi.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 19, subSumDichVuKhac.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 20, subSumDenBu.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 21, subSumHoiGhi.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 22, subSumCheckInSom.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 23, subSumCheckOutTre.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 24, subSumDichVuSetMonAn.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 25, subSumCongThanhToan.doubleValue(), subtotalNumberStyle);
-                createCellSO(subtotalRow, 26, subSumTienCoc.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 17, subSumDichVuSetMonAn.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 18, subSumDichVuMinibar.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 19, subSumDichVuGiatUi.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 20, subSumDichVuKhac.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 21, subSumDenBu.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 22, subSumHoiGhi.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 23, subSumDichVuGaLa.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 24, 0, subtotalNumberStyle);
+                createCellSO(subtotalRow, 25, subSumCheckInSom.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 26, subSumCheckOutTre.doubleValue(), subtotalNumberStyle);
+
+                createCellSO(subtotalRow, 29, subSumCongThanhToan.doubleValue(), subtotalNumberStyle);
+                createCellSO(subtotalRow, 28, subSumTienCoc.doubleValue(), subtotalNumberStyle);
                 createCellSO(subtotalRow, 27, subSumTienCuoi.doubleValue(), subtotalNumberStyle);
 
                 // Cộng vào grand total
@@ -1358,11 +1417,10 @@ public class ThongKeService {
             createCellSO(grandTotalRow1, 26, grandSumTienCoc1.doubleValue(), totalNumberStyle);
             createCellSO(grandTotalRow1, 27, grandSumTienCuoi1.doubleValue(), totalNumberStyle);
 
-
             // ===================== SHEET 0 (index=0): BÁO CÁO DOANH SỐ KPI NHÂN VIÊN =====================
             Sheet sheet0 = workbook.getSheetAt(0);
 
-            String content0 = "BÁO CÁO DOANH SỐ KPI NHÂN VIÊN\n"
+            String content0 = "BÁO CÁO THỐNG KÊ DOANH THU TỔNG (THEO NHÂN VIÊN)\n"
                     + "Từ ngày " + DateConverter.converDate(ngayDen)
                     + " Đến ngày " + DateConverter.converDate(ngayDi);
             Row headerRow0 = sheet0.getRow(1);
@@ -1393,6 +1451,14 @@ public class ThongKeService {
             BigDecimal grandSumTienDoanLe0        = BigDecimal.ZERO;
             BigDecimal grandSumHoiNghi0             = BigDecimal.ZERO;
             BigDecimal grandSumDenBu0             = BigDecimal.ZERO;
+            BigDecimal grandSumTongTienPhong0 = BigDecimal.ZERO;
+            BigDecimal grandSumTongPhuThuGiuong0 = BigDecimal.ZERO;
+            BigDecimal grandSumTongPhuDichVuGiatUi0 = BigDecimal.ZERO;
+            BigDecimal grandSumTongPhuDichVuKhacDenBu0 = BigDecimal.ZERO;
+            BigDecimal grandSumTongPhuThuHoiNghi0 = BigDecimal.ZERO;
+            BigDecimal gradSumTongPhuThuKhac0 = BigDecimal.ZERO;
+            BigDecimal grandSumTongDichVuGALA0 = BigDecimal.ZERO;
+
 
             int rowIndex0 = 5; // bắt đầu từ dòng 5 (index 5, tức dòng thứ 6 trong Excel)
 
@@ -1439,70 +1505,108 @@ public class ThongKeService {
                 createCellSO(row, 8, tienNone.doubleValue(), numberStyle);
                 grandSumTienNone0 = grandSumTienNone0.add(tienNone);
 
+
+                // Cột 9: TONG
+                BigDecimal tongTienPhong = tienTA.add(tienOTA).add(tienWalkIn).add(tienDoanLe).add(tienDoanGala).add(tienNone);
+                createCellSO(row, 9, tongTienPhong.doubleValue(), numberStyle);
+                grandSumTongTienPhong0 = grandSumTongTienPhong0.add(tongTienPhong);
+
                 // Cột 9 Phụ thu giường
                 BigDecimal phuThuGiuong = toBD(item.get("tong_phu_thu_giuong"));
-                createCellSO(row, 9, phuThuGiuong.doubleValue(), numberStyle);
+                createCellSO(row, 10, phuThuGiuong.doubleValue(), numberStyle);
                 grandSumPhuThuGiuong0 = grandSumPhuThuGiuong0.add(phuThuGiuong);
 
                 // Cột 10: Phụ thu ăn sáng
                 BigDecimal phuThuAnSang = toBD(item.get("tong_phu_thu_an_sang"));
-                createCellSO(row, 10, phuThuAnSang.doubleValue(), numberStyle);
+                createCellSO(row, 11, phuThuAnSang.doubleValue(), numberStyle);
                 grandSumPhuThuAnSang0 = grandSumPhuThuAnSang0.add(phuThuAnSang);
 
                 // Cột 11: Phụ thu trẻ em
                 BigDecimal phuThuTreEm = toBD(item.get("tong_phu_thu_tre_em"));
-                createCellSO(row, 11, phuThuTreEm.doubleValue(), numberStyle);
+                createCellSO(row, 12, phuThuTreEm.doubleValue(), numberStyle);
                 grandSumPhuThuTreEm0 = grandSumPhuThuTreEm0.add(phuThuTreEm);
 
                 // Cột 12: Phụ thu người lớn
                 BigDecimal phuThuNguoiLon = toBD(item.get("tong_phu_thu_nguoi_lon"));
-                createCellSO(row, 12, phuThuNguoiLon.doubleValue(), numberStyle);
+                createCellSO(row, 13, phuThuNguoiLon.doubleValue(), numberStyle);
                 grandSumPhuThuNguoiLon0 = grandSumPhuThuNguoiLon0.add(phuThuNguoiLon);
 
                 // Cột 13: Set món ăn
                 BigDecimal setMonAn = toBD(item.get("tong_tien_setmonan"));
-                createCellSO(row, 13, setMonAn.doubleValue(), numberStyle);
+                createCellSO(row, 14, setMonAn.doubleValue(), numberStyle);
                 grandSumSetMonAn0 = grandSumSetMonAn0.add(setMonAn);
+
+                // Cột 15 TONG
+                BigDecimal tongPhuThuGiuong = phuThuGiuong.add(phuThuAnSang).add(phuThuTreEm).add(phuThuNguoiLon).add(setMonAn);
+                createCellSO(row, 15, tongPhuThuGiuong.doubleValue(), numberStyle);
+                grandSumTongPhuThuGiuong0 = grandSumTongPhuThuGiuong0.add(tongPhuThuGiuong);
 
                 // Cột 14: Minibar
                 BigDecimal minibar = toBD(item.get("tong_tien_minibar"));
-                createCellSO(row, 14, minibar.doubleValue(), numberStyle);
+                createCellSO(row, 16, minibar.doubleValue(), numberStyle);
                 grandSumMinibar0 = grandSumMinibar0.add(minibar);
 
                 // Cột 15: Giặt ủi
                 BigDecimal giatUi = toBD(item.get("tong_tien_giatui"));
-                createCellSO(row, 15, giatUi.doubleValue(), numberStyle);
+                createCellSO(row, 17, giatUi.doubleValue(), numberStyle);
                 grandSumGiatUi0 = grandSumGiatUi0.add(giatUi);
+
+                // Cột 18 TONG
+                BigDecimal tongPhuThuGiaUi = minibar.add(giatUi);
+                createCellSO(row, 18, tongPhuThuGiaUi.doubleValue(), numberStyle);
+                grandSumTongPhuDichVuGiatUi0 = grandSumTongPhuDichVuGiatUi0.add(tongPhuThuGiaUi);
+
 
                 // Cột 16: Dịch vụ khác
                 BigDecimal dichVuKhac = toBD(item.get("tong_tien_dich_vu_khac"));
-                createCellSO(row, 16, dichVuKhac.doubleValue(), numberStyle);
+                createCellSO(row, 19, dichVuKhac.doubleValue(), numberStyle);
                 grandSumDichVuKhac0 = grandSumDichVuKhac0.add(dichVuKhac);
 
                 // Cột 17: Đền bù
                 BigDecimal denBu = toBD(item.get("tong_tien_denbu"));
-                createCellSO(row, 17, denBu.doubleValue(), numberStyle);
+                createCellSO(row, 20, denBu.doubleValue(), numberStyle);
                 grandSumDenBu0 = grandSumDenBu0.add(denBu);
+
+                // Cột 21 TONG
+                BigDecimal tongDichVuKhacDenBu = dichVuKhac.add(denBu);
+                createCellSO(row, 21, tongDichVuKhacDenBu.doubleValue(), numberStyle);
+                grandSumTongPhuDichVuKhacDenBu0 = grandSumTongPhuDichVuKhacDenBu0.add(tongDichVuKhacDenBu);
 
                 // Cột 18: Hội nghị
                 BigDecimal hoiNghi = toBD(item.get("tong_tien_hoi_nghi"));
-                createCellSO(row, 18, hoiNghi.doubleValue(), numberStyle);
+                createCellSO(row, 22, hoiNghi.doubleValue(), numberStyle);
                 grandSumHoiNghi0 = grandSumHoiNghi0.add(hoiNghi);
 
+                // Cột 23: gala
+                BigDecimal gala = toBD(item.get("tong_tien_dich_vu_gala"));
+                createCellSO(row, 23, gala.doubleValue(), numberStyle);
+                grandSumTongDichVuGALA0 = grandSumTongDichVuGALA0.add(gala);
+
+                createCellSO(row, 24, 0, numberStyle);
+
+                // Cột 25 TONG
+                BigDecimal tongTienHoiNghi = gala;
+                createCellSO(row, 25, tongTienHoiNghi.doubleValue(), numberStyle);
+                grandSumTongPhuThuHoiNghi0 = grandSumTongPhuThuHoiNghi0.add(tongTienHoiNghi);
 
                 // Cột 19: Phụ thu check-in sớm
                 BigDecimal checkInSom = toBD(item.get("tong_phu_thu_check_in_som"));
-                createCellSO(row, 19, checkInSom.doubleValue(), numberStyle);
+                createCellSO(row, 26, checkInSom.doubleValue(), numberStyle);
                 grandSumCheckInSom0 = grandSumCheckInSom0.add(checkInSom);
 
                 // Cột 20: Phụ thu check-out trễ
                 BigDecimal checkOutTre = toBD(item.get("tong_phu_thu_check_out_tre"));
-                createCellSO(row, 20, checkOutTre.doubleValue(), numberStyle);
+                createCellSO(row, 27, checkOutTre.doubleValue(), numberStyle);
                 grandSumCheckOutTre0 = grandSumCheckOutTre0.add(checkOutTre);
+
+                // Cột 28 TONG
+                BigDecimal tongDichVuKhac = checkInSom.add(checkOutTre);
+                createCellSO(row, 28, tongDichVuKhac.doubleValue(), numberStyle);
+                gradSumTongPhuThuKhac0 = gradSumTongPhuThuKhac0.add(tongDichVuKhac);
 
                 // Cột 16: Tổng thanh toán
                 BigDecimal thanhToan = toBD(item.get("tong_thanh_toan"));
-                createCellSO(row, 21, thanhToan.doubleValue(), numberStyle);
+                createCellSO(row, 29, thanhToan.doubleValue(), numberStyle);
                 grandSumThanhToan0 = grandSumThanhToan0.add(thanhToan);
 
             }
@@ -1513,26 +1617,105 @@ public class ThongKeService {
             grandTotalRow0.setHeightInPoints(25);
 
             // Gộp ô cột 0-2 để ghi "Tổng tiền"
-            sheet0.addMergedRegion(new CellRangeAddress(grandTotalIdx0, grandTotalIdx0, 0, 8));
-            for (int col = 0; col <= 8; col++) {
+            sheet0.addMergedRegion(new CellRangeAddress(grandTotalIdx0, grandTotalIdx0, 0, 2));
+            for (int col = 0; col <= 2; col++) {
                 Cell cell = grandTotalRow0.createCell(col);
                 if (col == 0) cell.setCellValue("Tổng tiền");
                 cell.setCellStyle(totalLabelStyle);
             }
+            createCellSO(grandTotalRow0,  3, grandSumTienTA0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0,  4, grandSumTienOTA0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0,  5, grandSumTienWalkIn0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0,  6, grandSumTienDoanLe0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0,  7, grandSumTienDoanGala0.doubleValue(), totalNumberStyle);
+            createCellSO(grandTotalRow0,   8, grandSumTienNone0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0,   9, grandSumTongTienPhong0.doubleValue(),   totalNumberStyle);
 
-            createCellSO(grandTotalRow0,  9, grandSumPhuThuGiuong0.doubleValue(),   totalNumberStyle);
-            createCellSO(grandTotalRow0, 10, grandSumPhuThuAnSang0.doubleValue(),        totalNumberStyle);
-            createCellSO(grandTotalRow0, 11, grandSumPhuThuTreEm0.doubleValue(),         totalNumberStyle);
-            createCellSO(grandTotalRow0, 12, grandSumPhuThuNguoiLon0.doubleValue(),     totalNumberStyle);
-            createCellSO(grandTotalRow0, 13, grandSumSetMonAn0.doubleValue(),       totalNumberStyle);
-            createCellSO(grandTotalRow0, 14, grandSumMinibar0.doubleValue(),     totalNumberStyle);
-            createCellSO(grandTotalRow0, 15, grandSumGiatUi0.doubleValue(),  totalNumberStyle);
-            createCellSO(grandTotalRow0, 16, grandSumDichVuKhac0.doubleValue(),      totalNumberStyle);
-            createCellSO(grandTotalRow0, 17, grandSumDenBu0.doubleValue(),      totalNumberStyle);
-            createCellSO(grandTotalRow0, 18, grandSumHoiNghi0.doubleValue(),       totalNumberStyle);
-            createCellSO(grandTotalRow0, 19, grandSumCheckInSom0.doubleValue(),         totalNumberStyle);
-            createCellSO(grandTotalRow0, 20, grandSumCheckOutTre0.doubleValue(),        totalNumberStyle);
-            createCellSO(grandTotalRow0, 21, grandSumThanhToan0.doubleValue(),     totalNumberStyle);
+            createCellSO(grandTotalRow0,  10, grandSumPhuThuGiuong0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0, 11, grandSumPhuThuAnSang0.doubleValue(),        totalNumberStyle);
+            createCellSO(grandTotalRow0, 12, grandSumPhuThuTreEm0.doubleValue(),         totalNumberStyle);
+            createCellSO(grandTotalRow0, 13, grandSumPhuThuNguoiLon0.doubleValue(),     totalNumberStyle);
+            createCellSO(grandTotalRow0, 14, grandSumSetMonAn0.doubleValue(),       totalNumberStyle);
+            createCellSO(grandTotalRow0, 15, grandSumTongPhuThuGiuong0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0, 16, grandSumMinibar0.doubleValue(),     totalNumberStyle);
+            createCellSO(grandTotalRow0, 17, grandSumGiatUi0.doubleValue(),  totalNumberStyle);
+            createCellSO(grandTotalRow0,  18, grandSumTongPhuDichVuGiatUi0.doubleValue(), totalNumberStyle);
+            createCellSO(grandTotalRow0, 19, grandSumDichVuKhac0.doubleValue(),      totalNumberStyle);
+            createCellSO(grandTotalRow0, 20, grandSumDenBu0.doubleValue(),      totalNumberStyle);
+            createCellSO(grandTotalRow0, 21, grandSumTongPhuDichVuKhacDenBu0.doubleValue(),      totalNumberStyle);
+            createCellSO(grandTotalRow0, 22, grandSumHoiNghi0.doubleValue(),       totalNumberStyle);
+            createCellSO(grandTotalRow0, 23, grandSumTongDichVuGALA0.doubleValue(),   totalNumberStyle);
+            createCellSO(grandTotalRow0, 24, 0,         totalNumberStyle);
+            createCellSO(grandTotalRow0, 25, grandSumTongDichVuGALA0.doubleValue(),        totalNumberStyle);
+            createCellSO(grandTotalRow0, 26, grandSumCheckInSom0.doubleValue(),        totalNumberStyle);
+            createCellSO(grandTotalRow0, 27, grandSumCheckOutTre0.doubleValue(),        totalNumberStyle);
+            createCellSO(grandTotalRow0, 28, gradSumTongPhuThuKhac0.doubleValue(),        totalNumberStyle);
+            createCellSO(grandTotalRow0, 29, grandSumThanhToan0.doubleValue(),     totalNumberStyle);
+
+            // ---- DÒNG MỚI: CƠ CẤU TỈ LỆ CÁC NGUỒN THU (%) SHEET 0 ----
+            rowIndex0++; // Tăng biến rowIndex để nhảy xuống dòng kế tiếp
+            int ratioRowIdx0 = rowIndex0;
+            Row ratioRow0 = sheet0.createRow(ratioRowIdx0);
+            ratioRow0.setHeightInPoints(25);
+
+            // ==========================================
+// TẠO STYLE CHO DÒNG TỈ LỆ PHẦN TRĂM (%)
+// ==========================================
+            CellStyle percentStyle = workbook.createCellStyle();
+
+// 1. Kế thừa toàn bộ định dạng (viền, font chữ, in đậm, căn lề...) từ totalNumberStyle
+            percentStyle.cloneStyleFrom(totalNumberStyle);
+
+// 2. Ghi đè DataFormat thành dạng phần trăm (Ví dụ: 0.2066 -> hiển thị "20.66%")
+            percentStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+
+// Gộp ô cột 0 đến 2 để ghi tiêu đề (vì dữ liệu số bắt đầu từ cột 3)
+            sheet0.addMergedRegion(new CellRangeAddress(ratioRowIdx0, ratioRowIdx0, 0, 2));
+            for (int col = 0; col <= 2; col++) {
+                Cell cell = ratioRow0.createCell(col);
+                if (col == 0) cell.setCellValue("CƠ CẤU TỈ LỆ CÁC NGUỒN THU (%)");
+                cell.setCellStyle(totalLabelStyle);
+            }
+
+            // Lấy mẫu số là Tổng thanh toán
+            double totalRevenue0 = grandSumThanhToan0 != null ? grandSumThanhToan0.doubleValue() : 0.0;
+
+            // Hàm hỗ trợ tính tỉ lệ (KHÔNG nhân 100, để Excel tự xử lý với format "0.00%")
+            java.util.function.Function<java.math.BigDecimal, Double> calcRatio0 = (value) -> {
+                if (totalRevenue0 == 0 || value == null) return 0.0;
+                // Giả sử (giá trị / tổng) = 0.00206627...
+                return value.doubleValue() / totalRevenue0;
+            };
+
+            // Truyền percentStyle thay vì totalNumberStyle
+            createCellSO(ratioRow0,  3, calcRatio0.apply(grandSumTienTA0),   percentStyle);
+            createCellSO(ratioRow0,  4, calcRatio0.apply(grandSumTienOTA0),   percentStyle);
+            createCellSO(ratioRow0,  5, calcRatio0.apply(grandSumTienWalkIn0),   percentStyle);
+            createCellSO(ratioRow0,  6, calcRatio0.apply(grandSumTienDoanLe0),   percentStyle);
+            createCellSO(ratioRow0,  7, calcRatio0.apply(grandSumTienDoanGala0), percentStyle);
+            createCellSO(ratioRow0,  8, calcRatio0.apply(grandSumTienNone0),   percentStyle);
+            createCellSO(ratioRow0,  9, calcRatio0.apply(grandSumTongTienPhong0),   percentStyle);
+
+            createCellSO(ratioRow0, 10, calcRatio0.apply(grandSumPhuThuGiuong0),   percentStyle);
+            createCellSO(ratioRow0, 11, calcRatio0.apply(grandSumPhuThuAnSang0),        percentStyle);
+            createCellSO(ratioRow0, 12, calcRatio0.apply(grandSumPhuThuTreEm0),         percentStyle);
+            createCellSO(ratioRow0, 13, calcRatio0.apply(grandSumPhuThuNguoiLon0),     percentStyle);
+            createCellSO(ratioRow0, 14, calcRatio0.apply(grandSumSetMonAn0),       percentStyle);
+            createCellSO(ratioRow0, 15, calcRatio0.apply(grandSumTongPhuThuGiuong0),   percentStyle);
+            createCellSO(ratioRow0, 16, calcRatio0.apply(grandSumMinibar0),     percentStyle);
+            createCellSO(ratioRow0, 17, calcRatio0.apply(grandSumGiatUi0),  percentStyle);
+            createCellSO(ratioRow0, 18, calcRatio0.apply(grandSumTongPhuDichVuGiatUi0), percentStyle);
+            createCellSO(ratioRow0, 19, calcRatio0.apply(grandSumDichVuKhac0),      percentStyle);
+            createCellSO(ratioRow0, 20, calcRatio0.apply(grandSumDenBu0),      percentStyle);
+            createCellSO(ratioRow0, 21, calcRatio0.apply(grandSumTongPhuDichVuKhacDenBu0),      percentStyle);
+            createCellSO(ratioRow0, 22, calcRatio0.apply(grandSumHoiNghi0),       percentStyle);
+            createCellSO(ratioRow0, 23, calcRatio0.apply(grandSumTongDichVuGALA0),   percentStyle);
+            createCellSO(ratioRow0, 24, 0,         percentStyle);
+            createCellSO(ratioRow0, 25, calcRatio0.apply(grandSumTongPhuThuHoiNghi0),        percentStyle);
+            createCellSO(ratioRow0, 26, calcRatio0.apply(grandSumCheckInSom0),        percentStyle);
+            createCellSO(ratioRow0, 27, calcRatio0.apply(grandSumCheckOutTre0),        percentStyle);
+            createCellSO(ratioRow0, 28, calcRatio0.apply(gradSumTongPhuThuKhac0),        percentStyle);
+            createCellSO(ratioRow0, 29, calcRatio0.apply(grandSumThanhToan0),     percentStyle); // Sẽ tự động hiển thị 100.00%
 
             // Xuất file
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
