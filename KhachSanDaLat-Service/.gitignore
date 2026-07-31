@@ -40,3 +40,6 @@ out/
 backup_old_files/
 *.bak
 *.backup
+
+KhachSanVT-Service/API-KEY.json
+*.json

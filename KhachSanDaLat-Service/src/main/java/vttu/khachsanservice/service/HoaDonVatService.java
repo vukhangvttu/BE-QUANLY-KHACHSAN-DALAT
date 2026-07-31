@@ -182,8 +182,8 @@ public class HoaDonVatService {
                 GeneralInvoiceInfo invoiceInfo = new GeneralInvoiceInfo();
                 invoiceInfo.setTransactionUuid(UUID.randomUUID().toString());
                 invoiceInfo.setInvoiceType("");
-                invoiceInfo.setTemplateCode("1/002");
-                invoiceInfo.setInvoiceSeries("C25MHK");
+                invoiceInfo.setTemplateCode("1/001");
+                invoiceInfo.setInvoiceSeries("C26MHK");
 //                invoiceInfo.setTemplateCode("1/679");
 //                invoiceInfo.setInvoiceSeries("C25TZC");
                 invoiceInfo.setCurrencyCode("VND");

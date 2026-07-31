@@ -13,7 +13,7 @@ spring:
     locale-resolver: fixed
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/QL-KHACH-SAN-VT
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/QL-KHACH-SAN-DALAT
     username: ${USER_DB:YqKZwsA/4cLvT22dQpMngxAfnGorgm+xYzbzW1qgPHw=}
     password: ${USER_PW:D0/HnzSe7XZII4zTojifuRoYlSQy/k4dXJVgwOHsDBrKc19wWPHjT0KXXMhNwP9d}
     driver-class-name: org.postgresql.Driver
@@ -58,7 +58,7 @@ jwt:
   refreshable-duration: 36000
 
 mst:
-  mk: 8V+MLk0eREGSIaqpefv2D4QE+X3tanteeZqu7Cbjh50=
+  mk: ry0OlGnOeFalUl07teh3dXYWMM7GANBBhSm7D/quh2U=
 
 #mst:
 #  mk: h/l+q0yOLBt+p9wPyciqmsV8c/ruzj5fN/Eaq6XdLsM=

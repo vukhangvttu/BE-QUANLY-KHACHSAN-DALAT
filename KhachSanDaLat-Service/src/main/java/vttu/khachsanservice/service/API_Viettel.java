@@ -45,9 +45,9 @@ public class API_Viettel {
     private final HoaDonVatRepository hoaDonVatRepository;
 
 
-    String maSoThue = "3502532620";
+    String maSoThue = "5801578218";
 //      String mk = "2wsxCDE#"; // Mật khẩu xác thực, cần được bảo mật
-    String user = "3502532620_api"; // Mã số thuế của doanh nghiệp
+    String user = "5801578218"; // Mã số thuế của doanh nghiệp
     // Mã số thuế và mật khẩu xác thực cần được bảo mật, không nên hardcode trong mã nguồn
     // Cập nhật thông tin xác thực tại đây hoặc sử dụng biến môi trường
     // hoặc cấu hình bên ngoài để bảo mật hơn
