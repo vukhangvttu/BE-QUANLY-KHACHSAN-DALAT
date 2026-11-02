@@ -44,10 +44,12 @@ public class API_Viettel {
     private final HoaDonVatPhatHanhRepository hoaDonVatPhatHanhRepository;
     private final HoaDonVatRepository hoaDonVatRepository;
 
-
-    String maSoThue = "5801578218";
-//      String mk = "2wsxCDE#"; // Mật khẩu xác thực, cần được bảo mật
-    String user = "5801578218"; // Mã số thuế của doanh nghiệp
+    private final String maSoThueLogin;
+    private final String maSoThue;
+    private final String user;
+   // String maSoThue = "5801578218";
+//    String mk = "2wsxCDE#"; // Mật khẩu xác thực, cần được bảo mật
+  //  String user = "5801578218"; // Mã số thuế của doanh nghiệp
     // Mã số thuế và mật khẩu xác thực cần được bảo mật, không nên hardcode trong mã nguồn
     // Cập nhật thông tin xác thực tại đây hoặc sử dụng biến môi trường
     // hoặc cấu hình bên ngoài để bảo mật hơn
@@ -56,26 +58,53 @@ public class API_Viettel {
 //    String maSoThue = "0100109106-509";
 //    String user = "0100109106-509";
 //    String matKhau = "2wsxCDE#"; // Mật khẩu xác thực, cần được bảo mật
-    public API_Viettel(WebClient.Builder webClientBuilder, ObjectMapper objectMapper, HoaDonVatNhapRepository hoaDonVatNhapRepository, HoaDonVatPhatHanhRepository hoaDonVatPhatHanhRepository,
-                       HoaDonVatRepository hoaDonVatRepository,
-//                      @Value("${config.dir}") String configDir,
-                       @Value("${mst.mk}") String mk)
+public API_Viettel(WebClient.Builder webClientBuilder,
+                   ObjectMapper objectMapper,
+                   HoaDonVatNhapRepository hoaDonVatNhapRepository,
+                   HoaDonVatPhatHanhRepository hoaDonVatPhatHanhRepository,
+                   HoaDonVatRepository hoaDonVatRepository,
+                   @Value("${viettel.location}") String location,
+                   @Value("${maSoThue.daLat}") String maSoThueDaLat,
+                   @Value("${maSoThue.vungTau}") String maSoThueVungTau,
+                   @Value("${mst.mkDaLat}") String mkDaLat,
+                   @Value("${mst.mkVungTau}") String mkVungTau,
+                    @Value("${maSoThueLogin.vungTau}") String maSoThueLoginVungTau,
+                   @Value("${maSoThueLogin.daLat}") String maSoThueLoginDaLat)
+
     {
 
         String setKey = "Aa@123456";
         String salt = "khangkhongnoi";
 
-        String decryptedPassword = AES.decrypt(mk, setKey, salt);
+        String selectMaSoThueLogin;
+        String selectedMaSoThue;
+        String selectedEncryptedPassword;
+
+        if ("daLat".equalsIgnoreCase(location)) {
+            selectMaSoThueLogin = maSoThueLoginDaLat;
+            selectedMaSoThue = maSoThueDaLat;
+            selectedEncryptedPassword = mkDaLat;
+        } else if ("vungTau".equalsIgnoreCase(location)) {
+            selectMaSoThueLogin = maSoThueLoginVungTau;
+            selectedMaSoThue = maSoThueVungTau;
+            selectedEncryptedPassword = mkVungTau;
+        } else {
+            throw new IllegalArgumentException("Địa điểm Viettel không hợp lệ: " + location);
+        }
+        this.maSoThueLogin = selectMaSoThueLogin;
+        this.maSoThue = selectedMaSoThue;
+        this.user = selectedMaSoThue;
+
+        String decryptedPassword = AES.decrypt(selectedEncryptedPassword, setKey, salt);
 
         if (decryptedPassword == null) {
-            throw new IllegalArgumentException("Không thể giải mã mật khẩu");
+            throw new IllegalArgumentException("Không thể giải mã mật khẩu Viettel cho địa điểm: " + location);
         }
-
         this.webClient = webClientBuilder
                 .baseUrl("https://api-vinvoice.viettel.vn")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeaders(headers -> headers.setBasicAuth(user, decryptedPassword)) // Cập nhật thông tin xác thực
+                .defaultHeaders(headers -> headers.setBasicAuth(maSoThueLogin, decryptedPassword)) // Cập nhật thông tin xác thực
                 .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024))
                 .build();
         this.objectMapper = objectMapper;

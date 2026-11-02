@@ -60,25 +60,44 @@ public class InvoiceCalculator {
     }
 
     // === Logic ===
-    public static List<ItemInfo> calculateWithoutVatFromItemInfo(List<ItemInfo> originalItems, BigDecimal vatRatePercent) {
-        BigDecimal vatRate = vatRatePercent.divide(BigDecimal.valueOf(100), 6, RoundingMode.HALF_UP);
+    public static List<ItemInfo> calculateWithoutVatFromItemInfo(
+            List<ItemInfo> originalItems,
+            BigDecimal vatRatePercent) {
+
+        BigDecimal vatRate = vatRatePercent
+                .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
         BigDecimal onePlusVat = BigDecimal.ONE.add(vatRate);
 
         for (ItemInfo item : originalItems) {
-            BigDecimal totalWithVat = item.getItemTotalAmountWithoutTax(); // hiện là có VAT
-            BigDecimal totalWithoutVat = totalWithVat.divide(onePlusVat, 6, RoundingMode.HALF_UP)
+            // 1. Tổng tiền khách trả cho dòng này (đã có VAT)
+            BigDecimal totalWithVat = item.getItemTotalAmountWithoutTax();
+            BigDecimal quantity = item.getQuantity();
+
+            // 2. Tính Đơn Giá chưa VAT: Làm tròn nguyên (0 chữ số) để hợp lệ với cấu hình Viettel
+            BigDecimal unitPriceWithoutVat = totalWithVat
+                    .divide(onePlusVat, 10, RoundingMode.HALF_UP)
+                    .divide(quantity, 10, RoundingMode.HALF_UP)
                     .setScale(0, RoundingMode.HALF_UP);
 
-            BigDecimal unitPriceWithoutVat = totalWithoutVat.divide(item.getQuantity(), 6, RoundingMode.HALF_UP)
+            // 3. Tính Thành tiền chưa VAT: CHỈ BẰNG (Đơn giá x Số lượng)
+            // Đảm bảo 100% qua vòng validate của Viettel
+            BigDecimal totalWithoutVat = unitPriceWithoutVat
+                    .multiply(quantity)
                     .setScale(0, RoundingMode.HALF_UP);
 
-            BigDecimal vatAmount = totalWithVat.subtract(totalWithoutVat)
-                    .setScale(0, RoundingMode.HALF_UP);
+            // 4. Tính Tiền VAT của dòng: Bù trừ trực tiếp để tổng thanh toán luôn khớp
+            BigDecimal vatAmount = totalWithVat.subtract(totalWithoutVat);
 
-            item.setItemTotalAmountWithoutTax(totalWithoutVat);
             item.setUnitPrice(unitPriceWithoutVat);
-            item.setTaxPercentage(vatAmount);
+            item.setItemTotalAmountWithoutTax(totalWithoutVat);
+
+            // SỬA CHỖ NÀY CHO MAP JSON ĐÚNG:
+            item.setTaxAmount(vatAmount); // Lưu SỐ TIỀN VAT vào field taxAmount
+            item.setTaxPercentage(vatRatePercent); // Lưu 8 vào field taxPercentage
         }
+
+        // ĐÃ XÓA TOÀN BỘ PHẦN TÍNH DIFF VÀ CỘNG DỒN
+
         return originalItems;
     }
 

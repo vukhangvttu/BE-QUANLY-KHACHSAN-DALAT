@@ -19,6 +19,20 @@ public interface GiaPhongTheoNgayRepository extends JpaRepository<GiaPhongTheoNg
    @Query("SELECT g FROM GiaPhongTheoNgay g WHERE g.chiTietBooking.maChiTietBooking = ?1")
    List<GiaPhongTheoNgay> findByMaChiTietBooking(String maChiTietBooking);
 
+    @Query("""
+    SELECT g
+    FROM GiaPhongTheoNgay g
+    WHERE g.chiTietBooking.maChiTietBooking = ?1
+      AND g.ngay >= ?2
+      AND g.ngay < ?3
+    ORDER BY g.ngay
+""")
+    List<GiaPhongTheoNgay> findByChiTietBookingAndNgay(
+            String maChiTietBooking,
+            LocalDate ngayBatDau,
+            LocalDate ngayKetThuc
+    );
+
    @Modifying
     @Query("DELETE FROM GiaPhongTheoNgay g WHERE g.chiTietBooking.maChiTietBooking = ?1 AND g.ngay = ?2")
     void xoaGiaPhongTheoNgayByMaChiTietBookingAndNgay(String maChiTietBooking, LocalDate ngay);
@@ -41,4 +55,7 @@ public interface GiaPhongTheoNgayRepository extends JpaRepository<GiaPhongTheoNg
     void updateGiaPhongTheoNgayByMaChiTietBookingAndNgay(@Param("gia") BigDecimal gia,
                                                         @Param("maChiTiet") String maChiTiet,
                                                         @Param("ngay") LocalDate ngay);
+    @Modifying
+    @Query(value = "DELETE FROM gia_phong_theo_ngay WHERE ma_gia_phong_theo_ngay = :maGiaPhongTheoNgay", nativeQuery = true)
+    void deleteByMaGiaPhongTheoNgay(String maGiaPhongTheoNgay);
 }

@@ -20,6 +20,9 @@ public interface LoaiPhongRepository extends JpaRepository<LoaiPhong, String> {
    LoaiPhongTrongDTO kiemTraLoaiPhongTrongMaLoaiPhong(LocalDate ngay_den, LocalDate ngay_di,String maLoaiPhong);
 
     @Query(value = "SELECT * FROM get_room_availability(:ngay_den,:ngay_di)", nativeQuery = true)
-List<LoaiPhongTrongDTO> xemDuBaoPhong(LocalDate ngay_den, LocalDate ngay_di);
+    List<LoaiPhongTrongDTO> xemDuBaoPhong(LocalDate ngay_den, LocalDate ngay_di);
+
+    @Query(value = "SELECT * FROM  thong_ke_phong_dang_o_theo_loai(:ngay_den,:ngay_di,:maLoaiPhong)", nativeQuery = true)
+    List<LoaiPhongTrongDTO> getThongKePhongDangOTheoLoai(LocalDate ngay_den, LocalDate ngay_di, String maLoaiPhong);
 
 }

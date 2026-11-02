@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
+import vttu.khachsanservice.dto.request.BatchCheckInRequest;
+import vttu.khachsanservice.dto.request.CheckAllPhongRequest;
 import vttu.khachsanservice.dto.request.GiaPhongTheoNgayRequest;
 import vttu.khachsanservice.dto.request.NhanPhongRequest;
 import vttu.khachsanservice.dto.request.XepPhongBooKingRequest;
@@ -186,6 +188,68 @@ public class XepPhongBooKingController {
         }
     }
 
+    @PutMapping("/check-in/bulk")
+    ApiResponse<Boolean> updateDaNhanPhongBulk(@RequestBody BatchCheckInRequest request) {
+        try {
+            return ApiResponse.<Boolean>builder()
+                    .result(xepPhongService.updateDaNhanPhongBatch(request))
+                    .message("Check-in phòng booking thành công")
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<Boolean>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value())
+                    .build();
+        } catch (AppException e) {
+            return ApiResponse.<Boolean>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .build();
+        } catch (Exception e) {
+            LoggerFactory.getLogger(XepPhongBooKingController.class).error("Error bulk check-in booking", e);
+            return ApiResponse.<Boolean>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .build();
+        }
+    }
+
+    @PutMapping("/check-out/{ma_xepphong_booking}")
+    ApiResponse<Boolean> updateCheckOutPhong(@PathVariable String ma_xepphong_booking,
+                                           @RequestParam boolean danhanphong,
+                                           @RequestParam BigDecimal phuThuCheckInSom) {
+        try {
+
+            return ApiResponse.<Boolean>builder()
+                    .result(xepPhongService.updateDaNhanPhong(ma_xepphong_booking,danhanphong,phuThuCheckInSom))
+                    .message("Check-out phòng booking thành công")
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<Boolean>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<Boolean>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(XepPhongBooKingController.class).error("Error check-in booking", e);
+
+            return ApiResponse.<Boolean>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
+
+
+
     @GetMapping("/chi-tiet-xep-phong/{ma_xepphong}")
     ApiResponse<XepPhongBooKingResponse> getXepPhongByMaXepPhong(@PathVariable String ma_xepphong) {
         try {
@@ -325,11 +389,15 @@ public class XepPhongBooKingController {
                                            @RequestParam int so_nguoi_lon,
                                            @RequestParam BigDecimal phu_thu_tre,
                                            @RequestParam int  so_tre,
+                                           @RequestParam BigDecimal phu_thu_check_in_som,
+                                           @RequestParam BigDecimal phu_thu_check_out_tre,
+                                           @RequestParam BigDecimal phu_thu_nang_hang_phong,
+                                           @RequestParam int so_luong_nang_hang_phong,
                                            @RequestParam String ma_xepphong) {
         try {
 
             return ApiResponse.<Boolean>builder()
-                    .result(xepPhongService.updatePhuThuPhong(phu_thu_giuong, so_giuong, phu_thu_nguoi_lon, so_nguoi_lon ,phu_thu_tre, so_tre,ma_xepphong))
+                    .result(xepPhongService.updatePhuThuPhong(phu_thu_giuong, so_giuong, phu_thu_nguoi_lon, so_nguoi_lon ,phu_thu_tre, so_tre,phu_thu_check_in_som,phu_thu_check_out_tre,phu_thu_nang_hang_phong,so_luong_nang_hang_phong,ma_xepphong))
                     .message("Cập nhật phụ thu thành công")
                     .code(HttpStatus.OK.value())
                     .build();
@@ -445,6 +513,75 @@ public class XepPhongBooKingController {
             return ApiResponse.<Boolean>builder()
                     .message("Internal Server Error!")
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
+    @GetMapping("/check_in_all/{ma_booking}")
+    ApiResponse<List<Map<String,Object>>> getDanhSachPhongCheckInByMaBooKingController(@PathVariable String ma_booking) {
+        try {
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .result(xepPhongService.getDanhSachPhongCheckInByMaBooKingService(ma_booking))
+
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(XepPhongBooKingController.class).error("Error phu thu xep phong", e);
+
+            return ApiResponse.<List<Map<String,Object>>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
+
+    @PutMapping("/check_in_all")
+    ApiResponse<Void> updateCheckNhanPhong(
+            @RequestBody List<CheckAllPhongRequest> checkAllPhongRequest) {
+
+        try {
+
+            xepPhongService.updatCheckInPhong(checkAllPhongRequest);
+
+            return ApiResponse.<Void>builder()
+                    .message("Cập nhật check in thành công")
+                    .code(HttpStatus.OK.value())
+                    .build();
+
+        } catch (AccessDeniedException e) {
+
+            return ApiResponse.<Void>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value())
+                    .build();
+
+        } catch (AppException e) {
+
+            return ApiResponse.<Void>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .build();
+
+        } catch (Exception e) {
+
+            LoggerFactory.getLogger(XepPhongBooKingController.class)
+                    .error("Error cập nhật check-in", e);
+
+            return ApiResponse.<Void>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
     }

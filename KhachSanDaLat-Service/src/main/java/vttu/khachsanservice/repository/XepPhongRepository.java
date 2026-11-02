@@ -35,6 +35,28 @@ public interface XepPhongRepository extends JpaRepository<XepPhongBooKing, Strin
     @Query("UPDATE XepPhongBooKing xp SET xp.daNhanPhong =:danhanphong, xp.thoiGianNhan = :thoigiannhan , xp.userCheckIn = :userCheckIn,xp.checkInTre =:checkinTre , xp.phuThuCheckInSom =:phuThuCheckInSom  WHERE xp.maXepPhongBooking = :maxepphongbooking")
     int updateDanhanPhong(boolean danhanphong, LocalDateTime thoigiannhan, String maxepphongbooking, String userCheckIn, boolean checkinTre, BigDecimal phuThuCheckInSom);
 
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("""
+            UPDATE XepPhongBooKing xp
+            SET xp.daNhanPhong = :daNhanPhong,
+                xp.thoiGianNhan = :thoiGianNhan,
+                xp.userCheckIn = :userCheckIn,
+                xp.checkInTre = CASE
+                    WHEN xp.ngayDen < :ngayHienTai
+                      OR (xp.ngayDen = :ngayHienTai AND xp.gioDen < :gioHienTai)
+                    THEN true
+                    ELSE false
+                END
+            WHERE xp.maXepPhongBooking IN :maXepPhongBookings
+            """)
+    int updateDaNhanPhongBatch(
+            @Param("maXepPhongBookings") List<String> maXepPhongBookings,
+            @Param("daNhanPhong") boolean daNhanPhong,
+            @Param("thoiGianNhan") LocalDateTime thoiGianNhan,
+            @Param("userCheckIn") String userCheckIn,
+            @Param("ngayHienTai") LocalDate ngayHienTai,
+            @Param("gioHienTai") LocalTime gioHienTai);
+
     @Query("SELECT COUNT(*) FROM XepPhongBooKing xp WHERE xp.maXepPhongBooking = :maxepphongbooking")
     long countByMaXepPhongBooking(String maxepphongbooking);
 
@@ -152,11 +174,11 @@ ORDER BY
 
     // Cập nhật thêm phụ thu phòng
     @Modifying
-    @Query("UPDATE XepPhongBooKing xp SET xp.phuThuTienGiuong =:phuThuTienGiuong, xp.soGiuong=:soGiuong,xp.phuThuNguoiLon=:phuThuNguoiLon, xp.soNguoiLon=:soNguoiLon, xp.phuThuTienTre=:phuThuTreEm, xp.soTre=:soTre, xp.thanhTien = :tongTien WHERE xp.maXepPhongBooking=:ma_xepphong")
-    int UpdatePhuThuPhong(BigDecimal phuThuTienGiuong, int soGiuong, BigDecimal phuThuNguoiLon, int soNguoiLon,BigDecimal phuThuTreEm ,int soTre, String ma_xepphong, BigDecimal tongTien);
+    @Query("UPDATE XepPhongBooKing xp SET xp.phuThuTienGiuong =:phuThuTienGiuong, xp.soGiuong=:soGiuong,xp.phuThuNguoiLon=:phuThuNguoiLon, xp.soNguoiLon=:soNguoiLon, xp.phuThuTienTre=:phuThuTreEm, xp.soTre=:soTre, xp.phuThuCheckInSom = :phuThuCheckInSom, xp.phuThuCheckOutTre =:phuThuCheckOutTre,xp.phuThuNangHangPhong = :phuThuNangHangPhong, xp.soLuongNangHangPhong = :soLuongNangHangPhong  ,xp.thanhTien = :tongTien WHERE xp.maXepPhongBooking=:ma_xepphong")
+    int UpdatePhuThuPhong(BigDecimal phuThuTienGiuong, int soGiuong, BigDecimal phuThuNguoiLon, int soNguoiLon,BigDecimal phuThuTreEm ,int soTre,BigDecimal phuThuCheckInSom, BigDecimal phuThuCheckOutTre, BigDecimal phuThuNangHangPhong, int  soLuongNangHangPhong,String ma_xepphong, BigDecimal tongTien);
 
     // Lấy phụ thu nếu có
-    @Query(value = "select phu_thu_tien_giuong, so_giuong,phu_thu_nguoi_lon,so_nguoi_lon,phu_thu_tien_tre,so_tre from xep_phong_booking where ma_xep_phong_booking=:ma_xepphong", nativeQuery = true)
+    @Query(value = "select phu_thu_tien_giuong, so_giuong,phu_thu_nguoi_lon,so_nguoi_lon,phu_thu_tien_tre,so_tre, phu_thu_check_in_som, phu_thu_check_out_tre, phu_thu_nang_hang_phong, so_luong_nang_hang_phong from xep_phong_booking where ma_xep_phong_booking=:ma_xepphong", nativeQuery = true)
     Map<String, Object> getPhuThuXepPhong(String ma_xepphong);
 
     // cập nhật nếu chi tiết có thay đổi
@@ -270,7 +292,15 @@ ORDER BY
         """, nativeQuery = true)
     List<XepPhongBooKing> getXepPhongDaNhan();
 
-}
+  /// DANH SACH PHONG CHECK-IN
+    @Query(value = """
+         SELECT ma_xep_phong_booking, xep_phong_booking.ma_phong, phong.ma_loaiphong, ma_booking , xep_phong_booking.da_nhan_phong, xep_phong_booking.thoi_gian_nhan  FROM
+        xep_phong_booking
+        JOIN phong on phong.ma_phong = xep_phong_booking.ma_phong
+        WHERE ma_booking = :ma_booking and thoi_gian_xoa is null order by xep_phong_booking.ma_phong asc;
+""", nativeQuery = true)
+    List<Map<String, Object>> getDanhSachPhongCheckInByMaBooKing(String ma_booking);
 
+}
 
 

@@ -158,6 +158,8 @@ public enum ErrorCode {
     THANG_INVALID(1146,"Tháng phải từ 1 đến 12",HttpStatus.NOT_FOUND),
     NAM_INVALID(1147, "Năm không hợp lệ trong hệ thống",HttpStatus.NOT_FOUND),
     DATA_IS_EMPTY(1148, "Dữ liệu trả về trống không có dữ liệu",HttpStatus.NOT_FOUND),
+    TEN_NGUON_TRUNG(1149, "Tên nguồn đã tồn tại",HttpStatus.NOT_FOUND),
+    DIA_CHI_CONG_TY_NOT_FOUND(1150,"Địa chỉ công ty không được để trống", HttpStatus.NOT_FOUND),
             ;
             ;
 

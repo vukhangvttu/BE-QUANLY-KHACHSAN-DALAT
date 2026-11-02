@@ -42,6 +42,7 @@ public class HoaDonRequest {
 
     BigDecimal tongPhuThuCheckInSom;
     BigDecimal tongPhuThuCheckOutTre;
+    BigDecimal tongPhuThuNangHangPhong;
 //    BooKing booKing;
 //    List<ChiTietHoaDon> chiTietHoaDons = new ArrayList<>();
 }

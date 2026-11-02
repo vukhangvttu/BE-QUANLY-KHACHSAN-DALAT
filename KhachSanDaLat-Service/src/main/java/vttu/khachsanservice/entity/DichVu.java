@@ -25,10 +25,8 @@ public class DichVu {
     String gia;
     String trangThai;
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.BINARY)
-    @Column(name = "hinh_anh", columnDefinition = "BYTEA") // PostgreSQL
-    byte[] hinhAnh;
+    @Column(name = "hinh_anh", length = 255)
+    String hinhAnh;
 
     @ManyToOne
     @JoinColumn(name = "ma_nhomdichvu", nullable = true)

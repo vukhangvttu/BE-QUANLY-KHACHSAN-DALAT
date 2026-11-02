@@ -26,11 +26,12 @@ public class ChuyenPhongController {
     @PostMapping
     ApiResponse<Boolean> saveChuyenPhong(@RequestParam String ma_xepphong, @RequestParam String ma_phong_cu,
                                          @RequestParam String ma_phong_moi, @RequestParam String ma_loai_phong,
+                                          @RequestParam String ma_loai_phong_moi,
                                           @RequestBody List<GiaPhongTheoNgayRequest> giaPhongTheoNgayRequests) {
         try {
 
             return ApiResponse.<Boolean>builder()
-                    .result(chuyenPhongService.saveChuyenPhong(ma_xepphong, ma_phong_cu, ma_phong_moi, ma_loai_phong,giaPhongTheoNgayRequests))
+                    .result(chuyenPhongService.saveChuyenPhong(ma_xepphong, ma_phong_cu, ma_phong_moi, ma_loai_phong ,ma_loai_phong_moi,giaPhongTheoNgayRequests))
                     .message("Chuyển phòng thành công")
                     .code(HttpStatus.OK.value())
                     .build();

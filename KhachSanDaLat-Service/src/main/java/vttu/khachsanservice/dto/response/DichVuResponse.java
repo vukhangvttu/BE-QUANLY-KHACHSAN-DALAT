@@ -13,6 +13,6 @@ public class DichVuResponse {
     String tenDichVu;
     String dvt;
     String gia;
-    byte[] hinhAnh;
+    String hinhAnh;
     String trangThai;
 }

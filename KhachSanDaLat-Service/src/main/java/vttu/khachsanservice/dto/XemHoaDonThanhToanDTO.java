@@ -44,4 +44,6 @@ public class XemHoaDonThanhToanDTO {
 
     BigDecimal phuThuCheckInSom;
     BigDecimal phuThuCheckOutTre;
+    BigDecimal phuThuNangHangPhong;
+    int soLuongNangHangPhong;
 }

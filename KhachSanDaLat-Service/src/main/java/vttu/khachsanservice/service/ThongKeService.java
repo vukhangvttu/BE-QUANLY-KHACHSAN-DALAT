@@ -98,7 +98,6 @@ public class ThongKeService {
 
             Sheet sheet = workbook.getSheetAt(1);
 
-
             CellStyle cellStyle = workbook.createCellStyle();
             cellStyle.setBorderTop(BorderStyle.THIN);
             cellStyle.setBorderBottom(BorderStyle.THIN);
@@ -165,6 +164,11 @@ public class ThongKeService {
             // Bổ sung 27-10
             BigDecimal sunTongTienPhuThuCheckInSom = BigDecimal.ZERO;
             BigDecimal sunTongTienPhuThuCheckOutTre = BigDecimal.ZERO;
+
+            // Bổ sung 27-08-2026
+            BigDecimal sumTongTienPhuThuDonPhong = BigDecimal.ZERO;
+            BigDecimal sumTongTienPhuThuNangHangPhong = BigDecimal.ZERO;
+            BigDecimal sumTongTienHoiNghi = BigDecimal.ZERO;
             // Thêm dữ liệu (từ dòng 4)
             DataFormat format = workbook.createDataFormat();
             CellStyle numberStyle = workbook.createCellStyle();
@@ -271,7 +275,13 @@ public class ThongKeService {
                     createCellSO(row, 19, 0, numberStyle);
                 }
 
-                createCellSO(row, 20,  0, numberStyle);
+                BigDecimal tienHoiNghi = (BigDecimal) item.get("tong_tien_hoi_nghi");
+                if (tienHoiNghi != null) {
+                    createCellSO(row, 20, tienHoiNghi.doubleValue(), numberStyle);
+                    sumTongTienHoiNghi = sumTongTienHoiNghi.add(tienDichVuKhac);
+                } else {
+                    createCellSO(row, 20, 0, numberStyle);
+                }
 
                 BigDecimal tienPhuThuCheckInSom = (BigDecimal) item.get("tong_phu_thu_check_in_som");
                 if (tienPhuThuCheckInSom != null) {
@@ -289,27 +299,40 @@ public class ThongKeService {
                     createCellSO(row, 22, 0, numberStyle);
                 }
 
+                BigDecimal tienPhuThuDonPhong = (BigDecimal) item.get("tong_tien_dich_vu_don_phong");
+                if (tienPhuThuDonPhong != null) {
+                    createCellSO(row, 23, tienPhuThuDonPhong.doubleValue(), numberStyle);
+                    sumTongTienPhuThuDonPhong = sumTongTienPhuThuDonPhong.add(tienPhuThuDonPhong);
+                } else {
+                    createCellSO(row, 23, 0, numberStyle);
+                }
+
+                BigDecimal tienPhuThuNangHangPhong= (BigDecimal) item.get("tong_phu_thu_nang_hang_phong");
+                if (tienPhuThuNangHangPhong != null) {
+                    createCellSO(row, 24, tienPhuThuNangHangPhong.doubleValue(), numberStyle);
+                    sumTongTienPhuThuNangHangPhong = sumTongTienPhuThuNangHangPhong.add(tienPhuThuNangHangPhong);
+                } else {
+                    createCellSO(row, 24, 0, numberStyle);
+                }
 
                 BigDecimal tongThanhToan = (BigDecimal) item.get("tong_tien");
                 BigDecimal tienCoc = (BigDecimal) item.get("tien_coc");
                 BigDecimal tongAddTienCoc = tongThanhToan.subtract(tienCoc);
 
 
-
-
                 if (tienCoc != null) {
-                    createCellSO(row, 24, tienCoc.doubleValue(), numberStyle);
+                    createCellSO(row, 26, tienCoc.doubleValue(), numberStyle);
                     sumTongTienCoc = sumTongTienCoc.add(tienCoc);
                 } else {
-                    createCellSO(row, 24, 0, numberStyle);
+                    createCellSO(row, 26, 0, numberStyle);
                 }
 
 //                BigDecimal tongTienCuoi = tongAddTienCoc.subtract(tienCoc);
-                createCellSO(row, 23,  tongThanhToan.doubleValue(), numberStyle);
+                createCellSO(row, 25,  tongThanhToan.doubleValue(), numberStyle);
                 sumTongTienCuoi = sumTongTienCuoi.add(tongThanhToan);
 
 
-                createCellSO(row, 25, tongAddTienCoc.doubleValue(), numberStyle);
+                createCellSO(row, 27, tongAddTienCoc.doubleValue(), numberStyle);
                 sumTongCongThanhToan = sumTongCongThanhToan.add(tongAddTienCoc);
 
             }
@@ -360,9 +383,11 @@ public class ThongKeService {
             createCellSO(totalRow1, 20, 0, cellStyle);
             createCellSO(totalRow1, 21, sunTongTienPhuThuCheckInSom.doubleValue(), cellStyle);
             createCellSO(totalRow1, 22, sunTongTienPhuThuCheckOutTre.doubleValue(), cellStyle);
-            createCellSO(totalRow1, 23, sumTongCongThanhToan.doubleValue(), numberStyle);
-            createCellSO(totalRow1, 24, sumTongTienCoc.doubleValue(), numberStyle);
-            createCellSO(totalRow1, 25, sumTongTienCuoi.doubleValue(), numberStyle);
+            createCellSO(totalRow1, 23, sumTongTienPhuThuDonPhong.doubleValue(), numberStyle);
+            createCellSO(totalRow1, 24, sumTongTienPhuThuNangHangPhong.doubleValue(), numberStyle);
+            createCellSO(totalRow1, 25, sumTongCongThanhToan.doubleValue(), numberStyle);
+            createCellSO(totalRow1, 26, sumTongTienCoc.doubleValue(), numberStyle);
+            createCellSO(totalRow1, 27, sumTongTienCuoi.doubleValue(), numberStyle);
 
 
             Sheet sheet0 = workbook.getSheetAt(0);
@@ -402,6 +427,11 @@ public class ThongKeService {
             // Bổ sung 27-10
             BigDecimal sunTongTienPhuThuCheckInSom1 = BigDecimal.ZERO;
             BigDecimal sunTongTienPhuThuCheckOutTre1 = BigDecimal.ZERO;
+
+            // Bổ sung 27-08-2026
+            BigDecimal sumTongTienPhuThuDonPhong1 = BigDecimal.ZERO;
+            BigDecimal sumTongTienPhuThuNangHangPhong1 = BigDecimal.ZERO;
+            BigDecimal sumTongTienHoiNghi1 = BigDecimal.ZERO;
 
             // Thêm dữ liệu (từ dòng 4)
             int rowIndex0 = 5;
@@ -547,12 +577,28 @@ public class ThongKeService {
                     createCellSO(row, 26, 0, numberStyle);
                 }
 
+                BigDecimal tienPhuThuDonPhong = (BigDecimal) item.get("tien_dich_vu_don_phong");
+                if (tienPhuThuDonPhong != null) {
+                    createCellSO(row, 27, tienPhuThuDonPhong.doubleValue(), numberStyle);
+                    sumTongTienPhuThuDonPhong1 = sumTongTienPhuThuDonPhong1.add(tienPhuThuDonPhong);
+                } else {
+                    createCellSO(row, 27, 0, numberStyle);
+                }
+
+                BigDecimal tienPhuThuNangHangPhong = (BigDecimal) item.get("tong_phu_thu_nang_hang_phong");
+                if (tienPhuThuNangHangPhong != null) {
+                    createCellSO(row, 28, tienPhuThuNangHangPhong.doubleValue(), numberStyle);
+                    sumTongTienPhuThuNangHangPhong1 = sumTongTienPhuThuNangHangPhong1.add(tienPhuThuNangHangPhong);
+                } else {
+                    createCellSO(row, 28, 0, numberStyle);
+                }
+
                 BigDecimal tongThanhToan = (BigDecimal) item.get("tong_thanh_toan");
                 if (tongThanhToan != null) {
-                    createCellSO(row, 27, tongThanhToan.doubleValue(), numberStyle);
+                    createCellSO(row, 29, tongThanhToan.doubleValue(), numberStyle);
                     sumTongCongThanhToan1 = sumTongCongThanhToan1.add(tongThanhToan);
                 } else {
-                    createCellSO(row, 27,0, numberStyle);
+                    createCellSO(row, 29,0, numberStyle);
                 }
 
             }
@@ -609,7 +655,9 @@ public class ThongKeService {
             createCell(totalRow, 24, "0", cellStyle);
             createCellSO(totalRow, 25, sunTongTienPhuThuCheckOutTre1.doubleValue(), numberStyle);
             createCellSO(totalRow, 26, sunTongTienPhuThuCheckInSom1.doubleValue(), numberStyle);
-            createCellSO(totalRow, 27, sumTongCongThanhToan1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 27, sumTongTienPhuThuDonPhong1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 28, sumTongTienPhuThuNangHangPhong1.doubleValue(), numberStyle);
+            createCellSO(totalRow, 29, sumTongCongThanhToan1.doubleValue(), numberStyle);
 
             // Xuất file
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -886,7 +934,7 @@ public class ThongKeService {
                     "KHONG", "9 - Giấy Tờ Khác"
             );
 
-            int rowIndex = 3;
+            int rowIndex = 4;
             for (Map<String, Object> item : data) {
 
                 Row row = sheet.createRow(rowIndex++);
@@ -1177,6 +1225,7 @@ public class ThongKeService {
             BigDecimal grandSumDichVuSetMonAn1 = BigDecimal.ZERO;
             BigDecimal grandSumDenBu1 = BigDecimal.ZERO;
             BigDecimal grandSumHoiNghi1 = BigDecimal.ZERO;
+            BigDecimal grandSumDonPhong = BigDecimal.ZERO;
 
             int rowIndex1 = 5;
             int stt1 = 1;

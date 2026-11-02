@@ -95,4 +95,8 @@ public class PhongService {
                 .orElseThrow(() -> new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND));
         return phongRepository.getThongTinKhachHangBooking(ma_xepphong);
     }
+
+    public List<PhongTrongThoiGian> getDanhSachPhongDangOTheoLoaiService(String maLoaiPhong, LocalDate ngay_den, LocalDate ngay_di) {
+        return phongRepository.getDanhSachPhongDangOTheoLoai(maLoaiPhong,ngay_den, ngay_di);
+    }
 }

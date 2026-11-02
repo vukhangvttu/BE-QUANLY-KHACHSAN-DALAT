@@ -1,5 +1,5 @@
 server:
-  port: 8310
+  port: 8080
   servlet:
     context-path: /khachsan-service
   tomcat:
@@ -13,7 +13,7 @@ spring:
     locale-resolver: fixed
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/QL-KHACH-SAN-DALAT
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:QL-KHACH-SAN-VT}
     username: ${USER_DB:YqKZwsA/4cLvT22dQpMngxAfnGorgm+xYzbzW1qgPHw=}
     password: ${USER_PW:D0/HnzSe7XZII4zTojifuRoYlSQy/k4dXJVgwOHsDBrKc19wWPHjT0KXXMhNwP9d}
     driver-class-name: org.postgresql.Driver
@@ -51,14 +51,31 @@ logging:
 config:
   dir: D:/docker/docker-khach-san
 
+file:
+  upload-dir: D:/images
+  public-path: /images
+
 jwt:
   signerKey: |-
     "9lo+R+4nWrLw4cs9/52XXDJuRy6JAM/tygP4JhbZl/64k5wTH0mNGjUQlncat4V5"
   valid-duration: 3600
   refreshable-duration: 36000
 
+viettel:
+  location: ${VIETTEL_LOCATION:vungTau}  # đổi thành vungTau nếu chạy cho Vũng Tàu vungTau, daLat
+
+maSoThueLogin:
+  daLat: 5801578218
+  vungTau: 3502532620_api
+
+maSoThue:
+  daLat: 5801578218
+  vungTau: 3502532620
+
 mst:
-  mk: ry0OlGnOeFalUl07teh3dXYWMM7GANBBhSm7D/quh2U=
+  mkDaLat: ry0OlGnOeFalUl07teh3dXYWMM7GANBBhSm7D/quh2U=
+  mkVungTau: 8V+MLk0eREGSIaqpefv2D4QE+X3tanteeZqu7Cbjh50=
+
 
 #mst:
 #  mk: h/l+q0yOLBt+p9wPyciqmsV8c/ruzj5fN/Eaq6XdLsM=

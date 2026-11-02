@@ -67,6 +67,7 @@ public class BooKingService {
     private final GiaPhongRepository giaPhongRepository;
     private final DanhSachPhongChiTietRepository danhSachPhongChiTietRepository;
     private final GiaPhongTheoNgayRepository giaPhongTheoNgayRepository;
+    private final KhachHangPhongRepository khachHangPhongRepository;
 
     Log_GiaPhongTheoNgayRepository logGiaPhongTheoNgayRepository;
     private final Log_DanhSachPhongChiTietRepositoty log_DanhSachPhongChiTietRepositoty;
@@ -291,6 +292,7 @@ public BooKingResponse createBooKing(BooKingRequest request) {
                               DateConverter.converDate(chiTietBooKingRequest.getNgayDen()),
                               DateConverter.converDate(chiTietBooKingRequest.getNgayDi())));
             }
+
           }
         }
       }
@@ -383,7 +385,8 @@ public BooKingResponse createBooKing(BooKingRequest request) {
       boolean duLieuMoi = chiTietBooking == null;
       if (!duLieuMoi) {
         // Cập nhật ChiTietBooking hiện có
-        if (!maLoaiPhong.equals(chiTietBooking.getLoaiPhong().getMaLoaiPhong())) {
+        boolean loaiPhongChanged = !maLoaiPhong.equals(chiTietBooking.getLoaiPhong().getMaLoaiPhong());
+        if (loaiPhongChanged) {
           List<Map<String, Object>> xepPhong = xepPhongRepository.DaXepPhong(chiTietBooKingRequest.getMaChiTietBooking());
           if (!xepPhong.isEmpty()) {
             StringBuilder listPhong = new StringBuilder();
@@ -392,7 +395,6 @@ public BooKingResponse createBooKing(BooKingRequest request) {
             }
             throw new AppException(ErrorCode.ERROR_LOAI_PHONG_MISMATCH, "Loại phòng không khớp vì đã check-in: " + listPhong);
           } else {
-            xepPhongRepository.DeleteXepPhongTheoChiTiet(chiTietBooKingRequest.getMaChiTietBooking());
             booKingUpdate.setDaXepPhong(false);
           }
         }
@@ -419,7 +421,8 @@ public BooKingResponse createBooKing(BooKingRequest request) {
         }
 
         // Kiểm tra sự thay đổi
-        boolean roomsChanged = chiTietBooKingRequest.getSoLuong() != chiTietBooking.getSoLuong() ||
+        boolean roomsChanged = loaiPhongChanged ||
+          chiTietBooKingRequest.getSoLuong() != chiTietBooking.getSoLuong() ||
           !inputPhongCount.equals(daXepPhongCount);
 
         // Cập nhật ChiTietBooking
@@ -460,6 +463,7 @@ public BooKingResponse createBooKing(BooKingRequest request) {
 
           // Tạo mới hoặc cập nhật XepPhongBooKing và DanhSachPhongChiTiet cho danh sách phòng từ request
           int sttMoi = 1;
+          List<XepPhongBooKing> newXepPhongBooKings = new ArrayList<>();
           for (DanhSachPhongChiTietRequest phongDTO : dsPhongkt) {
             String maPhong = phongDTO.getMaPhong();
             Phong phong = phongRepository.findById(maPhong)
@@ -509,7 +513,7 @@ public BooKingResponse createBooKing(BooKingRequest request) {
                 authentication
               );
             } else {
-              createSaveXepPhongBooKing(
+              XepPhongBooKing newXepPhong = createSaveXepPhongBooKing(
                 chiTietBooking,
                 booKing,
                 maPhong,
@@ -519,9 +523,11 @@ public BooKingResponse createBooKing(BooKingRequest request) {
                 authentication,
                 chiTietBooking.getGiaPhongTheoNgays()
               );
+              newXepPhongBooKings.add(newXepPhong);
             }
             sttMoi++;
           }
+          reassignGuestsToReplacementRooms(xepPhongBooKings, newXepPhongBooKings, loaiPhongChanged);
         } else {
           // Không thay đổi danh sách phòng, chỉ cập nhật DanhSachPhongChiTiet
           danhSachPhongChiTietRepository.deleteByChiTietBooking_MaChiTietBooking(chiTietBooking.getMaChiTietBooking());
@@ -1139,7 +1145,7 @@ public BooKingResponse createBooKing(BooKingRequest request) {
 
 
 
-    public void createSaveXepPhongBooKing(ChiTietBooking chiTietBooking, BooKing booKing,String maPhong, int count,int soGiuong, BigDecimal giaExtraBed, Authentication authentication ,List<GiaPhongTheoNgay> giaPhongTheoNgays) {
+    public XepPhongBooKing createSaveXepPhongBooKing(ChiTietBooking chiTietBooking, BooKing booKing,String maPhong, int count,int soGiuong, BigDecimal giaExtraBed, Authentication authentication ,List<GiaPhongTheoNgay> giaPhongTheoNgays) {
 
         BigDecimal tongGiaPhong = BigDecimal.ZERO;
         for(GiaPhongTheoNgay giaPhongTheoNgay : giaPhongTheoNgays){
@@ -1175,9 +1181,45 @@ public BooKingResponse createBooKing(BooKingRequest request) {
         xepPhongBooKing.setNguoiTao(authentication.getName());
         xepPhongBooKing.setPhuThuCheckInSom(BigDecimal.ZERO);
         xepPhongBooKing.setPhuThuCheckInSom(BigDecimal.ZERO);
+        xepPhongBooKing.setPhuThuNangHangPhong(BigDecimal.ZERO);
+        xepPhongBooKing.setSoLuongNangHangPhong(0);
 
 
-        xepPhongRepository.save(xepPhongBooKing);
+        return xepPhongRepository.save(xepPhongBooKing);
+    }
+
+    private void reassignGuestsToReplacementRooms(
+            List<XepPhongBooKing> oldXepPhongBookings,
+            List<XepPhongBooKing> newXepPhongBookings,
+            boolean loaiPhongChanged) {
+        List<XepPhongBooKing> oldAssignments = oldXepPhongBookings.stream()
+                .filter(xepPhong -> xepPhong.getThoiGianXoa() == null
+                        && !xepPhong.isDaNhanPhong()
+                        && !xepPhong.isDaThanhToan())
+                .sorted(Comparator.comparingLong(XepPhongBooKing::getAutoIncrementId))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        for (XepPhongBooKing newXepPhong : newXepPhongBookings) {
+            XepPhongBooKing oldXepPhong = oldAssignments.stream()
+                    .filter(old -> old.getPhong().getMaPhong().equals(newXepPhong.getPhong().getMaPhong()))
+                    .findFirst()
+                    .orElseGet(() -> oldAssignments.isEmpty() ? null : oldAssignments.get(0));
+            if (oldXepPhong != null) {
+                khachHangPhongRepository.reassignToXepPhongBooking(
+                        oldXepPhong.getMaXepPhongBooking(),
+                        newXepPhong);
+                oldAssignments.remove(oldXepPhong);
+            }
+        }
+
+        if (loaiPhongChanged && !newXepPhongBookings.isEmpty()) {
+            XepPhongBooKing replacement = newXepPhongBookings.get(0);
+            for (XepPhongBooKing oldXepPhong : oldAssignments) {
+                khachHangPhongRepository.reassignToXepPhongBooking(
+                        oldXepPhong.getMaXepPhongBooking(),
+                        replacement);
+            }
+        }
     }
 
     @Transactional
@@ -1242,4 +1284,3 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     );
   }
 }
-

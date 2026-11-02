@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import vttu.khachsanservice.dto.LoaiPhongTrongDTO;
-import vttu.khachsanservice.dto.PhongDTO;
 import vttu.khachsanservice.dto.PhongTrongThoiGian;
+import vttu.khachsanservice.dto.request.BatchCheckInRequest;
+import vttu.khachsanservice.dto.request.CheckAllPhongRequest;
 import vttu.khachsanservice.dto.request.GiaPhongTheoNgayRequest;
 import vttu.khachsanservice.dto.request.XepPhongBooKingRequest;
 import vttu.khachsanservice.dto.response.XepPhongBooKingResponse;
@@ -25,7 +25,7 @@ import vttu.khachsanservice.mapper.XepPhongBooKingMapper;
 import vttu.khachsanservice.repository.*;
 import vttu.khachsanservice.repository.log.Log_GiaPhongTheoNgayRepository;
 import vttu.khachsanservice.utils.DateConverter;
-import vttu.khachsanservice.utils.VietnamHolidayUtils;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -384,6 +384,51 @@ xepPhongBooKing.setSoNguoiLon(0);
         }
     }
 
+    @Transactional
+    public boolean updateDaNhanPhongBatch(BatchCheckInRequest request) {
+        if (request == null || request.getMaXepPhongBooking() == null
+                || request.getMaXepPhongBooking().isEmpty() || request.getDaNhanPhong() == null) {
+            throw new AppException(ErrorCode.DATA_IS_EMPTY);
+        }
+
+        List<String> maXepPhongBookings = request.getMaXepPhongBooking();
+        if (maXepPhongBookings.stream().anyMatch(ma -> ma == null || ma.trim().isEmpty())) {
+            throw new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND);
+        }
+
+        List<String> uniqueMaXepPhongBookings = maXepPhongBookings.stream()
+                .distinct()
+                .collect(Collectors.toList());
+        List<XepPhongBooKing> xepPhongBookings = xepPhongRepository.findAllById(uniqueMaXepPhongBookings);
+        if (xepPhongBookings.size() != uniqueMaXepPhongBookings.size()) {
+            throw new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND);
+        }
+
+        LocalDateTime thoiGianNhan = LocalDateTime.now();
+        LocalDate ngayHienTai = thoiGianNhan.toLocalDate();
+        for (XepPhongBooKing xepPhongBooking : xepPhongBookings) {
+            if (ngayHienTai.isBefore(xepPhongBooking.getNgayDen())) {
+                throw new AppException(
+                        ErrorCode.ERROR_NGAYDEN,
+                        "Ngày check-in phải là ngày hiện tại hoặc trước đó."
+                );
+            }
+        }
+
+        String userCheckIn = SecurityContextHolder.getContext().getAuthentication().getName();
+        int updatedRows = xepPhongRepository.updateDaNhanPhongBatch(
+                uniqueMaXepPhongBookings,
+                request.getDaNhanPhong(),
+                thoiGianNhan,
+                userCheckIn,
+                ngayHienTai,
+                thoiGianNhan.toLocalTime());
+        if (updatedRows != uniqueMaXepPhongBookings.size()) {
+            throw new AppException(ErrorCode.UPDATE_DA_XEP_PHONG);
+        }
+        return true;
+    }
+
     public XepPhongBooKingResponse getXepPhongBooKingByMaXepPhong(String ma_xepphong_booking) {
        XepPhongBooKing xepPhongBooKing =  xepPhongRepository.findById(ma_xepphong_booking)
                 .orElseThrow(() -> new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND));
@@ -726,7 +771,7 @@ xepPhongBooKing.setSoNguoiLon(0);
 
     // cập nhật phụ thu phòng
     @Transactional
-    public boolean updatePhuThuPhong(BigDecimal phuThuTienGiuong,int soGiuong,BigDecimal phuThuNguoiLon, int soNguoiLon, BigDecimal phuThuTreEm, int soTre, String ma_xepphong){
+    public boolean updatePhuThuPhong(BigDecimal phuThuTienGiuong,int soGiuong,BigDecimal phuThuNguoiLon, int soNguoiLon, BigDecimal phuThuTreEm, int soTre,BigDecimal phuThuCheckInSom, BigDecimal phuThuCheckOutTre, BigDecimal phuThuNangHangPhong, int soLuongNangHangPhong ,String ma_xepphong){
 
        XepPhongBooKing xepPhongBooKing =  xepPhongRepository.findById(ma_xepphong)
                 .orElseThrow(() -> new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND));
@@ -740,6 +785,15 @@ xepPhongBooKing.setSoNguoiLon(0);
         if(phuThuNguoiLon == null || phuThuNguoiLon.compareTo(BigDecimal.ZERO) < 0){
             throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_TRE_EM);
         }
+        if(phuThuCheckInSom == null || phuThuCheckInSom.compareTo(BigDecimal.ZERO) < 0){
+            throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_TRE_EM);
+        }
+        if(phuThuCheckOutTre == null || phuThuCheckOutTre.compareTo(BigDecimal.ZERO) < 0){
+            throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_TRE_EM);
+        }
+        if(phuThuNangHangPhong == null || phuThuNangHangPhong.compareTo(BigDecimal.ZERO) < 0){
+            throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_TRE_EM);
+        }
 
         if(soGiuong < 0){
             throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_GUONG);
@@ -748,6 +802,9 @@ xepPhongBooKing.setSoNguoiLon(0);
             throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_TRE_EM);
         }
         if(soNguoiLon < 0){
+            throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_TRE_EM);
+        }
+        if(soLuongNangHangPhong < 0){
             throw new AppException(ErrorCode.ERROR_PHU_THU_TIEN_TRE_EM);
         }
 
@@ -762,19 +819,22 @@ xepPhongBooKing.setSoNguoiLon(0);
             phuThuTreEm = BigDecimal.ZERO;
         if(soNguoiLon == 0)
             phuThuNguoiLon = BigDecimal.ZERO;
+        if(soLuongNangHangPhong == 0)
+            phuThuNangHangPhong = BigDecimal.ZERO;
 
         int soDemThue = (soDemThueLong == 0) ? 1 : (int) soDemThueLong;
 
-        BigDecimal tongTienPhuThuGiuong = phuThuTienGiuong.multiply(BigDecimal.valueOf(soDemThue));
-        BigDecimal tongTienPhuThuTre = phuThuTreEm.multiply(BigDecimal.valueOf(soDemThue));
-        BigDecimal tongTienPhuThuNguoiLon = phuThuNguoiLon.multiply(BigDecimal.valueOf(soDemThue));
+        BigDecimal tongTienPhuThuGiuong = phuThuTienGiuong.multiply(BigDecimal.valueOf(soDemThue)).multiply(BigDecimal.valueOf(soDemThue));
+        BigDecimal tongTienPhuThuTre = phuThuTreEm.multiply(BigDecimal.valueOf(soTre)).multiply(BigDecimal.valueOf(soDemThue));
+        BigDecimal tongTienPhuThuNguoiLon = phuThuNguoiLon.multiply(BigDecimal.valueOf(soNguoiLon)).multiply(BigDecimal.valueOf(soDemThue));
+        BigDecimal tongTienPhuThuNangHangPhong = phuThuNangHangPhong.multiply(BigDecimal.valueOf(soLuongNangHangPhong));
 
-        BigDecimal tongTienPhuThu = tongTienPhuThuGiuong.add(tongTienPhuThuTre).add(tongTienPhuThuNguoiLon);
+        BigDecimal tongTienPhuThu = tongTienPhuThuGiuong.add(tongTienPhuThuTre).add(tongTienPhuThuNguoiLon).add(tongTienPhuThuNangHangPhong).add(phuThuCheckInSom).add(phuThuCheckOutTre);
 
         BigDecimal thanhTien = tongTienPhuThu.add(xepPhongBooKing.getThanhTien());
 
         // Cập nhật phụ thu
-        int updatePhuThu = xepPhongRepository.UpdatePhuThuPhong(phuThuTienGiuong,soGiuong,phuThuNguoiLon,soNguoiLon,phuThuTreEm,soTre,ma_xepphong,thanhTien);
+        int updatePhuThu = xepPhongRepository.UpdatePhuThuPhong(phuThuTienGiuong,soGiuong,phuThuNguoiLon,soNguoiLon,phuThuTreEm,soTre,phuThuCheckInSom,phuThuCheckOutTre, phuThuNangHangPhong,soLuongNangHangPhong,ma_xepphong,thanhTien);
         if (updatePhuThu == 0) {
             logger.warn("Không thể cập nhật phụ thu : {}", ma_xepphong);
             throw new AppException(ErrorCode.UPDATE_DA_XEP_PHONG);
@@ -834,4 +894,74 @@ xepPhongBooKing.setSoNguoiLon(0);
         return true;
     }
 
+   public List<Map<String,Object>> getDanhSachPhongCheckInByMaBooKingService (String maBooking) {
+       if (maBooking == null || maBooking.trim().isEmpty()) {
+           logger.warn("Mã  booking không hợp lệ: {}", maBooking);
+           throw new IllegalArgumentException("Mã booking không được để trống hoặc null");
+       }
+        booKingRepository.findById(maBooking)
+               .orElseThrow(() -> new AppException(ErrorCode.MA_BOOKING_NOT_FOUND));
+
+       List<Map<String,Object>> listPhongCheckIn = xepPhongRepository.getDanhSachPhongCheckInByMaBooKing(maBooking);
+       return listPhongCheckIn;
+   }
+
+    @Transactional
+    public void updatCheckInPhong(List<CheckAllPhongRequest> requests) {
+
+        if (requests == null || requests.isEmpty()) {
+            throw new AppException(ErrorCode.DATA_IS_EMPTY);
+        }
+
+        for (CheckAllPhongRequest request : requests) {
+
+            if (request == null) {
+                throw new AppException(ErrorCode.DATA_IS_EMPTY);
+            }
+
+            // Kiểm tra mã xếp phòng
+            if (request.getMaXepPhongBooking() == null) {
+                throw new AppException(
+                        ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND
+                );
+            }
+
+            // Kiểm tra mã phòng
+            if (request.getMaPhong() == null) {
+                throw new AppException(
+                        ErrorCode.MA_PHONG_NOT_FOUND
+                );
+            }
+
+            // Kiểm tra check
+            if (request.getCheck() == null) {
+                throw new AppException(ErrorCode.DATA_IS_EMPTY);
+            }
+
+            // Tìm xếp phòng
+            XepPhongBooKing xepPhong = xepPhongRepository
+                    .findById(request.getMaXepPhongBooking())
+                    .orElseThrow(() ->
+                            new AppException(
+                                    ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND
+                            )
+                    );
+
+            // Tìm phòng
+            Phong phong = phongRepository
+                    .findById(request.getMaPhong())
+                    .orElseThrow(() ->
+                            new AppException(
+                                    ErrorCode.MA_PHONG_NOT_FOUND
+                            )
+                    );
+
+            // Update
+            xepPhong.setPhong(phong);
+            xepPhong.setDaNhanPhong(request.getCheck());
+            xepPhong.setThoiGianNhan(LocalDateTime.now());
+
+            xepPhongRepository.save(xepPhong);
+        }
+    }
 }

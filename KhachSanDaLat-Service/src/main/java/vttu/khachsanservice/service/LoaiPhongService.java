@@ -71,6 +71,23 @@ public class LoaiPhongService {
         return dsPhongTrong;
     }
 
+    public List<LoaiPhongTrongDTO> getThongKePhongDangOTheoLoaiService(LocalDate ngayDen, LocalDate ngayDi) {
+        // Kiểm tra ngày không null
+        if (ngayDen == null || ngayDi == null) {
+            throw new AppException(ErrorCode.NGAYDEN_NGAYDI_EMPTY);
+        }
+
+        // Gọi repository lấy danh sách phòng
+        List<LoaiPhongTrongDTO> dsPhongTrong = loaiPhongRepository.getThongKePhongDangOTheoLoai(ngayDen, ngayDi, "all");
+
+        // Kiểm tra nếu danh sách trống
+        if (dsPhongTrong.isEmpty()) {
+            System.out.println("Không có loại phòng trống trong khoảng thời gian đã chọn.");
+        }
+
+        return dsPhongTrong;
+    }
+
     public List<LoaiPhongTrongDTO> xemDuBaoPhong(LocalDate ngayDen, LocalDate ngayDi) {
         // Kiểm tra ngày không null
         if (ngayDen == null || ngayDi == null) {

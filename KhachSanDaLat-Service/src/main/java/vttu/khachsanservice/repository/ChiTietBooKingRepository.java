@@ -103,4 +103,9 @@ public interface ChiTietBooKingRepository extends JpaRepository<ChiTietBooking, 
 
 """ , nativeQuery = true)
   List<Map<String,Object>> getDanhSachPhuThuTreEmThanhToan(String maBooking);
+
+  @Query(value = """
+    SELECT * FROM chi_tiet_booking WHERE ma_chi_tiet_booking = :maChiTietBooking
+""", nativeQuery = true)
+    ChiTietBooking getChiTietBookingByMaChiTietBooking(String maChiTietBooking);
 }

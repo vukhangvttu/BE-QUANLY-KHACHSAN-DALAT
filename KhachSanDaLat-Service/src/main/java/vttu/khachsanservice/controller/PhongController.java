@@ -150,6 +150,36 @@ public class PhongController {
         }
     }
 
+    @GetMapping("/kiem-tra-phong-dang-o-theo-loai")
+    ApiResponse<List<PhongTrongThoiGian>> getListPhongDangOTheoLoai(@RequestParam String maLoaiPhong, @RequestParam LocalDate ngay_den, @RequestParam LocalDate ngay_di) {
+        try {
+
+            return ApiResponse.<List<PhongTrongThoiGian>>builder()
+                    .result(phongService.getDanhSachPhongDangOTheoLoaiService(maLoaiPhong,ngay_den,ngay_di))
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<List<PhongTrongThoiGian>>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<List<PhongTrongThoiGian>>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(PhongController.class).error("Error list phòng trống theo mã loại phòng và thời gian", e);
+
+            return ApiResponse.<List<PhongTrongThoiGian>>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
+                    .build();
+        }
+    }
+
     @GetMapping("/du-bao-phong-khoan-thoi-gian")
     ApiResponse<List<PhongStatusProjection>> getDuBaoPhongTheoThoiGian(LocalDate ngay_bd, LocalDate ngay_kt) {
         try {

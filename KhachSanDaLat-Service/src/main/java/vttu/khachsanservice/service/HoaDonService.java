@@ -275,6 +275,15 @@ public class HoaDonService {
                 decimalValue = new BigDecimal(stringValue);
                 phong.setPhuThuCheckinSom(decimalValue);
 
+                stringValue = row.get("phu_thu_check_out_tre").toString();
+                decimalValue = new BigDecimal(stringValue);
+                phong.setPhuThuCheckOutTre(decimalValue);
+
+                stringValue = row.get("phu_thu_nang_hang_phong").toString();
+                decimalValue = new BigDecimal(stringValue);
+                phong.setPhuThuNangHangPhong(decimalValue);
+
+                phong.setSoLuongNangHangPhong(Integer.parseInt(row.get("so_luong_nang_hang_phong").toString()));
 
                 phong.setDanhSachDichVu(danhSachDichVu);
                 phong.setDanhSachPhuThu(danhSachPhuThu);
@@ -344,7 +353,7 @@ public class HoaDonService {
             if (cthdReq.getLoaiKhoanMuc() == null || cthdReq.getLoaiKhoanMuc().isBlank()) {
                 throw new AppException(ErrorCode.INVALID_KHOAN_MUC);
             }
-            if (cthdReq.getDonGia() == null || cthdReq.getDonGia().compareTo(BigDecimal.ZERO) <= 0) {
+            if (cthdReq.getDonGia() == null || cthdReq.getDonGia().compareTo(BigDecimal.ZERO) < 0) {
                 throw new AppException(ErrorCode.INVALID_DON_GIA);
             }
             if (cthdReq.getSoLuong() <= 0) {
@@ -401,6 +410,8 @@ public class HoaDonService {
         // Kiểm tra tổng phụ thu check out muộn
         BigDecimal calculatedTongTienPhuThuCheckOutMuon = hoaDonRequestNew.getTongPhuThuCheckOutTre();
 
+        BigDecimal calculatedTongTienPhuThuNangHangPhong = hoaDonRequestNew.getTongPhuThuNangHangPhong();
+
         List<Map<String,Object>> phuThuTreEmList = chiTietBooKingRepository.getDanhSachPhuThuTreEmThanhToan(ma_booking);
         if(phuThuTreEmList != null && !phuThuTreEmList.isEmpty()) {
             for (Map<String, Object> phuThuTreEm : phuThuTreEmList) {
@@ -415,7 +426,7 @@ public class HoaDonService {
 
             }
         }
-      calculatedTongTienPhuThu = calculatedTongTienPhuThu.add(calculatedTongTienPhuThuTreEm).add(calculatedTongTienPhuThuCheckInSom).add(calculatedTongTienPhuThuCheckOutMuon).add(calculatedTongTienPhuThuAnSang);
+      calculatedTongTienPhuThu = calculatedTongTienPhuThu.add(calculatedTongTienPhuThuTreEm).add(calculatedTongTienPhuThuCheckInSom).add(calculatedTongTienPhuThuCheckOutMuon).add(calculatedTongTienPhuThuAnSang).add(calculatedTongTienPhuThuNangHangPhong);
 
 
       // Tạo và lưu hóa đơn
@@ -432,7 +443,7 @@ public class HoaDonService {
 
                 // Tính số ngày thuê cho từng phòng
                 LocalDate ngayDen = xpb.getNgayDen();
-                LocalDate ngayDi = hoaDonRequestNew.getNgayDi();
+                LocalDate ngayDi = xpb.getNgayDi();
 
                 if (ngayDen == null || ngayDi == null) {
                     throw new AppException(ErrorCode.NGAYDEN_NGAYDI_EMPTY, "Ngày đến hoặc ngày đi không được null");
@@ -447,7 +458,7 @@ public class HoaDonService {
 //            BigDecimal tienPhong = xpb.getGia().multiply(BigDecimal.valueOf(soDemThue));
 
 
-                List<GiaPhongTheoNgay> giaPhongTheoNgayList = giaPhongTheoNgayRepository.findByMaChiTietBooking(xpb.getChiTietBooking().getMaChiTietBooking());
+                List<GiaPhongTheoNgay> giaPhongTheoNgayList = giaPhongTheoNgayRepository.findByChiTietBookingAndNgay(xpb.getChiTietBooking().getMaChiTietBooking(), ngayDen, ngayDi);
 
                 if (giaPhongTheoNgayList.isEmpty()) {
                     throw new AppException(ErrorCode.GIA_PHONG_THEO_NGAY_EMPTY);
@@ -516,7 +527,7 @@ public class HoaDonService {
         hoaDon.setGhiChuThanhToanPhu(hoaDonRequestNew.getGhiChuThanhToanPhu() == null ? "" : hoaDonRequestNew.getGhiChuThanhToanPhu());
         hoaDon.setTongPhuThuCheckInSom(hoaDonRequestNew.getTongPhuThuCheckInSom() == null ? BigDecimal.ZERO : hoaDonRequestNew.getTongPhuThuCheckInSom());
         hoaDon.setTongPhuThuCheckOutTre(hoaDonRequestNew.getTongPhuThuCheckOutTre() == null ? BigDecimal.ZERO : hoaDonRequestNew.getTongPhuThuCheckOutTre());
-        hoaDonRepository.save(hoaDon);
+        hoaDonRepository.saveAndFlush(hoaDon);
 
         // Tạo và lưu chi tiết hóa đơn
         List<ChiTietHoaDon> danhSachChiTietHoaDon = new ArrayList<>();
@@ -639,6 +650,12 @@ public class HoaDonService {
                 stringValue = row.get("phu_thu_check_out_tre").toString();
                 decimalValue = new BigDecimal(stringValue);
                 phong.setPhuThuCheckOutTre(decimalValue);
+
+                stringValue = row.get("phu_thu_nang_hang_phong").toString();
+                decimalValue = new BigDecimal(stringValue);
+                phong.setPhuThuNangHangPhong(decimalValue);
+
+                phong.setSoLuongNangHangPhong(Integer.parseInt(row.get("so_luong_nang_hang_phong").toString()));
 
                 stringValue = row.get("tong_tien_phong_thanh_toan").toString();
                 decimalValue = new BigDecimal(stringValue);

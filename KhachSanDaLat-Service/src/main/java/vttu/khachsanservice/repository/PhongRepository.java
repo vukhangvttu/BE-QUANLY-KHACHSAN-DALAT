@@ -73,4 +73,9 @@ public interface PhongRepository extends JpaRepository<Phong, String> {
 """, nativeQuery = true)
     Map<String, Object> getThongTinKhachHangBooking(String ma_xepphong);
 
+    @Query(value = """
+        select * from danh_sach_phong_dang_o_theo_loai(:maloaiphong,:ngay_den,:ngay_di)
+""", nativeQuery = true)
+    List<PhongTrongThoiGian> getDanhSachPhongDangOTheoLoai(String maloaiphong, LocalDate ngay_den, LocalDate ngay_di);
+
 }

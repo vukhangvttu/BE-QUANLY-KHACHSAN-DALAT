@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import vttu.khachsanservice.entity.KhachHangPhong;
+import vttu.khachsanservice.entity.XepPhongBooKing;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +20,17 @@ public interface KhachHangPhongRepository extends JpaRepository<KhachHangPhong, 
 
     @Query("SELECT khp FROM KhachHangPhong khp WHERE khp.xepPhongBooKing.maXepPhongBooking = :ma_xepphong")
     List<KhachHangPhong> getKhachHangPhongByXepPhongBooking(String ma_xepphong);
+
+    @Modifying(flushAutomatically = true)
+    @Transactional
+    @Query("""
+            UPDATE KhachHangPhong khp
+            SET khp.xepPhongBooKing = :xepPhongMoi
+            WHERE khp.xepPhongBooKing.maXepPhongBooking = :maXepPhongCu
+            """)
+    int reassignToXepPhongBooking(
+            @Param("maXepPhongCu") String maXepPhongCu,
+            @Param("xepPhongMoi") XepPhongBooKing xepPhongMoi);
 
     // lấy tổng số khách theo ma xếp phong
     @Query("SELECT COUNT (*) FROM  KhachHangPhong khp WHERE khp.xepPhongBooKing.maXepPhongBooking=:ma_xepphong")

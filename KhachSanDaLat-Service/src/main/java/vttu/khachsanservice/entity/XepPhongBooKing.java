@@ -65,6 +65,8 @@ public class XepPhongBooKing {
     String userCheckIn;
     BigDecimal phuThuCheckInSom;
     BigDecimal phuThuCheckOutTre;
+    BigDecimal phuThuNangHangPhong;
+    int soLuongNangHangPhong;
     LocalDateTime thoiGianXoa;
     LocalDateTime thoiGianThanhToan;
 

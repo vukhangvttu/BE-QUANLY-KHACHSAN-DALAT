@@ -32,6 +32,9 @@ public class ThongTinPhongDto {
      BigDecimal phuThuNguoiLon;
      int soNguoiLon;
      BigDecimal phuThuCheckinSom;
+     BigDecimal phuThuCheckOutTre;
+     BigDecimal phuThuNangHangPhong;
+     int soLuongNangHangPhong;
      List<DichVuDto> danhSachDichVu;
      List<PhuThuDto> danhSachPhuThu;
      List<GiaPhongTheoNgayReponse> danhSachGiaPhongTheoNgay;
