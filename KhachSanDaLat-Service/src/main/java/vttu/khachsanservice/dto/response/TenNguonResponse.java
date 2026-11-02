@@ -1,4 +1,4 @@
-package vttu.khachsanservice.dto.request;
+package vttu.khachsanservice.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TenNguonRequest {
+public class TenNguonResponse {
     int maTenNguon;
     String tenNguon;
     String diaChi;
