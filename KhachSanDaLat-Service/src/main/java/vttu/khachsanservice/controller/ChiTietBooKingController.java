@@ -23,7 +23,8 @@ public class ChiTietBooKingController {
     ChiTietBooKingService chiTietBooKingService;
 
     @GetMapping("/{ma_booking}")
-    ApiResponse<List<ChiTietBooKingResponse>>  getChiTietBooKingByMaBooKing(@PathVariable String ma_booking) {
+    ApiResponse<List<ChiTietBooKingResponse>>  getChiTietBooKingByMaBooKing(
+            @PathVariable("ma_booking") String ma_booking) {
 
         try {
 
@@ -53,7 +54,9 @@ public class ChiTietBooKingController {
         }
     }
     @DeleteMapping("/{ma_chitiet}/{ma_booking}")
-    ApiResponse<Boolean> deleteChiTietBooKing(@PathVariable String ma_chitiet, @PathVariable String ma_booking) {
+    ApiResponse<Boolean> deleteChiTietBooKing(
+            @PathVariable("ma_chitiet") String ma_chitiet,
+            @PathVariable("ma_booking") String ma_booking) {
         try {
 
             return ApiResponse.<Boolean>builder()
@@ -84,7 +87,8 @@ public class ChiTietBooKingController {
     }
 
     @GetMapping("/gia-phong-theo-ngay/{ma_xep_phong}")
-    ApiResponse<List<GiaPhongTheoNgayReponse>>  getListGiaPhongTheoNgay(@PathVariable String ma_xep_phong) {
+    ApiResponse<List<GiaPhongTheoNgayReponse>>  getListGiaPhongTheoNgay(
+            @PathVariable("ma_xep_phong") String ma_xep_phong) {
 
         try {
 
@@ -114,7 +118,8 @@ public class ChiTietBooKingController {
         }
     }
     @GetMapping("/xuat-phieu-chi-tiet-dat-phong/{ma_booking}")
-    ApiResponse<List<Map<String,Object>>> getThongTinXuatPhieuChiTietBooking(@PathVariable String ma_booking) {
+    ApiResponse<List<Map<String,Object>>> getThongTinXuatPhieuChiTietBooking(
+            @PathVariable("ma_booking") String ma_booking) {
         try {
 
             return ApiResponse.<List<Map<String,Object>>>builder()
@@ -146,7 +151,8 @@ public class ChiTietBooKingController {
     }
 
   @GetMapping("/xuat-phieu-chi-tiet-dat-phong-phu-thu/{ma_booking}")
-  ApiResponse<List<Map<String,Object>>> getThongTinXuatPhieuPhuThuChiTietBooking(@PathVariable String ma_booking) {
+  ApiResponse<List<Map<String,Object>>> getThongTinXuatPhieuPhuThuChiTietBooking(
+      @PathVariable("ma_booking") String ma_booking) {
     try {
 
       return ApiResponse.<List<Map<String,Object>>>builder()
@@ -180,7 +186,8 @@ public class ChiTietBooKingController {
 
 
   @GetMapping("/phu-thu/{ma_booking}")
-  ApiResponse<List<Map<String,Object>>> getPhuThuTreEm(@PathVariable String ma_booking) {
+  ApiResponse<List<Map<String,Object>>> getPhuThuTreEm(
+      @PathVariable("ma_booking") String ma_booking) {
     try {
 
       return ApiResponse.<List<Map<String,Object>>>builder()

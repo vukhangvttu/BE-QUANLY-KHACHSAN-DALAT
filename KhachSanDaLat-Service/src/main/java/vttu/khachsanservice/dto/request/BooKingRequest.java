@@ -1,5 +1,6 @@
 package vttu.khachsanservice.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -39,6 +40,7 @@ public class BooKingRequest {
     boolean daXepPhong;
     String ghiChu;
     String loaiNguonKhach;
+    BigDecimal  tongTienDichVu;
 
     DanhXungRequest danhXung;
 
@@ -57,5 +59,10 @@ public class BooKingRequest {
     List<YeuCauRequest> yeuCaus;
 
     List<ChiTietBooKingRequest> chiTietBooKings;
+
+    @JsonAlias("dichVuBooKings")
+    List<DichVuBookingRequest> dichVuBookings;
+
+
 
 }

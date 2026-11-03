@@ -67,6 +67,7 @@ public class ChiTietBooking {
 
     @ManyToOne
     @JoinColumn(name = "ma_booking", nullable = true)
+    @JsonBackReference
     @JsonIgnoreProperties("chiTietBooKings")
     BooKing booKing;
 

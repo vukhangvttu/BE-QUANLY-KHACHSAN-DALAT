@@ -43,6 +43,7 @@ public class BooKing {
     String nguoiTao;
     boolean daXepPhong;
     String loaiNguonKhach;
+    BigDecimal  tongTienDichVu;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "ma_nguon_khach")
@@ -106,5 +107,7 @@ public class BooKing {
     @OneToMany(mappedBy = "booKing")
     List<HoaDon> hoaDons = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "booKing",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    List<DichVuBooking> dichVuBookings;
 }

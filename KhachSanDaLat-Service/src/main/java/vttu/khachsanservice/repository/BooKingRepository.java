@@ -38,8 +38,8 @@ public interface BooKingRepository extends JpaRepository<BooKing, String> {
 
 
     // danh sách booking
-    @Query(value ="SELECT * FROM danh_sach_all_booking()", nativeQuery = true)
-    List<Map<String, Object>> danhSachBooKing();
+    @Query(value ="SELECT * FROM danh_sach_all_booking(:size)", nativeQuery = true)
+    List<Map<String, Object>> danhSachBooKing(Integer size);
 
     // Update tổng tiền booking khi xóa phòng hội nghị
 

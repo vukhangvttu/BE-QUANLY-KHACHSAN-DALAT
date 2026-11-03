@@ -60,3 +60,7 @@ dependencies {
 tasks.withType(Test).configureEach {
     enabled = false
 }
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.add('-parameters')
+}

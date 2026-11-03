@@ -248,8 +248,6 @@ public class XepPhongBooKingController {
         }
     }
 
-
-
     @GetMapping("/chi-tiet-xep-phong/{ma_xepphong}")
     ApiResponse<XepPhongBooKingResponse> getXepPhongByMaXepPhong(@PathVariable String ma_xepphong) {
         try {
@@ -582,6 +580,39 @@ public class XepPhongBooKingController {
             return ApiResponse.<Void>builder()
                     .message("Internal Server Error!")
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .build();
+        }
+    }
+
+    @PutMapping("/chuyen-thong-tin-khach-hang")
+    ApiResponse<Boolean> updateChuyenThongTinKhachHang (
+                                             @RequestParam String ma_xepphong_booking_cu,
+                                             @RequestParam String ma_xepphong_booking_moi) {
+        try {
+
+            return ApiResponse.<Boolean>builder()
+                    .result(xepPhongService.chuyenThongTinKhachHang(ma_xepphong_booking_cu,ma_xepphong_booking_moi))
+                    .message("Chuyên thông tin khách hàng thành công")
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } catch (AccessDeniedException e) {
+            return ApiResponse.<Boolean>builder()
+                    .message("Bạn không có quyền thực hiện thao tác này")
+                    .code(HttpStatus.FORBIDDEN.value()) // 403 Forbidden
+                    .build();
+        } catch (AppException e) {
+            // Handle custom exceptions (e.g., validation or business logic errors)
+            return ApiResponse.<Boolean>builder()
+                    .message(e.getMessage())
+                    .code(HttpStatus.BAD_REQUEST.value()) // For client-side errors
+                    .build();
+        } catch (Exception e) {
+            // Log unexpected errors
+            LoggerFactory.getLogger(XepPhongBooKingController.class).error("Error check-in booking", e);
+
+            return ApiResponse.<Boolean>builder()
+                    .message("Internal Server Error!")
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value()) // For server-side errors
                     .build();
         }
     }

@@ -50,6 +50,8 @@ public class BooKingService {
     ThongTinLienHeBooKingMapper thongTinLienHeBooKingMapper;
     BooKingRepository booKingRepository;
     BooKingMapper booKingMapper;
+    DichVuBookingRepository dichVuBookingRepository;
+    DichVuBookingMapper dichVuBookingMapper;
     ChiTietBooKingRepository chiTietBooKingRepository;
     ChiTietBooKingMapper chiTietBooKingMapper;
     KhachHangBooKingService khachHangBooKingService;
@@ -88,12 +90,20 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     // Validate các entity liên quan
     validateRelatedEntities(request);
 
+    DichVuBookingCalculation dichVuBookingCalculation = calculateDichVuBookings(request);
+
     // Lưu thông tin khách hàng và liên hệ
     KhachHangBooKing khachHangBooKing = saveCustomerInfo(request);
     ThongTinLienHeBooKing thongTinLienHeBooKing = saveContactInfo(request);
 
     // Tạo và lưu BooKing chính
-    BooKing booKing = createAndSaveMainBooking(request, khachHangBooKing, thongTinLienHeBooKing);
+    BooKing booKing = createAndSaveMainBooking(
+            request,
+            khachHangBooKing,
+            thongTinLienHeBooKing,
+            dichVuBookingCalculation.tongTien()
+    );
+    saveDichVuBookings(dichVuBookingCalculation.dichVuBookings(), booKing);
 
     var authentiaction = SecurityContextHolder.getContext().getAuthentication();
   // Kiểm tra giá trị sau khi lưu
@@ -107,8 +117,14 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     // Xử lý ChiTietBooking
     ProcessChiTietBookingResult result = processChiTietBookings(request, booKing);
 
-    // Kiểm tra tổng tiền
-    validateTotalAmount(result.tongTien, request.getTongTien());
+    // tongTien từ FE bao gồm tiền phòng và tiền dịch vụ.
+    BigDecimal tongTienTinhDuoc = result.tongTien.add(dichVuBookingCalculation.tongTien());
+    validateTotalAmount(
+            tongTienTinhDuoc,
+            request.getTongTien(),
+            result.tongTien,
+            dichVuBookingCalculation.tongTien()
+    );
 
     // Kiểm tra số lượng booking
     if (request.getChiTietBooKings().size() != result.chiTietBookings.size()) {
@@ -129,8 +145,8 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     return booKingMapper.toBooKingResponse(booKing);
 }
 
-    public List<Map<String,Object>> getAllBooKing(){
-        return booKingRepository.danhSachBooKing();
+    public List<Map<String,Object>> getAllBooKing(int size){
+        return booKingRepository.danhSachBooKing(size);
 
     }
 
@@ -150,6 +166,7 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     // 1. Tìm bản ghi BooKing cần cập nhật
     BooKing booKing = booKingRepository.findById(maBooking)
       .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND, "Booking không tồn tại: " + maBooking));
+    DichVuBookingCalculation dichVuBookingCalculation = calculateDichVuBookings(request);
 
     // Kiểm tra các thực thể liên quan
     findEntityOrThrow(
@@ -727,16 +744,21 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     booKingUpdate.setThoiGianTao(booKing.getThoiGianTao());
     booKingUpdate.setNguoiTao(booKing.getNguoiTao());
     booKingUpdate.setLoaiNguonKhach(request.getLoaiNguonKhach().toUpperCase());
+    booKingUpdate.setTongTienDichVu(dichVuBookingCalculation.tongTien());
     booKingUpdate.setTongTien(request.getTongTien());
+    for (DichVuBooking dichVuBooking : dichVuBookingCalculation.dichVuBookings()) {
+      dichVuBooking.setBooKing(booKingUpdate);
+    }
+    booKingUpdate.setDichVuBookings(dichVuBookingCalculation.dichVuBookings());
 
     // Kiểm tra tổng tiền và số lượng chi tiết booking
-    if (tongTien.get().compareTo(request.getTongTien()) != 0) {
-      throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
-    }
+    BigDecimal tongTienTinhDuoc = tongTien.get().add(dichVuBookingCalculation.tongTien());
+    validateTotalAmount(tongTienTinhDuoc, request.getTongTien(), tongTien.get(), dichVuBookingCalculation.tongTien());
     if (request.getChiTietBooKings().size() != chiTietBookings.size()) {
       throw new AppException(ErrorCode.SO_LUONG_BOOKING_KHONG_KHOP);
     }
 
+    dichVuBookingRepository.deleteAllByBooKing_MaBooking(maBooking);
     booKingUpdate = booKingRepository.save(booKingUpdate);
     log_DanhSachPhongChiTietRepositoty.saveAll(logDanhSachPhongChiTietList);
 
@@ -791,11 +813,17 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     /**
      * Tạo và lưu booking chính
      */
-    private BooKing createAndSaveMainBooking(BooKingRequest request, KhachHangBooKing khachHangBooKing, ThongTinLienHeBooKing thongTinLienHeBooKing) {
+    private BooKing createAndSaveMainBooking(
+            BooKingRequest request,
+            KhachHangBooKing khachHangBooKing,
+            ThongTinLienHeBooKing thongTinLienHeBooKing,
+            BigDecimal tongTienDichVu
+    ) {
         BooKing booKing = booKingMapper.toCreateBooKing(request);
         booKing.setMaBooking(generateNewBookingId());
         booKing.setKhachHangBooKing(khachHangBooKing);
         booKing.setThongTinLienHeBooKing(thongTinLienHeBooKing);
+        booKing.setTongTienDichVu(tongTienDichVu);
 
         // Xử lý YeuCau
         if (CollectionUtils.isNotEmpty(request.getYeuCaus())) {
@@ -814,6 +842,65 @@ public BooKingResponse createBooKing(BooKingRequest request) {
         booKing.setThoiGianTao(LocalDateTime.now());
         booKing.setLoaiNguonKhach(request.getLoaiNguonKhach().toUpperCase());
         return booKingRepository.save(booKing);
+    }
+
+    private DichVuBookingCalculation calculateDichVuBookings(BooKingRequest request) {
+        List<DichVuBookingRequest> requests = request.getDichVuBookings();
+        BigDecimal tongTienDichVuRequest = request.getTongTienDichVu();
+
+        if (CollectionUtils.isEmpty(requests)) {
+            if (tongTienDichVuRequest != null && tongTienDichVuRequest.compareTo(BigDecimal.ZERO) != 0) {
+                throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
+            }
+            return new DichVuBookingCalculation(Collections.emptyList(), BigDecimal.ZERO);
+        }
+
+        List<DichVuBooking> dichVuBookings = new ArrayList<>(requests.size());
+        BigDecimal tongTienDichVuTinhDuoc = BigDecimal.ZERO;
+
+        for (DichVuBookingRequest dichVuRequest : requests) {
+            if (dichVuRequest == null) {
+                throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
+            }
+            if (!StringUtils.hasText(dichVuRequest.getMaDichVu())) {
+                throw new AppException(ErrorCode.MA_DICH_VU_EMPTY);
+            }
+            if (dichVuRequest.getSoLuong() <= 0
+                    || dichVuRequest.getDonGia() == null
+                    || dichVuRequest.getDonGia().compareTo(BigDecimal.ZERO) < 0) {
+                throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
+            }
+
+            BigDecimal tongTienChiTiet = dichVuRequest.getDonGia()
+                    .multiply(BigDecimal.valueOf(dichVuRequest.getSoLuong()));
+            if (dichVuRequest.getTongTien() != null
+                    && dichVuRequest.getTongTien().compareTo(tongTienChiTiet) != 0) {
+                throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
+            }
+
+            DichVuBooking dichVuBooking = dichVuBookingMapper.toDichVuBooking(dichVuRequest);
+            dichVuBooking.setTongTien(tongTienChiTiet);
+            dichVuBookings.add(dichVuBooking);
+            tongTienDichVuTinhDuoc = tongTienDichVuTinhDuoc.add(tongTienChiTiet);
+        }
+
+        if (tongTienDichVuRequest == null || tongTienDichVuTinhDuoc.compareTo(tongTienDichVuRequest) != 0) {
+            throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
+        }
+
+        return new DichVuBookingCalculation(dichVuBookings, tongTienDichVuTinhDuoc);
+    }
+
+    private void saveDichVuBookings(List<DichVuBooking> dichVuBookings, BooKing booKing) {
+        if (CollectionUtils.isEmpty(dichVuBookings)) {
+            return;
+        }
+
+        dichVuBookings.forEach(dichVuBooking -> dichVuBooking.setBooKing(booKing));
+        booKing.setDichVuBookings(dichVuBookingRepository.saveAll(dichVuBookings));
+    }
+
+    private record DichVuBookingCalculation(List<DichVuBooking> dichVuBookings, BigDecimal tongTien) {
     }
 
     /**
@@ -1103,10 +1190,24 @@ public BooKingResponse createBooKing(BooKingRequest request) {
     /**
      * Validate tổng tiền
      */
-    private void validateTotalAmount(BigDecimal tongTienTinhDuoc, BigDecimal tongTienRequest) {
+    private void validateTotalAmount(
+            BigDecimal tongTienTinhDuoc,
+            BigDecimal tongTienRequest,
+            BigDecimal tongTienPhong,
+            BigDecimal tongTienDichVu
+    ) {
 
         if (tongTienTinhDuoc.compareTo(tongTienRequest) != 0) {
-            throw new AppException(ErrorCode.TONG_TIEN_KHONG_KHOP);
+            throw new AppException(
+                    ErrorCode.TONG_TIEN_KHONG_KHOP,
+                    String.format(
+                            "(Tiền phòng: %s, dịch vụ: %s, tổng BE: %s, tổng FE: %s)",
+                            tongTienPhong,
+                            tongTienDichVu,
+                            tongTienTinhDuoc,
+                            tongTienRequest
+                    )
+            );
         }
     }
 

@@ -16,6 +16,7 @@ import java.util.List;
 
 @Mapper(componentModel =  "spring" , uses = {LoaiPhongMapper.class, LoaiGiaMapper.class,YeuCauMapper.class})
 public interface BooKingMapper {
+    @Mapping(target = "dichVuBookings", ignore = true)
     BooKing toCreateBooKing(BooKingRequest request);
 
 //    @Mapping(target = "chiTietBooKings", source = "chiTietBookings")
@@ -26,5 +27,6 @@ public interface BooKingMapper {
     @Mapping(target = "khachHangBooKing", ignore = true) // Bỏ qua quan hệ, xử lý trong service
     @Mapping(target = "thongTinLienHeBooKing", ignore = true) // Bỏ qua quan hệ
     @Mapping(target = "yeuCaus", ignore = true) // Bỏ qua quan hệ
+    @Mapping(target = "dichVuBookings", ignore = true)
     void updateBooKing(@MappingTarget BooKing entity, BooKingRequest request);
 }

@@ -48,4 +48,8 @@ public class BooKingResponse {
 
     List<YeuCauResponse> yeuCaus;
 
+    List<DichVuBookingReponse> dichVuBookings;
+
+
+
 }

@@ -3,7 +3,6 @@ package vttu.khachsanservice.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +56,7 @@ public class XepPhongService {
     private final GiaPhongTheoNgayRepository giaPhongTheoNgayRepository;
     private final GiaPhongRepository giaPhongRepository;
     private final Log_GiaPhongTheoNgayRepository log_GiaPhongTheoNgayRepository;
+    private final KhachHangPhongRepository khachHangPhongRepository;
 
     @Transactional
     public boolean createXepPhongBooKing(List<XepPhongBooKingRequest> request, String ma_booking) {
@@ -963,5 +963,68 @@ xepPhongBooKing.setSoNguoiLon(0);
 
             xepPhongRepository.save(xepPhong);
         }
+    }
+    @Transactional
+    public Boolean chuyenThongTinKhachHang(String maXepPhongCu, String maXepPhongMoi) {
+        xepPhongRepository.findById(maXepPhongCu)
+                .orElseThrow(() -> new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND));
+        XepPhongBooKing xepPhongMoi = xepPhongRepository.findById(maXepPhongMoi)
+                .orElseThrow(() -> new AppException(ErrorCode.MA_XEP_PHONG_BOOKING_NOT_FOUND));
+        var authentiaction = SecurityContextHolder.getContext().getAuthentication();
+        List<KhachHangPhong> data = khachHangPhongRepository.getKhachHangPhongByXepPhongBooking(maXepPhongCu);
+        Set<String> soGiayToDaCo = new HashSet<>();
+        for (KhachHangPhong khachHangPhong : khachHangPhongRepository
+                .getKhachHangPhongByXepPhongBooking(maXepPhongMoi)) {
+            if (khachHangPhong.getSoGiayTo() != null && !khachHangPhong.getSoGiayTo().isBlank()) {
+                soGiayToDaCo.add(khachHangPhong.getSoGiayTo().trim());
+            }
+        }
+
+        List<KhachHangPhong> khachHangPhongMoiList = new ArrayList<>();
+        String datePrefix = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        int nextId = getNextBookingIdNumber(datePrefix);
+        LocalDateTime thoiGianTao = LocalDateTime.now();
+        for (KhachHangPhong khachHangPhong : data) {
+            String soGiayTo = khachHangPhong.getSoGiayTo();
+            if (soGiayTo != null && !soGiayTo.isBlank() && !soGiayToDaCo.add(soGiayTo.trim())) {
+                continue;
+            }
+
+            KhachHangPhong khachHangPhongMoi = new KhachHangPhong();
+            khachHangPhongMoi.setMaKhachHangPhong(String.format("KH-P%s%03d", datePrefix, nextId++));
+            khachHangPhongMoi.setHo(khachHangPhong.getHo());
+            khachHangPhongMoi.setTen(khachHangPhong.getTen());
+            khachHangPhongMoi.setNgaySinh(khachHangPhong.getNgaySinh());
+            khachHangPhongMoi.setDiaChi(khachHangPhong.getDiaChi());
+            khachHangPhongMoi.setSoTuoiTre(khachHangPhong.getSoTuoiTre());
+            khachHangPhongMoi.setGhiChu(khachHangPhong.getGhiChu());
+            khachHangPhongMoi.setThoiGianTao(thoiGianTao);
+            khachHangPhongMoi.setNguoiTao(authentiaction.getName());
+            khachHangPhongMoi.setDanhXung(khachHangPhong.getDanhXung());
+            khachHangPhongMoi.setGioiTinh(khachHangPhong.getGioiTinh());
+            khachHangPhongMoi.setLoaiGiayTo(khachHangPhong.getLoaiGiayTo());
+            khachHangPhongMoi.setLoaiTreEm(khachHangPhong.getLoaiTreEm());
+            khachHangPhongMoi.setLyDoLuuTru(khachHangPhong.getLyDoLuuTru());
+            khachHangPhongMoi.setSdt(khachHangPhong.getSdt());
+            khachHangPhongMoi.setSoGiayTo(khachHangPhong.getSoGiayTo());
+            khachHangPhongMoi.setTinhThanh(khachHangPhong.getTinhThanh());
+            khachHangPhongMoi.setHuyen(khachHangPhong.getHuyen());
+            khachHangPhongMoi.setPhuongXa(khachHangPhong.getPhuongXa());
+            khachHangPhongMoi.setQuocGia(khachHangPhong.getQuocGia());
+            khachHangPhongMoi.setXepPhongBooKing(xepPhongMoi);
+            khachHangPhongMoiList.add(khachHangPhongMoi);
+        }
+
+        khachHangPhongRepository.saveAll(khachHangPhongMoiList);
+        return true;
+    }
+
+    private int getNextBookingIdNumber(String datePrefix) {
+        String idPrefix = "KH-P" + datePrefix;
+        Optional<String> latestId = khachHangPhongRepository.findLatestMaKhachHangPhong();
+        if (latestId.isPresent() && latestId.get().startsWith(idPrefix)) {
+            return Integer.parseInt(latestId.get().substring(idPrefix.length())) + 1;
+        }
+        return 1;
     }
 }
